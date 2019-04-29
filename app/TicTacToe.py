@@ -1,6 +1,6 @@
 import pygame
-from tools import *
-from screens.MainMenuScreen import MainMenuScreen
+from utils import *
+import screens.screen_manager as screen_manager
 
 
 class TicTacToe:
@@ -14,7 +14,7 @@ class TicTacToe:
         pygame.init()
 
     def run(self, screen):
-        self.current_screen = screen
+        self.current_screen = screen_manager.screens[screen](self)
         self.current_screen.create()
 
         self.mainloop = True
@@ -32,7 +32,10 @@ class TicTacToe:
 
     def quit(self):
         self.mainloop = False
+
+    def quit_game(self):
+        self.mainloop = False
         quit_game()
 
 game = TicTacToe(1080, 720)
-game.run(MainMenuScreen(game))
+game.run("MainMenu")

@@ -1,5 +1,5 @@
 import pygame
-from tools import *
+from utils import *
 
 
 class MainMenuScreen:
@@ -11,8 +11,15 @@ class MainMenuScreen:
 
     def handleInput(self):
         for e in pygame.event.get():
-            if e.type == pygame.MOUSEBUTTONDOWN:
-                self.game.quit()
+            if e.type == pygame.QUIT:
+                self.game.quit_game()
+
+            if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_ESCAPE:
+                    self.game.quit_game()
+                
+                if e.key == pygame.K_SPACE:
+                    self.game.change_screen("Game")
 
     def update(self):
         pass

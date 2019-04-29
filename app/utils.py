@@ -1,6 +1,7 @@
 import sys
 import pygame
 
+
 def toast(surface, text, size, color, x, y, font="Arial Black", angle=0):
 
     if font.endswith('.otf') or font.endswith('.ttf'):
