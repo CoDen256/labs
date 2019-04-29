@@ -5,6 +5,7 @@ from utils import *
 class MainMenuScreen:
     def __init__(self, game):
         self.game = game
+        self.game.type = None
 
     def create(self):
         self.surface = pygame.Surface(self.game.size)
@@ -12,13 +13,17 @@ class MainMenuScreen:
     def handleInput(self):
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
-                self.game.quit_game()
+                self.game.quit()
 
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_ESCAPE:
-                    self.game.quit_game()
+                    self.game.quit()
                 
-                if e.key == pygame.K_SPACE:
+                if e.key == pygame.K_0:
+                    self.game.type = 0
+                    self.game.change_screen("Game")
+                if e.key == pygame.K_1:
+                    self.game.type = 1
                     self.game.change_screen("Game")
 
     def update(self):

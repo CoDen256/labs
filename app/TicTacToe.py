@@ -10,6 +10,7 @@ class TicTacToe:
         self.window = pygame.display.set_mode(self.size)
         self.current_screen = None
         self.mainloop = None
+        self.type = None
 
         pygame.init()
 
@@ -27,13 +28,10 @@ class TicTacToe:
             self.current_screen.render()
 
     def change_screen(self, screen):
-        self.quit()
+        self.mainloop = False
         self.run(screen)
 
     def quit(self):
-        self.mainloop = False
-
-    def quit_game(self):
         self.mainloop = False
         quit_game()
 
