@@ -3,7 +3,7 @@ from players.Player import Player
 
 class Human(Player):
     def __init__(self, grid, id):
-        super(Human, self).__init__(grid, id)
+        super().__init__(grid, id)
 
     def onTurn(self):
         pos = self.handleInput()

@@ -1,6 +1,8 @@
 import pygame
-from utils import *
+
 import screens.screen_manager as screen_manager
+
+from utils import *
 
 
 class TicTacToe:

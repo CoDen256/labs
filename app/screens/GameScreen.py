@@ -1,5 +1,7 @@
 import pygame
+
 from random import randint
+
 from utils import *
 from grids.ExpandableGrid import ExpandableGrid
 from grids.StaticGrid import StaticGrid

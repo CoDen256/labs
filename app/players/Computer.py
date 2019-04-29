@@ -1,9 +1,10 @@
+from players.AIComponent import AIComponent
 from players.Player import Player
 
 
 class Computer(Player):
     def __init__(self, grid, id):
-        super(Computer, self).__init__(grid, id)
+        super().__init__(grid, id)
         self.ai_component = AIComponent()
 
     def onTurn(self):
