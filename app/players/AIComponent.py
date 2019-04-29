@@ -1,13 +1,13 @@
 class AIComponent():
     def __init__(self):
         pass
-    
+
     def update(self, grid):
         # Если тебе нужны предыдущие ходы, то бери актуальные отсюда
         # Вызывается каждый раз первым на ходе компьютера
         pass
 
-    def compute_next_move():
+    def compute_next_move(self):
         # Вызывается каждый раз после update() на ходе компьютера
         # На выходе итоговая координата x,y (относительно сетки, а не экрана)
         pass

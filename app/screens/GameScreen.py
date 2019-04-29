@@ -1,7 +1,10 @@
 import pygame
+from random import randint
 from utils import *
 from grids.ExpandableGrid import ExpandableGrid
 from grids.StaticGrid import StaticGrid
+from players.Human import Human
+from players.Computer import Computer
 
 
 class GameScreen:
@@ -15,6 +18,13 @@ class GameScreen:
         self.surface = pygame.Surface(self.game.size)
 
         self.grid = [StaticGrid(), ExpandableGrid()][self.type]
+        self.player0 = Human(self.grid, 0)
+        self.player1 = Human(self.grid, 1)
+
+        self.players = [self.player0, self.player1]
+
+        self.currentId = randint(0, 1)
+        self.current = self.players[self.currentId]
 
     def handleInput(self):
         for e in pygame.event.get():
@@ -29,7 +39,14 @@ class GameScreen:
                     self.game.change_screen("MainMenu")
 
     def update(self):
-        pass
+        self.grid.updateInput()
+        self.current = self.players[self.currentId]
+
+        if not self.current.onTurn():
+            pass
+        else:
+            self.grid.updateScore()
+            self.currentId = 1 - self.currentId
 
     def render(self):
         self.game.window.blit(self.surface, (0, 0))

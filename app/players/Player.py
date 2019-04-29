@@ -8,11 +8,11 @@ class Player:
         self.id = id
 
     @abstractmethod
-    def onTurn():
+    def onTurn(self):
         """ Methods that is called on each turn  -> bool"""
         pass
 
     @abstractmethod
-    def makeMove():
+    def makeMove(self):
         """ Methods that is called to make a move on a grid """
         pass
