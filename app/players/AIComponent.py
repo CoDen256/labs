@@ -4,7 +4,20 @@ from math import inf as infinity
 
 
 class AIComponent:
+    '''
+    >>> ai = AIComponent(1)
+    >>> grid = [
+    ...     [1, 1, -1],
+    ...     [0, 0, -1],
+    ...     [-1, -1, 1],
+    ... ]
+    >>> ai.compute_next_move_3x3(grid)
+    >>> grid
+    [[1, 0, 1],
+    [0, -1, 0],
+    [-1, 0, 0]]
 
+    '''
     def __init__(self, id):
         self.human = id * -1
         self.computer = id
@@ -20,7 +33,7 @@ class AIComponent:
         else:
             move = self.minimax_algorithm(grid, depth, self.computer)
             x, y = move[0], move[1]
-                   
+
         self.set_move(x, y, self.computer, grid)
 
     def minimax_algorithm(self, grid, depth, player):
