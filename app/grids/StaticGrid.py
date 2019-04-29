@@ -3,7 +3,7 @@ from grids.Grid import Grid
 
 class StaticGrid(Grid):
     def __init__(self, w=20, h=10):
-        self.cells = [[-1 for i in range(w)] for j in range(h)]
+        self.cells = [[0 for i in range(w)] for j in range(h)]
         self.width = w
         self.height = h
 

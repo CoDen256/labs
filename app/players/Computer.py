@@ -5,11 +5,9 @@ from players.Player import Player
 class Computer(Player):
     def __init__(self, grid, id):
         super().__init__(grid, id)
-        self.ai_component = AIComponent()
+        self.ai_component = AIComponent(id)
 
     def onTurn(self):
-        self.ai_component.update(self.grid)
-
         position = self.ai_component.compute_next_move()
         self.makeMove(position)
         
