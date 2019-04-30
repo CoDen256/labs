@@ -1,7 +1,6 @@
 import pygame
 
 import screens.screen_manager as screen_manager
-
 from utils import *
 
 
@@ -38,4 +37,5 @@ class TicTacToe:
         quit_game()
 
 game = TicTacToe(1080, 720)
-game.run("MainMenu")
+game.type = 0
+game.run("Game")

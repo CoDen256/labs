@@ -22,3 +22,6 @@ class ExpandableGrid(Grid):
 
     def add(self, value, position):
         pass
+
+    def render(self, surface):
+        pass

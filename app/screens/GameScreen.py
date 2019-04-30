@@ -15,18 +15,17 @@ class GameScreen:
         self.type = self.game.type
         # type == 0 - Static
         # type == 1 - Expandable
-    
+
     def create(self):
         self.surface = pygame.Surface(self.game.size)
 
         self.grid = [StaticGrid(), ExpandableGrid()][self.type]
-        self.player0 = Human(self.grid, 0)
-        self.player1 = Human(self.grid, 1)
 
-        self.players = [self.player0, self.player1]
+        self.players = [Human(self.grid, 1), Human(self.grid, -1)] 
+        # num = (id + 2) % 3
 
-        self.currentId = randint(0, 1)
-        self.current = self.players[self.currentId]
+        self.currentPLayerNum = randint(0, 1)
+        self.update_current()
 
     def handleInput(self):
         for e in pygame.event.get():
@@ -36,26 +35,35 @@ class GameScreen:
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_ESCAPE:
                     self.game.quit()
-                
+
                 if e.key == pygame.K_SPACE:
                     self.game.change_screen("MainMenu")
 
     def update(self):
         self.grid.updateInput()
-        self.current = self.players[self.currentId]
+        self.update_current()
 
         if not self.current.onTurn():
             pass
         else:
             self.grid.updateScore()
-            self.currentId = 1 - self.currentId
+            self.currentPLayerNum = 1 - self.currentPLayerNum
 
     def render(self):
         self.game.window.blit(self.surface, (0, 0))
         self.surface.fill((100, 150, 175))
-        
+
+        self.grid.render(self.surface)
+
         toast(self.surface,
               "Welcome To GameScreen with {} Grid".format(self.type),
               20, (50, 50, 50), self.game.w/2, self.game.h/2)
 
+        toast(self.surface,
+              "Player #{} has current turn".format(self.currentPLayerNum),
+              15, (50, 50, 50), self.game.w*2/3, self.game.h/3)
+
         pygame.display.flip()
+
+    def update_current(self):
+        self.current = self.players[self.currentPLayerNum]

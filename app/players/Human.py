@@ -11,7 +11,7 @@ class Human(Player):
         if pos is None:
             return
 
-        return makeMove(position)
+        return makeMove(pos)
 
     def makeMove(self, position):
         # Convert position from absolute to cell position

@@ -9,7 +9,7 @@ class Player:
 
     @abstractmethod
     def onTurn(self):
-        """ Methods that is called on each turn  -> bool"""
+        """ Methods that is called on each turn -> bool"""
         pass
 
     @abstractmethod

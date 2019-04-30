@@ -23,3 +23,8 @@ class Grid():
     def add(self, value, position):
         """ Adds an input to position (relative to grid) """
         pass
+
+    @abstractmethod
+    def render(self, surface):
+        """Renders the particular grid to a surface"""
+        pass

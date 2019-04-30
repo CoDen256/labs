@@ -41,6 +41,8 @@ class AIComponent:
 
         self.set_move(x, y, self.computer, grid)
 
+        # Has to return position
+
     def compute_next_move_exp(self, grid):
         # For expandable grid
         pass

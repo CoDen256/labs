@@ -10,14 +10,15 @@ class Computer(Player):
 
     def onTurn(self):
         position = None
+
         if isinstance(self.grid, ExpandableGrid):
-            position = self.ai_component.compute_next_move(self.grid)
-        else:
             position = self.ai_component.compute_next_move_exp(self.grid)
+        else:
+            position = self.ai_component.compute_next_move_3x3(self.grid)
+
         self.makeMove(position)
-        
+
         return True
 
     def makeMove(self, position):
         self.grid.add(self.id, position)
-
