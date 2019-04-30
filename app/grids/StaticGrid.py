@@ -1,5 +1,6 @@
 from grids.Grid import Grid
 import pygame.gfxdraw as pydraw
+import pygame
 
 
 class StaticGrid(Grid):
@@ -17,17 +18,31 @@ class StaticGrid(Grid):
 
         self.scores = [0, 0]
 
-    def updateInput(self):
-        pass
-
     def updateScore(self):
         pass
 
     def convert(self, position):
+        """ Converts absolute position to array position and returns False if unsuccessful"""
+        x, y = position
+        if not (self.x < x < self.x + self.width) or \
+           not (self.y < y < self.y + self.height):
+
+            return False
+
+        else:
+            return (self.grid_to_arr(self.surf_to_grid(position)))
+
+    def updateInput(self):
+        """ No update is needed: grid is not resizable """
         pass
 
     def add(self, value, position):
-        pass
+        # Adds particular move to a position(relative to Array), returns True if successful
+        if not self.cells[position[0]][position[1]]:
+            self.cells[position[0]][position[1]] = value
+            return True
+        else:
+            return False
 
     def render(self):
         self.renderGrid()

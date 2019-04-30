@@ -8,6 +8,7 @@ from grids.StaticGrid import StaticGrid
 from players.Human import Human
 from players.Computer import Computer
 from hud.ui import HUD
+from hud.Mouse import Mouse
 
 
 class GameScreen:
@@ -32,6 +33,7 @@ class GameScreen:
         self.update_current()
 
     def handleInput(self):
+        self.grid.updateInput()
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 self.game.quit()
@@ -44,7 +46,6 @@ class GameScreen:
                     self.game.change_screen("MainMenu")
 
     def update(self):
-        self.grid.updateInput()
         self.update_current()
 
         if not self.current.onTurn():
@@ -52,6 +53,8 @@ class GameScreen:
         else:
             self.grid.updateScore()
             self.currentPLayerNum = 1 - self.currentPLayerNum
+
+        Mouse.update()
 
     def render(self):
         self.game.window.blit(self.surface, (0, 0))
