@@ -5,11 +5,10 @@ import pygame
 
 class StaticGrid(Grid):
     def __init__(self, surface, x, y, cell_size, columns=3, rows=3):
+        super().__init__(surface)
         self.cells = [[0 for i in range(columns)] for j in range(rows)]
         self.columns = columns
         self.rows = rows
-
-        self.surface = surface
 
         self.position = self.x, self.y = x, y
         self.cell_size = cell_size
@@ -103,9 +102,9 @@ class StaticGrid(Grid):
         # Converts Grid coordinates to Array coordinates
         return (pos[0] // self.cell_size, pos[1] // self.cell_size)
 
-    def highlight(self, pos):
+    def highlight(self, position):
         """ Highlights certain position(relative to surface) """
-        x,y = pos
+        x,y = position
 
         if not (self.x < x < self.x + self.width) or \
            not (self.y < y < self.y + self.height):

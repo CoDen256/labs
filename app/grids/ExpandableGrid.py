@@ -2,7 +2,8 @@ from grids.Grid import Grid
 
 
 class ExpandableGrid(Grid):
-    def __init__(self, w=100, h=100):
+    def __init__(self, surface, w=100, h=100):
+        super().__init__(surface)
         self.cells = [[0 for i in range(w)] for j in range(h)]
         self.width = w
         self.height = h

@@ -24,7 +24,7 @@ class GameScreen:
         log("GameScreen size", self.surface.get_size())
 
         self.grid = [StaticGrid(self.surface, x=210, y=50, cell_size=220),
-                     ExpandableGrid()][self.type]
+                     ExpandableGrid(self.surface)][self.type]
 
         self.players = [Human(self.grid, 1), Human(self.grid, -1)] 
         # num = (id + 2) % 3
