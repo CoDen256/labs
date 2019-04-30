@@ -1,5 +1,6 @@
 from players.AIComponent import AIComponent
 from players.Player import Player
+from grids.ExpandableGrid import ExpandableGrid
 
 
 class Computer(Player):
@@ -8,7 +9,11 @@ class Computer(Player):
         self.ai_component = AIComponent(id)
 
     def onTurn(self):
-        position = self.ai_component.compute_next_move()
+        position = None
+        if isinstance(self.grid, ExpandableGrid):
+            position = self.ai_component.compute_next_move(self.grid)
+        else:
+            position = self.ai_component.compute_next_move_exp(self.grid)
         self.makeMove(position)
         
         return True

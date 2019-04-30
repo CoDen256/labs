@@ -1,6 +1,11 @@
 import doctest
+import sys
+import math
 
-from math import inf as infinity
+if sys.version_info < (3, 5):
+    math.inf = float('inf')
+
+infinity = math.inf
 
 
 class AIComponent:
@@ -35,6 +40,10 @@ class AIComponent:
             x, y = move[0], move[1]
 
         self.set_move(x, y, self.computer, grid)
+
+    def compute_next_move_exp(self, grid):
+        # For expandable grid
+        pass
 
     def minimax_algorithm(self, grid, depth, player):
         if player == self.computer:
