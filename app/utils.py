@@ -20,3 +20,7 @@ def toast(surface, text, size, color, x, y, font="Arial Black", angle=0):
 
 def quit_game():
     sys.exit()
+
+
+def log(tag, message):
+    print(tag, message, sep=': ')

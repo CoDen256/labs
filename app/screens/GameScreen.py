@@ -7,6 +7,7 @@ from grids.ExpandableGrid import ExpandableGrid
 from grids.StaticGrid import StaticGrid
 from players.Human import Human
 from players.Computer import Computer
+from hud.ui import HUD
 
 
 class GameScreen:
@@ -17,9 +18,12 @@ class GameScreen:
         # type == 1 - Expandable
 
     def create(self):
-        self.surface = pygame.Surface(self.game.size)
 
-        self.grid = [StaticGrid(), ExpandableGrid()][self.type]
+        self.surface = pygame.Surface(self.game.size)
+        log("GameScreen size", self.surface.get_size())
+
+        self.grid = [StaticGrid(self.surface, x=210, y=50, cell_size=220),
+                     ExpandableGrid()][self.type]
 
         self.players = [Human(self.grid, 1), Human(self.grid, -1)] 
         # num = (id + 2) % 3
@@ -53,17 +57,20 @@ class GameScreen:
         self.game.window.blit(self.surface, (0, 0))
         self.surface.fill((100, 150, 175))
 
-        self.grid.render(self.surface)
+        self.grid.render()
 
+        self.renderMessages()
+
+        pygame.display.flip()
+
+    def renderMessages(self):
         toast(self.surface,
               "Welcome To GameScreen with {} Grid".format(self.type),
-              20, (50, 50, 50), self.game.w/2, self.game.h/2)
+              20, (50, 50, 50), self.game.w/2, 20)
 
         toast(self.surface,
               "Player #{} has current turn".format(self.currentPLayerNum),
-              15, (50, 50, 50), self.game.w*2/3, self.game.h/3)
-
-        pygame.display.flip()
+              15, (50, 50, 50), self.game.w - 150, 20)
 
     def update_current(self):
         self.current = self.players[self.currentPLayerNum]
