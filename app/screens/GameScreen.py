@@ -54,12 +54,11 @@ class GameScreen:
             self.grid.updateScore()
             self.currentPLayerNum = 1 - self.currentPLayerNum
 
-        Mouse.update()
-
     def render(self):
         self.game.window.blit(self.surface, (0, 0))
-        self.surface.fill((100, 150, 175))
+        self.surface.fill((220, 220, 220))
 
+        self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
 
         self.renderMessages()

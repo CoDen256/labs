@@ -28,9 +28,8 @@ class StaticGrid(Grid):
            not (self.y < y < self.y + self.height):
 
             return False
-
-        else:
-            return (self.grid_to_arr(self.surf_to_grid(position)))
+    
+        return (self.grid_to_arr(self.surf_to_grid(position)))
 
     def updateInput(self):
         """ No update is needed: grid is not resizable """
@@ -103,3 +102,17 @@ class StaticGrid(Grid):
     def grid_to_arr(self, pos):
         # Converts Grid coordinates to Array coordinates
         return (pos[0] // self.cell_size, pos[1] // self.cell_size)
+
+    def highlight(self, pos):
+        """ Highlights certain position(relative to surface) """
+        x,y = pos
+
+        if not (self.x < x < self.x + self.width) or \
+           not (self.y < y < self.y + self.height):
+            return
+        x,y = self.surf_to_grid((x,y))
+        x = (x // self.cell_size) * self.cell_size
+        y = (y // self.cell_size) * self.cell_size
+        x,y = self.grid_to_surf((x,y))
+
+        pygame.draw.rect(self.surface, (180, 180, 180), [x, y, self.cell_size, self.cell_size])
