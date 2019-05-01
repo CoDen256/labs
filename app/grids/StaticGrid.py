@@ -4,17 +4,8 @@ import pygame
 
 
 class StaticGrid(Grid):
-    def __init__(self, surface, x, y, cell_size, columns=3, rows=3):
-        super().__init__(surface)
-        self.cells = [[0 for i in range(columns)] for j in range(rows)]
-        self.columns = columns
-        self.rows = rows
-
-        self.position = self.x, self.y = x, y
-        self.cell_size = cell_size
-        self.height = cell_size * rows
-        self.width = cell_size * columns
-
+    def __init__(self, parent, position, cell_size, columns=3, rows=3):
+        super().__init__(parent, columns, rows, cell_size, position)
         self.scores = [0, 0]
 
     def updateScore(self):
@@ -43,16 +34,18 @@ class StaticGrid(Grid):
             return False
 
     def render(self):
+        self.parent.blit(self.surface, (self.x, self.y))
+        #fill the surface
         self.renderGrid()
         self.renderCells()
 
     def renderGrid(self):
         # Draws a grid: vertical and horizontal lines
         for i in range(0, self.width+1, self.cell_size):
-            pydraw.vline(self.surface, self.x+i, self.y, self.y+self.height, (50, 50, 50))
+            pydraw.vline(self.surface, i, 0, self.height, (50, 50, 50))
 
         for j in range(0, self.height+1, self.cell_size):
-            pydraw.hline(self.surface, self.x, self.x+self.width, self.y+j, (50, 50, 50))
+            pydraw.hline(self.surface, 0, self.width, j, (50, 50, 50))
 
     def renderCells(self):
         for row in range(len(self.cells)):
@@ -66,11 +59,11 @@ class StaticGrid(Grid):
         # renders a cross at the position relative to grid
         x, y = self.grid_to_surf(self.arr_to_grid(position))
 
-        pydraw.line(self.surface,
+        pydraw.line(self.parent,
                     x, y,
                     x + self.cell_size, y + self.cell_size, (255, 50, 50))
 
-        pydraw.line(self.surface,
+        pydraw.line(self.parent,
                     x + self.cell_size, y,
                     x, y + self.cell_size, (255, 50, 50))
 
@@ -78,20 +71,20 @@ class StaticGrid(Grid):
         # renders a circle at the position relative to grid
         x, y = self.grid_to_surf(self.arr_to_grid(position))
 
-        pydraw.aacircle(self.surface,
+        pydraw.aacircle(self.parent,
                         x + self.cell_size//2, y + self.cell_size//2,
                         self.cell_size//2, (50, 50, 255))
 
-        pydraw.aacircle(self.surface,
+        pydraw.aacircle(self.parent,
                         x + self.cell_size//2, y + self.cell_size//2,
                         self.cell_size//4, (50, 50, 255))
 
     def grid_to_surf(self, pos):
-        # Converts Grid coordinates to self.surface coordinates
+        # Converts Grid coordinates to self.parent coordinates
         return (self.x + pos[0], self.y + pos[1])
 
     def surf_to_grid(self, pos):
-        # Converts self.surface coordinates to Grid coordinates
+        # Converts self.parent coordinates to Grid coordinates
         return (pos[0] - self.x, pos[1] - self.y)
     
     def arr_to_grid(self, pos):
@@ -103,7 +96,7 @@ class StaticGrid(Grid):
         return (pos[0] // self.cell_size, pos[1] // self.cell_size)
 
     def highlight(self, position):
-        """ Highlights certain position(relative to surface) """
+        """ Highlights certain position(relative to parent) """
         x,y = position
 
         if not (self.x < x < self.x + self.width) or \
@@ -114,4 +107,4 @@ class StaticGrid(Grid):
         y = (y // self.cell_size) * self.cell_size
         x,y = self.grid_to_surf((x,y))
 
-        pygame.draw.rect(self.surface, (180, 180, 180), [x, y, self.cell_size, self.cell_size])
+        pygame.draw.rect(self.parent, (180, 180, 180), [x, y, self.cell_size, self.cell_size])

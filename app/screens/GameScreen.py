@@ -23,8 +23,8 @@ class GameScreen:
         self.surface = pygame.Surface(self.game.size)
         log("GameScreen size", self.surface.get_size())
 
-        self.grid = [StaticGrid(self.surface, x=210, y=50, cell_size=220),
-                     ExpandableGrid(self.surface)][self.type]
+        self.grid = [StaticGrid(self.surface, (210, 50), cell_size=220),
+                     ExpandableGrid(self.surface, (50, 50), cell_size=220)][self.type]
 
         self.players = [Human(self.grid, 1), Human(self.grid, -1)] 
         # num = (id + 2) % 3

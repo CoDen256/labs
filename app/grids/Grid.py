@@ -1,11 +1,25 @@
 from abc import ABCMeta, abstractmethod
+import pygame
 
 
 class Grid():
     __metaclass__ = ABCMeta
 
-    def __init__(self, surface):
-        self.surface = surface
+    def __init__(self, parent, columns, rows, cell_size, position):
+        self.cells = [[0 for i in range(columns)] for j in range(rows)]
+        self.cell_size = cell_size
+
+        self.columns = columns
+        self.rows = rows
+
+        self.width = cell_size * columns
+        self.height = cell_size * rows
+
+        self.position = self.x, self.y = position
+
+        self.parent = parent  # parent surface
+        self.surface = pygame.Surface((self.width, self.height))
+
 
     @abstractmethod
     def updateInput(self):
