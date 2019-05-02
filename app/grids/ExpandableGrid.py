@@ -19,9 +19,9 @@ class ExpandableGrid(Grid):
     def updateInput(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 4:
-                self.resize(+0.1)
+                self.resize(+0.05, event.pos)
             elif event.button == 5:
-                self.resize(-0.1)
+                self.resize(-0.05, event.pos)
             else:
                 if not self.dragged:
                     self.dragged = True
@@ -35,17 +35,22 @@ class ExpandableGrid(Grid):
 
                 self.delta = None
                 self.last_pressed = None
-    
-    def resize(self, deltaScale):
+
+    def resize(self, deltaScale, scale_point):
         if self.scale + deltaScale < 0.1 or self.scale + deltaScale > 1: return
-        scalePoint = self.x, self.y
+
+        scale_point = self.surf_to_grid(scale_point)
+        ratio = scale_point[0] / self.cell_size, scale_point[1] / self.cell_size
+
         self.scale += deltaScale
-        print(self.scale, self.x, self.y)
-        #self.x += pygame.mouse.get_pos()[0] - scalePoint[0]
-        #self.y += pygame.mouse.get_pos()[1] - scalePoint[1]
+
+        new_scale_point = int(ratio[0] * self.cell_size), int(ratio[1] * self.cell_size)
+
+        self.x += scale_point[0] - new_scale_point[0]
+        self.y += scale_point[1] - new_scale_point[1]
+
         pygame.transform.scale(self.surface, (self.width, self.height))
 
-    
     def update(self):
         if self.dragged:
             self.delta = pygame.mouse.get_pos()[0] - self.last_pressed[0], pygame.mouse.get_pos()[1] - self.last_pressed[1]

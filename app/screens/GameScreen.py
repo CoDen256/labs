@@ -59,7 +59,7 @@ class GameScreen:
         self.surface.render(self.game.window)
         self.surface.fill((220, 220, 220))
 
-        #self.grid.highlight(pygame.mouse.get_pos())
+        self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
 
         toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
