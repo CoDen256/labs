@@ -6,7 +6,9 @@ import pygame.gfxdraw as pydraw
 class Grid():
     __metaclass__ = ABCMeta
 
-    def __init__(self, parent, columns, rows, cell_size, position, scale):
+    def __init__(self, parent, columns, rows, cell_size,
+                 position, scale, color=(50, 50, 50)):
+
         self.cells = [[0 for i in range(columns)] for j in range(rows)]
         self.initial_size = cell_size
         self.scale = scale
@@ -21,7 +23,8 @@ class Grid():
         self.surface.fill((0, 0, 0))
         self.surface.set_colorkey((0, 0, 0))
 
-        self.grid_color = (50, 50, 50)
+        self.grid_color = color
+        self.dragged = False
 
     @abstractmethod
     def updateInput(self):
@@ -31,6 +34,16 @@ class Grid():
     @abstractmethod
     def updateScore(self):
         """ Updates score of each player """
+        pass
+
+    @abstractmethod
+    def update(self):
+        """ Updates the state of grid """
+        pass
+
+    @abstractmethod
+    def render(self):
+        """ Renders grid surface, grid lines, cells """
         pass
 
     def convert(self, position):
@@ -51,15 +64,6 @@ class Grid():
             return True
         else:
             return False
-
-    def render(self):
-        """ Renders grid surface, grid lines, cells """
-
-        # Parent surface blits grid surface
-        self.parent.blit(self.surface, (self.x, self.y))
-
-        self.renderGrid()
-        self.renderCells()
 
     def renderGrid(self):
         """ Render lines and box of the grid """

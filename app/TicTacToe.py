@@ -37,5 +37,5 @@ class TicTacToe:
         quit_game()
 
 game = TicTacToe(1080, 720)
-game.type = 0
+game.type = 1
 game.run("Game")

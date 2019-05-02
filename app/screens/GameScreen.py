@@ -7,8 +7,7 @@ from grids.ExpandableGrid import ExpandableGrid
 from grids.StaticGrid import StaticGrid
 from players.Human import Human
 from players.Computer import Computer
-from hud.ui import HUD
-from hud.Mouse import Mouse
+from screens.surfaces.GameSurface import GameSurface
 
 
 class GameScreen:
@@ -20,7 +19,8 @@ class GameScreen:
 
     def create(self):
 
-        self.surface = pygame.Surface(self.game.size)
+        self.surface = GameSurface((0, 0), self.game.size)
+
         log("GameScreen size", self.surface.get_size())
 
         self.grid = [StaticGrid(self.surface, (210, 50), cell_size=220),
@@ -33,8 +33,8 @@ class GameScreen:
         self.update_current()
 
     def handleInput(self):
-        self.grid.updateInput()
         for e in pygame.event.get():
+            self.grid.updateInput(e)
             if e.type == pygame.QUIT:
                 self.game.quit()
 
@@ -47,6 +47,7 @@ class GameScreen:
 
     def update(self):
         self.update_current()
+        self.grid.update()
 
         if not self.current.onTurn():
             pass
@@ -55,13 +56,14 @@ class GameScreen:
             self.currentPLayerNum = 1 - self.currentPLayerNum
 
     def render(self):
-        self.game.window.blit(self.surface, (0, 0))
+        self.surface.render(self.game.window)
         self.surface.fill((220, 220, 220))
 
         self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
 
-        self.renderMessages()
+        toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
+        #self.renderMessages()
 
         pygame.display.flip()
 

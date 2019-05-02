@@ -1,6 +1,5 @@
 from players.Player import Player
 import pygame
-from hud.Mouse import Mouse
 
 
 class Human(Player):
@@ -28,10 +27,11 @@ class Human(Player):
     def handleInput(self):
         # Handle the input user provides and returns the position
         # If not input provided returns None
-        if Mouse.is_pressed() and not self.pressed:
+        #print(self.grid.full_delta)
+        if pygame.mouse.get_pressed()[0] and not self.pressed:
             self.pressed = True
             return pygame.mouse.get_pos()
-        if not Mouse.is_pressed():
+        if not pygame.mouse.get_pressed()[0]:
             self.pressed = False
 
         return None
