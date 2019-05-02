@@ -67,9 +67,10 @@ class Grid():
 
     def renderGrid(self):
         """ Render lines and box of the grid """
+        self.surface.fill((0, 0, 0))
 
         # Draws a box of grid
-        pydraw.rectangle(self.surface, self.surface.get_rect(), self.grid_color)
+        pydraw.rectangle(self.surface, [0, 0, self.width, self.height], (250, 0,0 ))
 
         # Draws vertical lines
         for i in range(self.columns - 1):
