@@ -38,11 +38,11 @@ class ExpandableGrid(Grid):
     
     def resize(self, deltaScale):
         if self.scale + deltaScale < 0.1 or self.scale + deltaScale > 1: return
-        scalePoint = self.x + self.parent.x + pygame.mouse.get_pos()[0], self.y + self.parent.y + pygame.mouse.get_pos()[1]
+        scalePoint = self.x, self.y
         self.scale += deltaScale
         print(self.scale, self.x, self.y)
-        self.x += pygame.mouse.get_pos()[0]
-        self.y += pygame.mouse.get_pos()[1]
+        #self.x += pygame.mouse.get_pos()[0] - scalePoint[0]
+        #self.y += pygame.mouse.get_pos()[1] - scalePoint[1]
         pygame.transform.scale(self.surface, (self.width, self.height))
 
     
