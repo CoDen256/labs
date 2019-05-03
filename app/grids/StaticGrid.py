@@ -23,5 +23,5 @@ class StaticGrid(Grid):
         pass
 
     def update(self):
-        """ Nothing to update """
+        """ No update is needed """
         pass

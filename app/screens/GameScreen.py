@@ -63,7 +63,8 @@ class GameScreen:
         self.grid.render()
 
         toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
-        #self.renderMessages()
+        toast(self.surface, str(self.grid.scale), 20, (50, 50, 50), self.game.w * 1/3, 20)
+        # self.renderMessages()
 
         pygame.display.flip()
 

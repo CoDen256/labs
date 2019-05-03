@@ -24,7 +24,6 @@ class Grid():
         self.surface.set_colorkey((0, 0, 0))
 
         self.grid_color = color
-        self.dragged = False
 
     @abstractmethod
     def updateInput(self):
@@ -70,7 +69,7 @@ class Grid():
         self.surface.fill((0, 0, 0))
 
         # Draws a box of grid
-        pydraw.rectangle(self.surface, [0, 0, self.width, self.height], (250, 0,0 ))
+        pydraw.rectangle(self.surface, self.surface.get_rect(), (250, 0, 0))
 
         # Draws vertical lines
         for i in range(self.columns - 1):
@@ -157,6 +156,11 @@ class Grid():
     def height(self):
         """ Current height of the grid """
         return self.cell_size * self.rows
+
+    @property
+    def size(self):
+        """ Current dimensions of the grid """
+        return (self.width, self.height)
 
     @property
     def cell_size(self):
