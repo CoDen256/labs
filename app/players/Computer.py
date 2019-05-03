@@ -12,13 +12,14 @@ class Computer(Player):
         position = None
 
         if isinstance(self.grid, ExpandableGrid):
-            position = self.ai_component.compute_next_move_exp(self.grid)
+            position = self.ai_component.compute_next_move_exp(self.grid.cells)
         else:
-            position = self.ai_component.compute_next_move_3x3(self.grid)
+            position = self.ai_component.compute_next_move_3x3(self.grid.cells)
 
         self.make_move(position)
 
         return True
 
     def make_move(self, position):
-        self.grid.add(self.id, position)
+        if position:
+            self.grid.add(self.id, position)
