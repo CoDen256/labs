@@ -8,7 +8,7 @@ class Computer(Player):
         super().__init__(grid, id)
         self.ai_component = AIComponent(id)
 
-    def onTurn(self):
+    def on_turn(self):
         position = None
 
         if isinstance(self.grid, ExpandableGrid):
@@ -16,9 +16,9 @@ class Computer(Player):
         else:
             position = self.ai_component.compute_next_move_3x3(self.grid)
 
-        self.makeMove(position)
+        self.make_move(position)
 
         return True
 
-    def makeMove(self, position):
+    def make_move(self, position):
         self.grid.add(self.id, position)

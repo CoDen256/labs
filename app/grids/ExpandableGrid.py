@@ -6,7 +6,7 @@ class ExpandableGrid(Grid):
     def __init__(self, parent, position, cell_size, columns=25, rows=25):
         super().__init__(parent, columns, rows, cell_size, position, scale=0.5)
         self.scores = [0, 0]
-        self.position = self.x, self.y = self.parent.x - self.x, self.parent.y - self.y
+        self.x, self.y = self.parent.x - self.x, self.parent.y - self.y
 
         self.last_pressed = None  # last pressed point
 
@@ -15,11 +15,8 @@ class ExpandableGrid(Grid):
 
         self.dragged = False
 
-    def updateScore(self):
-        pass
-
-    def updateInput(self, event):
-        # Handles each event if for loop
+    def update_input(self, event):
+        # Handles each event in for loop
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 4:  # mouse wheel rolled up
                 self.resize(+0.05, event.pos)
@@ -41,11 +38,14 @@ class ExpandableGrid(Grid):
         if self.dragged:
             self.on_drag()
 
+    def update_score(self):
+        pass
+
     def render(self):
         self.parent.blit(self.surface, (self.x, self.y))
 
-        self.renderGrid()
-        self.renderCells()
+        self.render_grid()
+        self.render_cells()
 
         self.full_delta = None
         # updating full_delta
@@ -95,7 +95,7 @@ class ExpandableGrid(Grid):
             self.y = -self.height + self.parent.height
 
     @property
-    def just_pressed(self):
+    def is_just_pressed(self):
         # If not input provided or the delta is small return False
         # Otherwise returns the position of touching
         if not self.full_delta:

@@ -32,9 +32,9 @@ class GameScreen:
         self.currentPLayerNum = randint(0, 1)
         self.update_current()
 
-    def handleInput(self):
+    def handle_input(self):
         for e in pygame.event.get():
-            self.grid.updateInput(e)
+            self.grid.update_input(e)
             if e.type == pygame.QUIT:
                 self.game.quit()
 
@@ -49,10 +49,10 @@ class GameScreen:
         self.update_current()
         self.grid.update()
 
-        if not self.current.onTurn():
+        if not self.current.on_turn():
             pass
         else:
-            self.grid.updateScore()
+            self.grid.update_score()
             self.currentPLayerNum = 1 - self.currentPLayerNum
 
     def render(self):
@@ -62,8 +62,8 @@ class GameScreen:
         self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
 
-        toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
-        toast(self.surface, str(self.grid.scale), 20, (50, 50, 50), self.game.w * 1/3, 20)
+        #toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
+        #toast(self.surface, str(self.grid.scale), 20, (50, 50, 50), self.game.w * 1/3, 20)
         # self.renderMessages()
 
         pygame.display.flip()

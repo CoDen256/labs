@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta, abstractmethod, abstractproperty
 import pygame
 import pygame.gfxdraw as pydraw
 
@@ -16,7 +16,7 @@ class Grid():
         self.columns = columns
         self.rows = rows
 
-        self.position = self.x, self.y = position
+        self.x, self.y = position
 
         self.parent = parent  # parent surface
         self.surface = pygame.Surface((self.width, self.height))
@@ -26,13 +26,8 @@ class Grid():
         self.grid_color = color
 
     @abstractmethod
-    def updateInput(self):
+    def update_input(self, event):
         """ Updates input of user (zoom in/out, drag)"""
-        pass
-
-    @abstractmethod
-    def updateScore(self):
-        """ Updates score of each player """
         pass
 
     @abstractmethod
@@ -41,8 +36,18 @@ class Grid():
         pass
 
     @abstractmethod
+    def update_score(self):
+        """ Updates score of each player """
+        pass
+
+    @abstractmethod
     def render(self):
         """ Renders grid surface, grid lines, cells """
+        pass
+
+    @abstractproperty
+    def is_just_pressed(self):
+        """ Returns False if not properly pressed, otherwise -> position"""
         pass
 
     def convert(self, position):
@@ -64,7 +69,7 @@ class Grid():
         else:
             return False
 
-    def renderGrid(self):
+    def render_grid(self):
         """ Render lines and box of the grid """
         self.surface.fill((0, 0, 0))
 
@@ -79,17 +84,17 @@ class Grid():
         for j in range(self.rows - 1):
             pydraw.hline(self.surface, 0, self.width, (j+1)*self.cell_size, self.grid_color)
 
-    def renderCells(self):
+    def render_cells(self):
         # Renders all the cells acording to the content of the cell
         for row in range(len(self.cells)):
             for col in range(len(self.cells[row])):
                 if self.cells[row][col] == 1:
-                    self.renderCross((row, col))
+                    self.render_cross((row, col))
                 elif self.cells[row][col] == -1:
-                    self.renderCircle((row, col))
+                    self.render_circle((row, col))
 
-    def renderCross(self, position):
-        """ Renders a cross at position (relative to array) """
+    def render_cross(self, position):
+        """ Renders a cross at given position (relative to array) """
         # id = 1
 
         x, y = self.arr_to_grid(position)
@@ -102,8 +107,8 @@ class Grid():
                     x + self.cell_size, y,
                     x, y + self.cell_size, (255, 50, 50))
 
-    def renderCircle(self, position):
-        """ Renders a circle at position (relative to array) """
+    def render_circle(self, position):
+        """ Renders a circle at given position (relative to array) """
         # id = -1
 
         x, y = self.arr_to_grid(position)
@@ -166,3 +171,7 @@ class Grid():
     def cell_size(self):
         """ Current scaled size of cells """
         return int(self.initial_size * self.scale)
+
+    @property
+    def position(self):
+        return (self.x, self.y)

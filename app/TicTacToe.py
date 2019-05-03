@@ -24,7 +24,7 @@ class TicTacToe:
 
     def update(self):
         while self.mainloop:
-            self.current_screen.handleInput()
+            self.current_screen.handle_input()
             self.current_screen.update()
             self.current_screen.render()
 
@@ -37,5 +37,5 @@ class TicTacToe:
         quit_game()
 
 game = TicTacToe(1080, 720)
-game.type = 1
+game.type = 0
 game.run("Game")
