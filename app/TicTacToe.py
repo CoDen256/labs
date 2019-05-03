@@ -11,12 +11,11 @@ class TicTacToe:
         self.window = pygame.display.set_mode(self.size)
         self.current_screen = None
         self.mainloop = None
-        self.type = None
 
         pygame.init()
 
     def run(self, screen):
-        self.current_screen = screen_manager.screens[screen](self)
+        self.current_screen = screen
         self.current_screen.create()
 
         self.mainloop = True
@@ -36,6 +35,8 @@ class TicTacToe:
         self.mainloop = False
         quit_game()
 
+    def screen(self, name):
+        return screen_manager.screens[name]
+
 game = TicTacToe(1080, 720)
-game.type = 0
-game.run("Game")
+game.run(game.screen("MainMenuScreen")(game))

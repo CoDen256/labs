@@ -11,9 +11,9 @@ from screens.surfaces.GameSurface import GameSurface
 
 
 class GameScreen:
-    def __init__(self, game):
+    def __init__(self, game, type):
         self.game = game
-        self.type = self.game.type
+        self.type = type
         # type == 0 - Static
         # type == 1 - Expandable
 
@@ -43,7 +43,7 @@ class GameScreen:
                     self.game.quit()
 
                 if e.key == pygame.K_SPACE:
-                    self.game.change_screen("MainMenu")
+                    self.game.change_screen(self.game.screen("MainMenuScreen")(self.game))
 
     def update(self):
         self.update_current()
