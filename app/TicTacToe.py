@@ -7,7 +7,7 @@ from utils import *
 class TicTacToe:
 
     def __init__(self, w, h):
-        self.size = self.w, self.h = w, h
+        self.size = self.width, self.height = self.w, self.h = w, h
         self.window = pygame.display.set_mode(self.size)
         self.current_screen = None
         self.mainloop = None
@@ -27,7 +27,7 @@ class TicTacToe:
             self.current_screen.update()
             self.current_screen.render()
 
-    def change_screen(self, screen):
+    def set(self, screen):
         self.mainloop = False
         self.run(screen)
 

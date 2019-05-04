@@ -29,10 +29,11 @@ class ExpandableGrid(Grid):
         if event.type == pygame.MOUSEBUTTONUP:
             if event.button == 1:
 
-                self.dragged = False
-                self.full_delta = self.first[0] - pygame.mouse.get_pos()[0], self.first[1] - pygame.mouse.get_pos()[1]
+                if self.dragged:
+                    self.dragged = False
+                    self.full_delta = self.first[0] - pygame.mouse.get_pos()[0], self.first[1] - pygame.mouse.get_pos()[1]
 
-                self.last_pressed = None
+                    self.last_pressed = None
 
     def update(self):
         if self.dragged:

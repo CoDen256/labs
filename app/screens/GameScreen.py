@@ -40,9 +40,6 @@ class GameScreen:
 
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_ESCAPE:
-                    self.game.quit()
-
-                if e.key == pygame.K_SPACE:
                     self.game.change_screen(self.game.screen("MainMenuScreen")(self.game))
 
     def update(self):
