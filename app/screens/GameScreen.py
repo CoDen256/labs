@@ -40,7 +40,7 @@ class GameScreen:
 
             if e.type == pygame.KEYDOWN:
                 if e.key == pygame.K_ESCAPE:
-                    self.game.change_screen(self.game.screen("MainMenuScreen")(self.game))
+                    self.game.set(self.game.screen("MainMenuScreen")(self.game))
 
     def update(self):
         self.update_current()

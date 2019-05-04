@@ -36,7 +36,7 @@ class Button(pygame.sprite.Sprite):
               self.width/2, self.height/2)
 
     def check_pressing(self, mouse):
-        if mouse.pressed and not self.active:
+        if mouse.pressed:
             self.on_click()
 
     def draw_borders(self, mouse):
