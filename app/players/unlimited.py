@@ -1,6 +1,9 @@
+from pprint import pprint
+
+
 grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,25 +47,54 @@ def estimation(grid, player):
 
     # horizontally
     for i in range(len(grid)):
-        for j in range(len(grid[0]) - 4):
-            cells = grid[i][j:j+5]
+        for j in range(len(grid) - 4):
+            cells = grid[i][j:j + 5]
 
-            if not cells.count(-player):
-                if cells.count(player):
+            if -player not in cells:
+                if player in cells:
                     grid_score += 10 ** (cells.count(player) - 1)
 
     # vertically
-    grid = list(zip(grid))
+    grid = [list(row) for row in zip(*grid)]
     for i in range(len(grid)):
-        for j in range(len(grid[0]) - 4):
-            cells = grid[i][j:j+5]
+        for j in range(len(grid) - 4):
+            cells = grid[i][j:j + 5]
 
-            if not cells.count(-player):
-                if cells.count(player):
+            if -player not in cells:
+                if player in cells:
+                    grid_score += 10 ** (cells.count(player) - 1)
+
+    # diagonally
+    rows = []
+    for i in range(len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[j][i + j])
+        rows.append(row)
+    for i in range(1, len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[len(grid) - j - 1][len(grid) - (i + j) - 1])
+        rows.append(row)
+    for i in range(len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[j][len(grid) - (i + j) - 1])
+        rows.append(row)
+    for i in range(1, len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[len(grid) - j - 1][i + j])
+        rows.append(row)
+    for row in rows:
+        for i in range(len(row) - 4):
+            cells = row[i:i + 5]
+
+            if -player not in cells:
+                if player in cells:
                     grid_score += 10 ** (cells.count(player) - 1)
 
     return grid_score
 
 
 print(estimation(grid, 1))
-    
