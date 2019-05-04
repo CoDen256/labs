@@ -42,7 +42,17 @@ def compute_best_move(grid, depth=2):
 def estimation(grid, player):
     grid_score = 0
 
-    #horizontally
+    # horizontally
+    for i in range(len(grid)):
+        for j in range(len(grid[0]) - 4):
+            cells = grid[i][j:j+5]
+
+            if not cells.count(-player):
+                if cells.count(player):
+                    grid_score += 10 ** (cells.count(player) - 1)
+
+    # vertically
+    grid = list(zip(grid))
     for i in range(len(grid)):
         for j in range(len(grid[0]) - 4):
             cells = grid[i][j:j+5]
@@ -55,14 +65,4 @@ def estimation(grid, player):
 
 
 print(estimation(grid, 1))
-            
-
-
-
-
-
-    
-
-
-
     
