@@ -7,6 +7,9 @@ class Human(Player):
         super().__init__(grid, id)
         self.pressed = False
 
+    def __repr__(self):
+        return "Human"
+
     def on_turn(self):
         # Handle the input user and returns the position
         pos = self.grid.is_just_pressed

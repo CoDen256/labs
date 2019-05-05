@@ -14,18 +14,18 @@ class MainMenuScreen:
 
         self.mouse = Mouse()
         self.button_3x3 = Button(
-                            position=(self.game.w/3, 500),
-                            size=(200, 100),
+                            position=(self.game.w/3, self.game.h/2),
+                            size=(300, 150),
                             color=(230, 130, 100),
                             text="3x3 Grid",
-                            on_click=lambda: self.game.set(self.game.screen("GameScreen")(self.game, 0)))
+                            on_click=lambda: self.game.set(self.game.screen("SelectionScreen")(self.game, 0)))
 
         self.button_inf = Button(
-                            position=(self.game.w*2/3, 500),
-                            size=(200, 100),
+                            position=(self.game.w*2/3, self.game.h/2),
+                            size=(300, 150),
                             color=(230, 130, 100),
                             text="Infinite Grid",
-                            on_click=lambda: self.game.set(self.game.screen("GameScreen")(self.game, 1)))
+                            on_click=lambda: self.game.set(self.game.screen("SelectionScreen")(self.game, 1)))
 
     def handle_input(self):
         for e in pygame.event.get():
@@ -42,10 +42,6 @@ class MainMenuScreen:
                 if e.key == pygame.K_ESCAPE:
                     self.game.quit()
 
-                if e.key == pygame.K_0:
-                    self.game.set(self.game.screen("GameScreen")(self.game, 0))
-                if e.key == pygame.K_1:
-                    self.game.set(self.game.screen("GameScreen")(self.game, 1))
 
     def update(self):
         self.mouse.update()
@@ -59,10 +55,7 @@ class MainMenuScreen:
         self.button_inf.render(self.surface)
         self.button_3x3.render(self.surface)
 
-        toast(self.surface, "Welcome To MainMenuScreen", 20, (50, 50, 50),
-              self.game.w/2, self.game.h/2)
-
-        toast(self.surface, str(self.mouse.position), 20, (50, 50, 50),
+        toast(self.surface, "Choose the grid", 20, (50, 50, 50),
               self.game.w/2, self.game.h/3)
 
         pygame.display.flip()

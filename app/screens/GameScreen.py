@@ -11,11 +11,14 @@ from screens.surfaces.GameSurface import GameSurface
 
 
 class GameScreen:
-    def __init__(self, game, type):
+    def __init__(self, game, type, mode):
         self.game = game
         self.type = type
+        self.mode = mode
         # type == 0 - Static
         # type == 1 - Expandable
+        # mode == 0 - Human
+        # mode == 1 - AI
 
     def create(self):
 
@@ -23,10 +26,9 @@ class GameScreen:
 
         log("GameScreen size", self.surface.get_size())
 
-        self.grid = [StaticGrid(self.surface, (210, 50), cell_size=220),
-                     ExpandableGrid(self.surface, (50, 50), cell_size=220)][self.type]
+        self.grid = [StaticGrid, ExpandableGrid][self.type](self.surface, (210, 50), cell_size=220)
 
-        self.players = [Human(self.grid, 1), Human(self.grid, -1)] 
+        self.players = [Human(self.grid, 1), [Human, Computer][self.mode](self.grid, -1)]
         # num = (id + 2) % 3
 
         self.currentPLayerNum = randint(0, 1)
@@ -59,20 +61,14 @@ class GameScreen:
         self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
 
-        #toast(self.surface, str(pygame.mouse.get_pos()), 20, (50, 50, 50), self.game.w * 2/3, 20)
-        #toast(self.surface, str(self.grid.scale), 20, (50, 50, 50), self.game.w * 1/3, 20)
-        # self.renderMessages()
+        self.renderMessages()
 
         pygame.display.flip()
 
     def renderMessages(self):
         toast(self.surface,
-              "Welcome To GameScreen with {} Grid".format(self.type),
+              "Now is turn of Player #{} - {}".format(self.currentPLayerNum, self.current),
               20, (50, 50, 50), self.game.w/2, 20)
-
-        toast(self.surface,
-              "Player #{} has current turn".format(self.currentPLayerNum),
-              15, (50, 50, 50), self.game.w - 150, 20)
 
     def update_current(self):
         self.current = self.players[self.currentPLayerNum]
