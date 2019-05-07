@@ -97,4 +97,62 @@ def estimation(grid, player):
     return grid_score
 
 
+def is_game_over(grid, player):
+    is_over_vertically = False
+    is_over_horizontally = False
+    is_over_diagonally = False
+
+    # horizontally
+    for i in range(len(grid)):
+        for j in range(len(grid) - 4):
+            cells = grid[i][j:j + 5]
+
+            if -player not in cells:
+                if player in cells:
+                    if cells.count(player) == 5:
+                        is_over_horizontally = True
+
+    # vertically
+    grid = [list(row) for row in zip(*grid)]
+    for i in range(len(grid)):
+        for j in range(len(grid) - 4):
+            cells = grid[i][j:j + 5]
+
+            if -player not in cells:
+                if player in cells:
+                    if cells.count(player) == 5:
+                        is_over_vertically = True
+    # diagonally
+    rows = []
+    for i in range(len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[j][i + j])
+        rows.append(row)
+    for i in range(1, len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[len(grid) - j - 1][len(grid) - (i + j) - 1])
+        rows.append(row)
+    for i in range(len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[j][len(grid) - (i + j) - 1])
+        rows.append(row)
+    for i in range(1, len(grid) - 4):
+        row = []
+        for j in range(len(grid) - i):
+            row.append(grid[len(grid) - j - 1][i + j])
+        rows.append(row)
+    for row in rows:
+        for i in range(len(row) - 4):
+            cells = row[i:i + 5]
+
+            if -player not in cells:
+                if player in cells:
+                    if cells.count(player) == 5:
+                        is_over_diagonally = True
+    return is_over_diagonally or is_over_horizontally or is_over_vertically
+
+    
 print(estimation(grid, 1))
