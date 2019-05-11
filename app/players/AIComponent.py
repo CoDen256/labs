@@ -1,6 +1,7 @@
 import doctest
 import sys
 import math
+from random import choice
 
 if sys.version_info < (3, 5):
     math.inf = float('inf')
@@ -39,9 +40,8 @@ class AIComponent:
             move = self.minimax_algorithm(grid, depth, self.computer)
             x, y = move[0], move[1]
 
-        self.set_move(x, y, self.computer, grid)
-
-        # Has to return position
+        # self.set_move(x, y, self.computer, grid)
+        return x, y
 
     def compute_next_move_exp(self, grid):
         # For expandable grid
