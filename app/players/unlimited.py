@@ -1,30 +1,15 @@
-from copy import deepcopy
-from pprint import pprint
-
-
-grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 1, -1, -1, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-]
+import pickle
+import base64
+from sys import argv
+from random import shuffle
 
 
 def compute_best_move(grid, player, depth=2):
-    if is_game_over(grid, player):
-        return None, 1e9
-    elif is_game_over(grid, -player):
-        return None, -1e9
+    winner = compute_winner(grid)
+    if winner == player:
+        return None, 1e7
+    elif winner == -player:
+        return None, -1e7
 
     if depth == 0:
         mark = estimation(grid, player)
@@ -34,244 +19,138 @@ def compute_best_move(grid, player, depth=2):
     else:
         possible_moves = compute_possible_moves(grid)
 
-        best_move, best_mark = None, -1e10
+        best_move, best_mark = None, -1e8
 
         for current_move in possible_moves:
-            current_grid = deepcopy(grid)
-            current_grid[current_move[0]][current_move[1]] = player
-            _, current_mark = compute_best_move(current_grid, -player, depth=depth-1)
+            grid[current_move[0]][current_move[1]] = player
+
+            _, current_mark = compute_best_move(grid, -player, depth=depth - 1)
             current_mark = -current_mark
+
             if current_mark > best_mark:
                 best_mark = current_mark
                 best_move = current_move
+
+            grid[current_move[0]][current_move[1]] = 0
 
         return best_move, best_mark
 
 
 def estimation(grid, player):
-    grid_score = 0
+    score = 0
 
-    # horizontally
-    for i in range(len(grid)):
-        for j in range(len(grid) - 4):
-            cells = grid[i][j:j + 5]
-            if -player not in cells:
-                if player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(player) - 1) + (max_sc * (10 ** (cells.count(player) - 1)))
-                    grid_score += current_score
-            if player not in cells:
-                if -player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == -player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(-player) - 1) + (max_sc * (10 ** (cells.count(-player) - 1)))
-                    grid_score -= current_score
+    rows = make_rows(grid)
 
-    # vertically
-    grid = [list(row) for row in zip(*grid)]
-    for i in range(len(grid)):
-        for j in range(len(grid) - 4):
-            cells = grid[i][j:j + 5]
-
-            if -player not in cells:
-                if player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(player) - 1) + (max_sc * (10 ** (cells.count(player) - 1)))
-                    grid_score += current_score
-            if player not in cells:
-                if -player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == -player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(-player) - 1) + (max_sc * (10 ** (cells.count(-player) - 1)))
-                    grid_score -= current_score
-
-
-    # diagonally
-    rows = []
-    for i in range(len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[j][i + j])
-        rows.append(row)
-    for i in range(1, len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[len(grid) - j - 1][len(grid) - (i + j) - 1])
-        rows.append(row)
-    for i in range(len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[j][len(grid) - (i + j) - 1])
-        rows.append(row)
-    for i in range(1, len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[len(grid) - j - 1][i + j])
-        rows.append(row)
     for row in rows:
-        for i in range(len(row) - 4):
-            cells = row[i:i + 5]
+        score += (
+            row.count('+') * 1 +
+            row.count('++') * 10 +
+            row.count('+++') * 100 +
+            row.count('++++') * 1000 +
+            row.count('+++++') * 10000
+        )
+        score -= (
+            row.count('-') * 1 +
+            row.count('--') * 10 +
+            row.count('---') * 100 +
+            row.count('----') * 1000 +
+            row.count('-----') * 10000
+        )
 
-            if -player not in cells:
-                if player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(player) - 1) + (max_sc * (10 ** (cells.count(player) - 1)))
-                    grid_score += current_score
-            if player not in cells:
-                if -player in cells:
-                    index = 0
-                    max_sc = 0
-                    cur_score = 0
-                    while index < 5:
-                        if cells[index] == -player:
-                            cur_score += 1
-                        else:
-                            if cur_score > max_sc:
-                                max_sc = cur_score
-                            cur_score = 0
-                        index += 1
-                    if cur_score > max_sc:
-                        max_sc = cur_score
-                    current_score =  10 ** (cells.count(-player) - 1) + (max_sc * (10 ** (cells.count(-player) - 1)))
-                    grid_score -= current_score
-
-    return grid_score
+    return score * player
 
 
-def is_game_over(grid, player):
-    is_over_vertically = False
-    is_over_horizontally = False
-    is_over_diagonally = False
+def compute_winner(grid):
+    rows = make_rows(grid)
 
-    # horizontally
-    for i in range(len(grid)):
-        for j in range(len(grid) - 4):
-            cells = grid[i][j:j + 5]
-
-            if -player not in cells:
-                if player in cells:
-                    if cells.count(player) == 5:
-                        is_over_horizontally = True
-
-    # vertically
-    grid = [list(row) for row in zip(*grid)]
-    for i in range(len(grid)):
-        for j in range(len(grid) - 4):
-            cells = grid[i][j:j + 5]
-
-            if -player not in cells:
-                if player in cells:
-                    if cells.count(player) == 5:
-                        is_over_vertically = True
-    # diagonally
-    rows = []
-    for i in range(len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[j][i + j])
-        rows.append(row)
-    for i in range(1, len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[len(grid) - j - 1][len(grid) - (i + j) - 1])
-        rows.append(row)
-    for i in range(len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[j][len(grid) - (i + j) - 1])
-        rows.append(row)
-    for i in range(1, len(grid) - 4):
-        row = []
-        for j in range(len(grid) - i):
-            row.append(grid[len(grid) - j - 1][i + j])
-        rows.append(row)
     for row in rows:
-        for i in range(len(row) - 4):
-            cells = row[i:i + 5]
+        if '+++++' in row:
+            return 1
+        elif '-----' in row:
+            return -1
 
-            if -player not in cells:
-                if player in cells:
-                    if cells.count(player) == 5:
-                        is_over_diagonally = True
-    return is_over_diagonally or is_over_horizontally or is_over_vertically
+    return None
 
 
 def compute_possible_moves(grid):
-    moves_list = []
+    moves = set()
 
-    for i in range((len(grid))):
-        for j in range((len(grid))):
+    for center_row in range(len(grid)):
+        for center_column in range(len(grid)):
+            if grid[center_row][center_column]:
+                for row in range(max(center_row - 4, 0), min(center_row + 5, len(grid))):
+                    for column in range(max(center_column - 4, 0), min(center_column + 5, len(grid))):
+                        if not grid[row][column]:
+                            moves.add((row, column))
 
-            if grid[i][j] != 0:
-                x, y = max(i - 4, 0), max(j - 4, 0)
+    moves = list(moves)
+    shuffle(moves)
 
-                for x_raw in range(x, min(i + 5, len(grid))):
-                    for y_raw in range(y, min(j + 5, len(grid))):
-                        if grid[x_raw][y_raw] == 0:
-                            moves_list.append((x_raw, y_raw))                            
-
-    return list(set(moves_list))
+    return moves
 
 
-# print(compute_possible_moves(grid))
-print(compute_best_move(grid, 1))
+def to_symbol(cell):
+    if cell > 0:
+        return '+'
+    elif cell < 0:
+        return '-'
+    else:
+        return ' '
 
-# print(estimation(grid, 1))
+
+def make_rows(grid):
+    rows = []
+
+    rows.extend(''.join(to_symbol(cell) for cell in row) for row in grid)
+    rows.extend(''.join(to_symbol(cell) for cell in row) for row in zip(*grid))
+
+    start_points = (
+        [(0, column) for column in range(len(grid) - 4)] + 
+        [(row, 0) for row in range(1, len(grid) - 4)]
+    )
+    for start_point in start_points:
+        row, column = start_point
+        new_row = []
+
+        while row < len(grid) and column < len(grid):
+            new_row.append(grid[row][column])
+            row += 1
+            column += 1
+
+        rows.append(''.join(to_symbol(cell) for cell in new_row))
+
+    start_points = (
+        [(0, column) for column in range(4, len(grid))] + 
+        [(row, len(grid) - 1) for row in range(1, len(grid) - 4)]
+    )
+    for start_point in start_points:
+        row, column = start_point
+        new_row = []
+
+        while row < len(grid) and column >= 0:
+            new_row.append(grid[row][column])
+            row += 1
+            column -= 1
+
+        rows.append(''.join(to_symbol(cell) for cell in new_row))
+
+    return rows
+
+
+if __name__ == '__main__':
+    grid_pickled = argv[1]
+    grid_pickled = grid_pickled.encode()
+    grid_pickled = base64.b64decode(grid_pickled)
+    grid = pickle.loads(grid_pickled)
+
+    player_pickled = argv[2]
+    player_pickled = player_pickled.encode()
+    player_pickled = base64.b64decode(player_pickled)
+    player = pickle.loads(player_pickled)
+
+    result = compute_best_move(grid, player)
+
+    result_pickled = pickle.dumps(result)
+    result_pickled = base64.b64encode(result_pickled).decode()
+
+    print(result_pickled)
