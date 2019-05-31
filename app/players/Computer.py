@@ -9,7 +9,7 @@ class Computer(Player):
         super().__init__(grid, id)
         self.ai_component = AIComponent(id)
         self.time = 0
-        self.thinking_time = 2
+        self.thinking_time = 1
 
     def __repr__(self):
         return "Computer"
@@ -22,6 +22,8 @@ class Computer(Player):
             else:
                 position = self.ai_component.compute_next_move_3x3(self.grid.cells)
 
+            if position == True or position == False:
+                return False
             self.make_move(position)
 
             return True

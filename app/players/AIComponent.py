@@ -149,11 +149,11 @@ class AIComponent:
         player_pickled = pickle.dumps(self._computer)
         player_pickled = base64.b64encode(player_pickled).decode()
 
-        result_pickled = subprocess.run(
+        result_pickled = subprocess.Popen(
             [
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
-                    'pypy', 'bin', 'pypy3'
+                    'pypy3', 'pypy3.exe'
                 ),
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
@@ -162,9 +162,9 @@ class AIComponent:
                 grid_pickled,
                 player_pickled
             ],
-            stdout=subprocess.PIPE
-        ).stdout
-
+            stdout=subprocess.PIPE,
+            universal_newlines=True
+        ).communicate()[0]
         result_pickled = base64.b64decode(result_pickled)
         result = pickle.loads(result_pickled)
         if result[0] != None:
@@ -173,8 +173,7 @@ class AIComponent:
             if result[1] == 1e7:
                 return True
             else:
-                return False
-            
+                return False  
 
 
 if __name__ == '__main__':

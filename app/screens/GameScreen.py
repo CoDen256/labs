@@ -31,7 +31,7 @@ class GameScreen:
         self.players = [Human(self.grid, 1), [Human, Computer][self.mode](self.grid, -1)]
         # num = (id + 2) % 3
 
-        self.currentPLayerNum = randint(0, 1)
+        self.currentPLayerNum = randint(0, 0)
         self.update_current()
 
     def handle_input(self):
