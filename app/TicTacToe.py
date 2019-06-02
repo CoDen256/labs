@@ -33,7 +33,7 @@ class TicTacToe:
 
     def quit(self):
         self.mainloop = False
-        quit_game()
+        Utils.quit_game()
 
     def screen(self, name):
         return screen_manager.screens[name]

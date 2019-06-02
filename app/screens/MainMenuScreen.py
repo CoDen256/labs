@@ -55,7 +55,7 @@ class MainMenuScreen:
         self.button_inf.render(self.surface)
         self.button_3x3.render(self.surface)
 
-        toast(self.surface, "Choose the grid", 20, (50, 50, 50),
-              self.game.w/2, self.game.h/3)
+        Utils.toast(self.surface, "Choose the grid", 20, (50, 50, 50),
+                   self.game.w/2, self.game.h/3)
 
         pygame.display.flip()

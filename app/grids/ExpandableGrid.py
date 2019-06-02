@@ -4,7 +4,8 @@ import pygame
 
 class ExpandableGrid(Grid):
     def __init__(self, parent, position, cell_size, columns=25, rows=25):
-        super().__init__(parent, columns, rows, cell_size, position, scale=0.5)
+        super().__init__(parent, columns, rows, cell_size, position, scale=(25/2)/columns)
+        #elf.cells[0][0] = 1
         self.scores = [0, 0]
         self.x, self.y = self.parent.x - self.x, self.parent.y - self.y
 
@@ -12,6 +13,9 @@ class ExpandableGrid(Grid):
 
         self.first = None  # first pressed point on the drag
         self.full_delta = None  # full delta between last and first point
+
+        self.min_scale = 0.15 * (25/columns)
+        self.max_scale = 0.5 * (25/rows)
 
         self.max_points = 5
 
@@ -101,8 +105,8 @@ class ExpandableGrid(Grid):
         self.check_boundaries()
 
     def resize(self, delta_scale, scale_point):
-        if self.scale + delta_scale < 0.15 \
-           or self.scale + delta_scale > 0.5:
+        if self.scale + delta_scale < self.min_scale \
+           or self.scale + delta_scale > self.max_scale:
             return
 
         point_x, point_y = self.surf_to_grid(scale_point)

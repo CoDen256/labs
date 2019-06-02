@@ -42,7 +42,6 @@ class SelectionScreen:
                 if e.key == pygame.K_ESCAPE:
                     self.game.quit()
 
-
     def update(self):
         self.mouse.update()
         self.button_hum.update(self.mouse)
@@ -55,7 +54,7 @@ class SelectionScreen:
         self.button_hum.render(self.surface)
         self.button_ai.render(self.surface)
 
-        toast(self.surface, "Select your opponent", 20, (50, 50, 50),
-              self.game.w/2, self.game.h/3)
+        Utils.toast(self.surface, "Select your opponent", 20, (50, 50, 50),
+                    self.game.w/2, self.game.h/3)
 
         pygame.display.flip()

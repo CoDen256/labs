@@ -32,7 +32,7 @@ class Button(pygame.sprite.Sprite):
         self.image.fill(self.color)
 
 
-        toast(self.image, self.text, self.text_size, self.text_color,
+        Utils.toast(self.image, self.text, self.text_size, self.text_color,
               self.width/2, self.height/2)
 
     def check_pressing(self, mouse):

@@ -24,7 +24,7 @@ class GameScreen:
 
         self.surface = GameSurface((0, 0), self.game.size)
 
-        log("GameScreen size", self.surface.get_size())
+        print("GameScreen size", self.surface.get_size())
 
         self.grid = [StaticGrid, ExpandableGrid][self.type](self.surface, (210, 50), cell_size=220)
 
@@ -47,9 +47,9 @@ class GameScreen:
 
     def update(self):
         if self.victory_message:
-            toast(self.surface,
-                  self.victory_message,
-                  40, (250, 100, 100), self.game.w/2, self.game.h/2)
+            Utils.toast(self.surface,
+                        self.victory_message,
+                        40, (250, 100, 100), self.game.w/2, self.game.h/2)
             return
 
         self.update_current()
@@ -79,9 +79,9 @@ class GameScreen:
         pygame.display.flip()
 
     def renderMessages(self):
-        toast(self.surface,
-              "Now is turn of Player #{} - {}".format(self.currentPLayerNum, self.current),
-              20, (50, 50, 50), self.game.w/2, 20)
+        Utils.toast(self.surface,
+                    "Now is turn of Player #{} - {}".format(self.currentPLayerNum, self.current),
+                    20, (50, 50, 50), self.game.w/2, 20)
 
     def update_current(self):
         self.current = self.players[self.currentPLayerNum]

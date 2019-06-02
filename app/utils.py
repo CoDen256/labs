@@ -2,25 +2,21 @@ import sys
 import pygame
 
 
-def toast(surface, text, size, color, x, y, font="Arial Black", angle=0):
+class Utils:
+    def toast(surface, text, size, color, x, y, font="Arial Black", angle=0):
 
-    if font.endswith('.otf') or font.endswith('.ttf'):
-        font = pygame.font.Font(font, size)
-    else:
-        font = pygame.font.SysFont(font, size)
+        if font.endswith('.otf') or font.endswith('.ttf'):
+            font = pygame.font.Font(font, size)
+        else:
+            font = pygame.font.SysFont(font, size)
 
-    textS = font.render(text, True, color)
-    textR = font.render(text, True, color).get_rect()
+        textS = font.render(text, True, color)
+        textR = font.render(text, True, color).get_rect()
 
-    textS = pygame.transform.rotate(textS, angle)
+        textS = pygame.transform.rotate(textS, angle)
 
-    textR.center = x, y
-    surface.blit(textS, textR)
+        textR.center = x, y
+        surface.blit(textS, textR)
 
-
-def quit_game():
-    sys.exit()
-
-
-def log(tag, message):
-    print(tag, message, sep=': ')
+    def quit_game():
+        sys.exit()
