@@ -38,5 +38,8 @@ class TicTacToe:
     def screen(self, name):
         return screen_manager.screens[name]
 
+    def change_color(self):
+        color.color_scheme = ( color.color_scheme + 1 ) % color.max_colors
+
 game = TicTacToe(1080, 720)
 game.run(game.screen("MainMenuScreen")(game))

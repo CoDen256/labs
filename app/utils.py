@@ -1,5 +1,8 @@
 import sys
 import pygame
+import ColorScheme
+
+color = ColorScheme.Color()
 
 
 class Utils:

@@ -32,7 +32,7 @@ class GameScreen:
         # num = (id + 2) % 3
         
         self.victory_message = ""
-        self.currentPLayerNum = 0 if self.players[1] is Computer and self.type == 1 else randint(0, 1)
+        self.currentPLayerNum = 0 if self.mode and self.type else randint(0, 1)
         self.update_current()
 
     def handle_input(self):
@@ -42,6 +42,8 @@ class GameScreen:
                 self.game.quit()
 
             if e.type == pygame.KEYDOWN:
+                if e.key == pygame.K_c:
+                    self.game.change_color()
                 if e.key == pygame.K_ESCAPE:
                     self.game.set(self.game.screen("MainMenuScreen")(self.game))
 
@@ -49,7 +51,7 @@ class GameScreen:
         if self.victory_message:
             Utils.toast(self.surface,
                         self.victory_message,
-                        40, (250, 100, 100), self.game.w/2, self.game.h/2)
+                        40, color.victory_text, self.game.w/2, self.game.h/2)
             return
 
         self.update_current()
@@ -69,7 +71,7 @@ class GameScreen:
 
     def render(self):
         self.surface.render(self.game.window)
-        self.surface.fill((220, 220, 220))
+        self.surface.fill(color.background_game)
 
         self.grid.highlight(pygame.mouse.get_pos())
         self.grid.render()
@@ -81,7 +83,7 @@ class GameScreen:
     def renderMessages(self):
         Utils.toast(self.surface,
                     "Now is turn of Player #{} - {}".format(self.currentPLayerNum, self.current),
-                    20, (50, 50, 50), self.game.w/2, 20)
+                    20, color.text, self.game.w/2, 20)
 
     def update_current(self):
         self.current = self.players[self.currentPLayerNum]

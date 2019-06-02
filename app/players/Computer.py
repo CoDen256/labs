@@ -32,7 +32,7 @@ class Computer(Player):
     def thinking(self):
         self.time += 1/60
 
-        Utils.toast(self.grid.parent, "Let me think...", 20, (100, 100, 100), self.grid.parent.width-100, 50)
+        Utils.toast(self.grid.parent, "Let me think...", 20, color.thinking_text, self.grid.parent.width-100, 50)
 
         ready = self.time >= self.thinking_time
         if ready:

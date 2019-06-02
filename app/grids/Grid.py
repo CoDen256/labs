@@ -2,13 +2,13 @@ from abc import ABCMeta, abstractmethod, abstractproperty
 import pygame
 import pygame.gfxdraw as pydraw
 import pygame.draw as pygdraw
-
+from utils import color
 
 class Grid():
     __metaclass__ = ABCMeta
 
     def __init__(self, parent, columns, rows, cell_size,
-                 position, scale, color=(50, 50, 50)):
+                 position, scale, grid_color=color.grid):
 
         self.cells = [[0 for i in range(columns)] for j in range(rows)]
         self.initial_size = cell_size
@@ -23,10 +23,10 @@ class Grid():
 
         self.parent = parent  # parent surface
         self.surface = pygame.Surface((self.width, self.height))
-        self.surface.fill((206, 151, 219))
+        self.surface.fill(color.cell)
         self.surface.set_colorkey((0, 0, 0))
 
-        self.grid_color = color
+        self.grid_color = grid_color
 
         self.filled = 0
 
@@ -87,10 +87,10 @@ class Grid():
 
     def render_grid(self):
         """ Render lines and box of the grid """
-        self.surface.fill((0, 0, 0))
+        self.surface.fill(color.cell)
 
         # Draws a box of grid
-        pydraw.rectangle(self.surface, self.surface.get_rect(), (163, 39, 245))
+        pydraw.rectangle(self.surface, self.surface.get_rect(), color.grid_box)
 
         # Draws vertical lines
         for i in range(self.columns - 1):
@@ -115,12 +115,12 @@ class Grid():
 
         x, y = self.arr_to_grid(position)
 
-        pygdraw.line(self.surface, (224, 74, 144),
+        pygdraw.line(self.surface, color.cross,
                     (x, y),
                     (x + self.cell_size, y + self.cell_size), 12
                     )
 
-        pygdraw.line(self.surface, (224, 74, 144),
+        pygdraw.line(self.surface, color.cross,
                     (x + self.cell_size, y),
                     (x, y + self.cell_size), 12)
 
@@ -130,13 +130,15 @@ class Grid():
 
         x, y = self.arr_to_grid(position)
 
-        pygdraw.circle(self.surface, (134, 63, 181),
-                        (x + self.cell_size//2, y + self.cell_size//2),
-                        self.cell_size//2 - 1, 5)
+        self._draw_circle(x + self.cell_size//2, y + self.cell_size//2,
+                          r=self.cell_size//4,
+                          R=self.cell_size//2,
+                          color=color.circle)
+#
 
-        pygdraw.circle(self.surface, (134, 63, 181),
-                        (x + self.cell_size//2, y + self.cell_size//2),
-                        self.cell_size//4 - 1, 5)
+    def _draw_circle(self, x, y, r, R, color):
+        #for i in range(r, R+1):
+        pygdraw.circle(self.surface, color, (x, y), R, 10)
 
     def grid_to_surf(self, pos):
         """ Converts Grid surface coordinates to Parent surface coordinates"""
@@ -166,7 +168,7 @@ class Grid():
         y = (y // self.cell_size) * self.cell_size
         x, y = self.grid_to_surf((x, y))
         # TODO: Change to surface related position
-        pygame.draw.rect(self.parent, (220, 120, 245),
+        pygame.draw.rect(self.parent, color.cell_hov,
                          [x, y, self.cell_size, self.cell_size])
 
     @property
