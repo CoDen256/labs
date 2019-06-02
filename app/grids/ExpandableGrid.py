@@ -13,6 +13,8 @@ class ExpandableGrid(Grid):
         self.first = None  # first pressed point on the drag
         self.full_delta = None  # full delta between last and first point
 
+        self.max_points = 5
+
         self.dragged = False
 
     def update_input(self, event):
@@ -39,8 +41,46 @@ class ExpandableGrid(Grid):
         if self.dragged:
             self.on_drag()
 
-    def update_score(self):
-        pass
+    def _check_winner(self, grid):
+        pos = x, y = self.last_moved
+        if pos is None:
+            return 0
+
+        total = []
+
+        # columns
+        for i in range(y-(self.max_points-1), y+1):
+            if 0 <= i <= self.rows - 1 and 0 <= i + self.max_points <= self.rows:
+                total.append(self.cells[x][i: i+self.max_points])
+
+        #rows
+        for i in range(x-(self.max_points-1), x+1):
+            row = []
+            for j in range(self.max_points):
+                if 0 <= i+j <= self.columns - 1:
+                    row.append(self.cells[i+j][y])
+            total.append(row)
+        
+        #y=-x diagonal
+        for i in range(self.max_points):
+            diag1 = []
+            for j in range(self.max_points):
+                if 0 <= x-i+j <= self.columns - 1 and 0 <= y-i+j <= self.rows - 1: 
+                    diag1.append(self.cells[x-i+j][y-i+j])
+            total.append(diag1)
+
+        #y=x diagonal
+        for i in range(self.max_points):
+            diag2 = []
+            for j in range(self.max_points):
+                if 0 <= x-i+j <= self.columns - 1 and 0 <= y+i-j <= self.rows - 1: 
+                    diag2.append(self.cells[x-i+j][y+i-j])
+            total.append(diag2)
+
+        for line in total:
+            if len(line) == 5 and len(set(line)) == 1:
+                return line[0]
+        return 0
 
     def render(self):
         self.parent.blit(self.surface, (self.x, self.y))

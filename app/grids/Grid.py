@@ -18,12 +18,18 @@ class Grid():
 
         self.x, self.y = position
 
+        self.last_moved = None
+
         self.parent = parent  # parent surface
         self.surface = pygame.Surface((self.width, self.height))
         self.surface.fill((0, 0, 0))
         self.surface.set_colorkey((0, 0, 0))
 
         self.grid_color = color
+
+        self.filled = 0
+
+        
 
     @abstractmethod
     def update_input(self, event):
@@ -36,8 +42,8 @@ class Grid():
         pass
 
     @abstractmethod
-    def update_score(self):
-        """ Updates score of each player """
+    def _check_winner(self, grid):
+        """ Function that will compute the winner for certain grid """
         pass
 
     @abstractmethod
@@ -49,6 +55,13 @@ class Grid():
     def is_just_pressed(self):
         """ Returns False if not properly pressed, otherwise -> position"""
         pass
+
+    def update_score(self):
+        """ Updates score of each player """
+        result = self._check_winner(self.cells)  
+        if result == 0 and self.filled == self.columns * self.rows:
+            return -2
+        return result
 
     def convert(self, position):
         """ Converts absolute position to array position and returns False if unsuccessful"""
@@ -65,6 +78,8 @@ class Grid():
 
         if not self.cells[position[0]][position[1]]:
             self.cells[position[0]][position[1]] = value
+            self.last_moved = position
+            self.filled += 1
             return True
         else:
             return False

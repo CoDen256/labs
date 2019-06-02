@@ -9,7 +9,7 @@ class Computer(Player):
         super().__init__(grid, id)
         self.ai_component = AIComponent(id)
         self.time = 0
-        self.thinking_time = 1
+        self.thinking_time = 1 if grid is ExpandableGrid else 0.5
 
     def __repr__(self):
         return "Computer"

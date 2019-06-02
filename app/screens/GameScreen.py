@@ -30,8 +30,9 @@ class GameScreen:
 
         self.players = [Human(self.grid, 1), [Human, Computer][self.mode](self.grid, -1)]
         # num = (id + 2) % 3
-
-        self.currentPLayerNum = randint(0, 0)
+        
+        self.victory_message = ""
+        self.currentPLayerNum = 0 if self.players[1] is Computer and self.type == 1 else randint(0, 1)
         self.update_current()
 
     def handle_input(self):
@@ -45,14 +46,26 @@ class GameScreen:
                     self.game.set(self.game.screen("MainMenuScreen")(self.game))
 
     def update(self):
+        if self.victory_message:
+            toast(self.surface,
+                  self.victory_message,
+                  40, (250, 100, 100), self.game.w/2, self.game.h/2)
+            return
+
         self.update_current()
         self.grid.update()
 
         if not self.current.on_turn():
             pass
         else:
-            self.grid.update_score()
-            self.currentPLayerNum = 1 - self.currentPLayerNum
+            result = self.grid.update_score()
+            if result != 0:
+                if result != -2:  # not draw
+                    self.victory_message = "Player #{} - {} has won".format(self.currentPLayerNum, self.current)
+                else:
+                    self.victory_message = "Draw!"
+            else:
+                self.currentPLayerNum = 1 - self.currentPLayerNum
 
     def render(self):
         self.surface.render(self.game.window)
