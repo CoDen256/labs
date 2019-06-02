@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import pickle
 import base64
 from sys import argv

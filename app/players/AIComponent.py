@@ -5,7 +5,6 @@ import os
 import pickle
 import base64
 import subprocess
-import platform
 
 from random import choice 
 from copy import deepcopy
@@ -150,30 +149,21 @@ class AIComponent:
         player_pickled = pickle.dumps(self._computer)
         player_pickled = base64.b64encode(player_pickled).decode()
 
-        args = lambda inter: [
-                os.path.join(os.path.dirname(os.path.abspath(__file__)), *inter),
+        result_pickled = subprocess.run(
+            [
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    'pypymac', 'bin', 'pypy3'
+                ),
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
                     'unlimited.py'
                 ),
                 grid_pickled,
                 player_pickled
-            ]
-
-        result_pickled = None
-
-        if platform.system() == "Windows":
-            result_pickled = subprocess.Popen(
-                args(['pypy3', 'pypy3.exe']),
-                stdout=subprocess.PIPE,
-                universal_newlines=True
-            ).communicate()[0]
-
-        else:
-            result_pickled = subprocess.run(
-                args(['pypy', 'bin', 'pypy3']),
-                stdout=subprocess.PIPE
-            ).stdout
+            ],
+            stdout=subprocess.PIPE
+        ).stdout
 
         result_pickled = base64.b64decode(result_pickled)
         result = pickle.loads(result_pickled)
@@ -183,7 +173,8 @@ class AIComponent:
             if result[1] == 1e7:
                 return True
             else:
-                return False  
+                return False
+            
 
 
 if __name__ == '__main__':
