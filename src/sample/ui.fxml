@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.TreeItem?>
+<BorderPane prefHeight="600.0" prefWidth="800.0"
+            xmlns="http://javafx.com/javafx/8.0.65"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="sample.EditorController">
+
+   <top>
+       <VBox BorderPane.alignment="TOP_CENTER">
+           <MenuBar >
+               <Menu text="File">
+                   <MenuItem text="Save" onAction="#onSave" />
+                   <MenuItem text="Load" onAction="#onLoad" />
+                   <MenuItem text="Close" onAction="#onClose" />
+               </Menu>
+
+               <Menu text="Help">
+                   <MenuItem text="About" onAction="#onAbout" />
+               </Menu>
+           </MenuBar>
+           <ToolBar>
+                <Button text="Hui" onAction="#onAbout">
+
+                </Button>
+           </ToolBar>
+       </VBox>
+
+
+   </top>
+
+
+    <left >
+       <fx:include source="tree.fxml" />
+    </left>
+   <bottom>
+      <HBox prefHeight="30.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
+   </bottom>
+
+   <center>
+
+      <TextArea fx:id="areaText" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER_RIGHT" />
+   </center>
+</BorderPane>
