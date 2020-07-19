@@ -1,14 +1,9 @@
 package editor.controllers;
 
 import editor.EditorModel;
-import editor.IOResult;
-import editor.TextFile;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Window;
-
-import java.io.File;
 
 public class MainController {
 
@@ -28,7 +23,7 @@ public class MainController {
     private TreeViewController treeViewController;
 
     @FXML
-    private TextAreaController textAreaController;
+    private TabController tabController;
 
     @FXML
     private FooterController footerController;
@@ -36,16 +31,17 @@ public class MainController {
     private EditorModel model = new EditorModel();
 
 
-
-    public TextAreaController getTextAreaController() {
-        return textAreaController;
+    public TabController getTabController() {
+        return tabController;
     }
 
     @FXML
     public void initialize() {
         System.out.println("borderPane"+ toolBarController);
-        System.out.println("footer: "+menuBarController);
-        System.out.println(textAreaController);
+        System.out.println("menubar: "+menuBarController);
+        System.out.println("tree: "+treeViewController);
+        System.out.println("footer: "+footerController);
+        System.out.println("tab:"+tabController);
     }
 
 }

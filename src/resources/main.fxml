@@ -2,11 +2,14 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TextArea?>
 <BorderPane prefHeight="600.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/8.0.65"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="editor.controllers.MainController"
-        fx:id="borderPane">
+            fx:id="borderPane">
 
     <top>
         <VBox BorderPane.alignment="TOP_CENTER">
@@ -15,12 +18,12 @@
         </VBox>
     </top>
 
-    <left >
+    <left>
         <fx:include fx:id="treeView" source="tree.fxml" />
     </left>
 
     <center>
-        <fx:include fx:id="textArea" source="textArea.fxml" />
+        <fx:include fx:id="tabPane" source="tabPane.fxml" />
     </center>
 
     <bottom>
