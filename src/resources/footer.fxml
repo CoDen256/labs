@@ -4,11 +4,35 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Separator?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="editor.controllers.FooterController"
       prefHeight="30.0" prefWidth="600.0">
-    <Text >
-        <text>Somethign</text>
-    </Text>
+
+
+    <Separator orientation="VERTICAL"/>
+    <HBox alignment="CENTER_LEFT" prefWidth="300">
+        <Text text="Length:"/>
+        <Text fx:id="fileLength"/>
+
+        <Text text="  Lines:"/>
+        <Text fx:id="fileLines"/>
+    </HBox>
+
+    <Separator orientation="VERTICAL"/>
+
+    <HBox alignment="CENTER_LEFT" prefWidth="300">
+        <Text text="Line:"/>
+        <Text fx:id="currentLine"/>
+
+        <Text text="  Column:" />
+        <Text fx:id="currentColumn" />
+    </HBox>
+
+
+
+
+
+
 </HBox>

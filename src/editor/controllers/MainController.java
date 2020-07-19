@@ -31,10 +31,6 @@ public class MainController {
     private EditorModel model = new EditorModel();
 
 
-    public TabController getTabController() {
-        return tabController;
-    }
-
     @FXML
     public void initialize() {
         System.out.println("borderPane"+ toolBarController);

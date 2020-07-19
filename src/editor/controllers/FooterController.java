@@ -1,26 +1,26 @@
 package editor.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 public class FooterController {
 
-    @FXML
-    private MainController controller;
 
     @FXML
-    private TabController tabController;
-
-    public void setMainController(MainController controller) {
-        this.controller = controller;
-    }
-
+    private Text fileLines;
     @FXML
-    public String text = "something else";
+    private Text currentLine;
+    @FXML
+    private Text currentColumn;
+    @FXML
+    private Text fileLength;
 
     @FXML
     public void initialize() {
-        System.out.println(tabController);
-        System.out.println(controller);
+        fileLength.setText("10");
+        currentColumn.setText("10");
+        currentLine.setText("10");
+        fileLines.setText("10");
     }
 
 
