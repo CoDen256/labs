@@ -1,10 +1,10 @@
 package editor.controllers;
 
-import editor.events.EditorEvent;
-import editor.events.EventManager;
-import editor.events.LoadFileEvent;
-import editor.events.Subscriber;
+import editor.events.*;
 import javafx.fxml.FXML;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextArea;
 
 import java.io.File;
@@ -25,6 +25,9 @@ public class TabPaneController implements Subscriber {
 
     @FXML
     private MainController controller;
+
+    @FXML
+    private TabPane tabPane;
 
     public TextArea getAreaText() {
         return areaText;
@@ -53,6 +56,15 @@ public class TabPaneController implements Subscriber {
                 e.printStackTrace();
             }
 
+        }
+        if (event instanceof NewFileEvent) {
+            TextArea textArea = new TextArea();
+            int numTabs = tabPane.getTabs().filtered(tab -> tab.getText().contains("untitled")).size();
+            Tab tab = numTabs == 0 ? new Tab("untitled") : new Tab("untitled (" + (numTabs + 1) + ")");
+            tab.setContent(textArea);
+            tabPane.getTabs().add(tab);
+            SingleSelectionModel<Tab> selectionModel = tabPane.getSelectionModel();
+            selectionModel.select(tab);
         }
     }
 }

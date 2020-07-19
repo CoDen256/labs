@@ -1,9 +1,11 @@
 package editor.controllers;
 
+import editor.events.EditorEvent;
+import editor.events.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 
-public class FooterController {
+public class FooterController implements Subscriber {
 
 
     @FXML
@@ -24,5 +26,8 @@ public class FooterController {
     }
 
 
+    @Override
+    public void update(EditorEvent event) {
 
+    }
 }

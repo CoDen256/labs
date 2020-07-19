@@ -9,8 +9,10 @@
             fx:controller="editor.controllers.MenuBarController">
 
     <Menu text="File">
-        <MenuItem text="Save" onAction="#onSave" />
+        <MenuItem text="New" onAction="#onNew" />
         <MenuItem text="Load" onAction="#onLoad" />
+        <MenuItem text="Save" onAction="#onSave" />
+<!--        <MenuItem text="OpenDir" onAction="#onOpenDir" />-->
     </Menu>
 
     <Menu text="Help">

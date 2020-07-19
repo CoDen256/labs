@@ -4,6 +4,8 @@ import editor.IOResult;
 import editor.TextFile;
 import editor.events.EventManager;
 import editor.events.LoadFileEvent;
+import editor.events.NewFileEvent;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
@@ -37,4 +39,8 @@ public class MenuBarController {
     }
 
 
+    @FXML
+    public void onNew() {
+        eventManager.notifySubscribers(new NewFileEvent());
+    }
 }
