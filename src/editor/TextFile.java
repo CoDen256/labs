@@ -24,4 +24,9 @@ public class TextFile extends Object {
     public List<String> getContent() {
         return content;
     }
+
+    @Override
+    public String toString() {
+        return file.getFileName().toString();
+    }
 }

@@ -55,6 +55,7 @@ public class TabPaneController implements Subscriber {
     @Override
     public void update(EditorEvent event) {
 
+
         switch (event) {
             case LOAD_FILE_EVENT: handleLoad((File) event.getContent()); break;
             case NEW_FILE_EVENT: handleNew(); break;
@@ -74,7 +75,6 @@ public class TabPaneController implements Subscriber {
                 updateFont(currentFont);
                 break;
             }
-
 
         }
 

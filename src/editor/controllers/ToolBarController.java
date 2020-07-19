@@ -44,8 +44,8 @@ public class ToolBarController implements Subscriber {
 
     @FXML
     public void onOpenDirectory() {
-        File path = FileUtils.loadDirectoryDialog();
-        manager.notifySubscribers(LOAD_DIR_EVENT.setContent(path));
+        File file = FileUtils.loadDirectoryDialog();
+        manager.notifySubscribers(LOAD_DIR_EVENT.setContent(file.toPath()));
     }
 
     @FXML

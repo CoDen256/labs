@@ -5,6 +5,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.SplitPane?>
 <BorderPane prefHeight="600.0" prefWidth="800.0"
             xmlns="http://javafx.com/javafx/8.0.65"
             xmlns:fx="http://javafx.com/fxml/1"
@@ -19,11 +20,14 @@
     </top>
 
     <left>
-        <fx:include fx:id="treeView" source="tree.fxml" />
+
     </left>
 
     <center>
-        <fx:include fx:id="tabPane" source="tabPane.fxml" />
+        <SplitPane dividerPositions="0.2">
+            <fx:include fx:id="treeView" source="tree.fxml" />
+            <fx:include fx:id="tabPane" source="tabPane.fxml" />
+        </SplitPane>
     </center>
 
     <bottom>
