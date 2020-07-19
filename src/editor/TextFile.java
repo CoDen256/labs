@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 
-public class TextFile {
+public class TextFile extends Object {
 
     private final Path file;
 

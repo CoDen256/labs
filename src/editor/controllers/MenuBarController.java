@@ -5,6 +5,7 @@ import editor.TextFile;
 import editor.events.EventManager;
 import editor.events.LoadFileEvent;
 import editor.events.NewFileEvent;
+import editor.events.SaveFileEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -16,9 +17,11 @@ import java.util.Arrays;
 public class MenuBarController {
     private EventManager eventManager;
 
+
     @FXML
     private void onSave() {
-
+//        TextFile textFile = new TextFile();
+        eventManager.notifySubscribers(new SaveFileEvent());
     }
 
     public void setEventManager(EventManager eventManager) {

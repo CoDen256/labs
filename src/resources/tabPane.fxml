@@ -7,14 +7,5 @@
             fx:controller="editor.controllers.TabPaneController"
           prefHeight="200.0" prefWidth="200.0">
 
-    <Tab text="file">
-        <TextArea fx:id="areaText" text="Something">
-        </TextArea>
-    </Tab>
-
-    <Tab text="file2">
-        <TextArea text="Something2">
-        </TextArea>
-    </Tab>
 </TabPane>
 
