@@ -1,11 +1,11 @@
 package editor.controllers;
 
-import editor.events.EditorEvent;
-import editor.events.EventManager;
-import editor.events.NewFileEvent;
-import editor.events.Subscriber;
+import editor.events.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.stage.FileChooser;
+
+import java.io.File;
 
 public class ToolBarController implements Subscriber {
     public ToolBarController() {
@@ -23,7 +23,7 @@ public class ToolBarController implements Subscriber {
         System.out.println(getClass()+" initialized");
     }
 
-    private void setEventManager(EventManager manager) {
+    public void setEventManager(EventManager manager) {
         this.manager = manager;
     }
 
@@ -33,8 +33,12 @@ public class ToolBarController implements Subscriber {
     }
 
     @FXML
-    public void onOpen() {
+    public void onLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("./"));
+        File file = fileChooser.showOpenDialog(null);
 
+        manager.notifySubscribers(new LoadFileEvent(file));
     }
 
     @FXML

@@ -44,6 +44,9 @@ public class MainController {
 
         menuBarController.setEventManager(manager);
         tabPaneController.setEventManager(manager);
+        toolBarController.setEventManager(manager);
+
+
         manager.subscribe(tabPaneController);
 
         footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));

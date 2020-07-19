@@ -19,7 +19,7 @@
 
     </Button>
 
-    <Button onAction="#onOpen">
+    <Button onAction="#onLoad">
         <graphic>
             <ImageView>
                 <Image url="@icons/import.png" requestedWidth="15" requestedHeight="15"/>
