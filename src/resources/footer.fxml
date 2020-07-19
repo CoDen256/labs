@@ -18,8 +18,6 @@
         <Text text="Length:"/>
         <Text fx:id="fileLength"/>
 
-        <Text text="  Lines:"/>
-        <Text fx:id="fileLines"/>
     </HBox>
 
     <Separator orientation="VERTICAL"/>

@@ -22,7 +22,8 @@ public enum  EditorEvent {
     BRIGHT_EVENT,
 
     CURSOR_CHANGED,
-    FILE_LENGTH_CHANGED
+    FILE_LENGTH_CHANGED,
+    NULL_FOOTER
     ;
 
     protected Object content;

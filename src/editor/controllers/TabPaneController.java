@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static editor.events.EditorEvent.NULL_FOOTER;
+
 public class TabPaneController implements Subscriber {
     public void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
@@ -140,6 +142,7 @@ public class TabPaneController implements Subscriber {
 
                 tabTextFileMap.putIfAbsent(getCurrentTab(), currentFile);
                 Files.write(currentFile.getFile(), currentFile.getContent());
+                getCurrentTab().setText(path.getFileName().toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -152,7 +155,7 @@ public class TabPaneController implements Subscriber {
         Tab tab = new Tab(name, textArea);
 
         tab.setOnCloseRequest(event -> {
-//            System.out.println("Tab closed " + tabTextFileMap.get(tab).getFile().getFileName());
+            eventManager.notifySubscribers(NULL_FOOTER);
             tabTextFileMap.remove(tab);
         });
 

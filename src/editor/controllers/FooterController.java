@@ -44,6 +44,9 @@ public class FooterController implements Subscriber {
                 fileLength.setText(len.toString());
                 break;
             }
+            case NULL_FOOTER: {
+                initialize();
+            }
         }
     }
 }
