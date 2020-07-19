@@ -1,6 +1,7 @@
 package editor.controllers;
 
 import editor.EditorModel;
+import editor.events.EventManager;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -34,11 +35,16 @@ public class MainController {
 
     @FXML
     public void initialize() {
+        EventManager manager = new EventManager();
         System.out.println("borderPane"+ toolBarController);
         System.out.println("menubar: "+menuBarController);
         System.out.println("tree: "+treeViewController);
         System.out.println("footer: "+footerController);
         System.out.println("tab:"+ tabPaneController);
+
+        menuBarController.setEventManager(manager);
+        tabPaneController.setEventManager(manager);
+        manager.subscribe(tabPaneController);
 
         footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));
     }

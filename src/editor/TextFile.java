@@ -3,9 +3,7 @@ package editor;
 import java.nio.file.Path;
 import java.util.List;
 
-/**
- * @author Almas Baimagambetov (almaslvl@gmail.com)
- */
+
 public class TextFile {
 
     private final Path file;

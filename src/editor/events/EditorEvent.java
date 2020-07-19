@@ -1,4 +1,5 @@
 package editor.events;
 
-public class EditorEvent {
+public interface EditorEvent {
+    Object getContent();
 }

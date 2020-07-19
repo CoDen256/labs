@@ -2,6 +2,8 @@ package editor.controllers;
 
 import editor.IOResult;
 import editor.TextFile;
+import editor.events.EventManager;
+import editor.events.LoadFileEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
@@ -10,25 +12,29 @@ import java.io.File;
 import java.util.Arrays;
 
 public class MenuBarController {
-    private MainController controller;
+    private EventManager eventManager;
 
     @FXML
     private void onSave() {
 
     }
 
+    public void setEventManager(EventManager eventManager) {
+        this.eventManager = eventManager;
+    }
+
     @FXML
     private void onLoad() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File("./"));
+        File file = fileChooser.showOpenDialog(null);
 
+        eventManager.notifySubscribers(new LoadFileEvent(file));
     }
 
     @FXML
     private void onAbout() {
     }
 
-
-    public void setMainController(MainController controller) {
-        this.controller = controller;
-    }
 
 }
