@@ -2,6 +2,7 @@ package editor.controllers;
 
 import editor.EditorModel;
 import javafx.fxml.FXML;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -23,7 +24,7 @@ public class MainController {
     private TreeViewController treeViewController;
 
     @FXML
-    private TabController tabController;
+    private TabPaneController tabPaneController;
 
     @FXML
     private FooterController footerController;
@@ -37,7 +38,9 @@ public class MainController {
         System.out.println("menubar: "+menuBarController);
         System.out.println("tree: "+treeViewController);
         System.out.println("footer: "+footerController);
-        System.out.println("tab:"+tabController);
+        System.out.println("tab:"+ tabPaneController);
+
+        footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));
     }
 
 }

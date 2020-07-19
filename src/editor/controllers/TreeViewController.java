@@ -25,7 +25,9 @@ public class TreeViewController  {
         root.getChildren().addAll(root1, root2, root3);
 
         treeView.setRoot(root);
+    }
 
+    public void setHandler() {
 
     }
 }

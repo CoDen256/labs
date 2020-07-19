@@ -4,7 +4,7 @@
 
 <TabPane xmlns="http://javafx.com/javafx/8"
             xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="editor.controllers.TabController"
+            fx:controller="editor.controllers.TabPaneController"
           prefHeight="200.0" prefWidth="200.0">
 
     <Tab text="file">
@@ -13,7 +13,7 @@
     </Tab>
 
     <Tab text="file2">
-        <TextArea text="Something">
+        <TextArea text="Something2">
         </TextArea>
     </Tab>
 </TabPane>

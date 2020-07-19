@@ -3,7 +3,7 @@ package editor.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
-public class TabController {
+public class TabPaneController {
     @FXML
     private TextArea areaText;
 
