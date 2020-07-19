@@ -15,6 +15,26 @@
 <!--        <MenuItem text="OpenDir" onAction="#onOpenDir" />-->
     </Menu>
 
+
+
+    <Menu text="Edit">
+        <MenuItem text="Cut" onAction="#onCut" />
+        <MenuItem text="Copy" onAction="#onCopy" />
+        <MenuItem text="Paste" onAction="#onPaste" />
+        <MenuItem text="Redo" onAction="#onRedo" />
+        <MenuItem text="Undo" onAction="#onUndo" />
+        <!--        <MenuItem text="OpenDir" onAction="#onOpenDir" />-->
+    </Menu>
+
+    <Menu text="Settings">
+        <MenuItem text="Larger" onAction="#onLarger" />
+        <MenuItem text="Smaller" onAction="#onSmaller" />
+        <MenuItem text="Dark mode" onAction="#onDark" />
+        <MenuItem text="Bright mode" onAction="#onBright" />
+        <!--        <MenuItem text="OpenDir" onAction="#onOpenDir" />-->
+    </Menu>
+
+
     <Menu text="Help">
         <MenuItem text="About" onAction="#onAbout" />
     </Menu>

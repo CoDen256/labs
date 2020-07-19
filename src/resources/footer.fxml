@@ -18,18 +18,14 @@
         <Text text="Length:"/>
         <Text fx:id="fileLength"/>
 
-        <Text text="  Lines:"/>
-        <Text fx:id="fileLines"/>
     </HBox>
 
     <Separator orientation="VERTICAL"/>
 
     <HBox alignment="CENTER_LEFT" prefWidth="300">
-        <Text text="Line:"/>
-        <Text fx:id="currentLine"/>
 
-        <Text text="  Column:" />
-        <Text fx:id="currentColumn" />
+        <Text text="  Character:" />
+        <Text fx:id="currentPosition" />
     </HBox>
 
 

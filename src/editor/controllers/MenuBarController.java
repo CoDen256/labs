@@ -3,6 +3,7 @@ package editor.controllers;
 import editor.FileUtils;
 import editor.events.EditorEvent;
 import editor.events.EventManager;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.stage.FileChooser;
 
@@ -38,4 +39,50 @@ public class MenuBarController {
     public void onNew() {
         eventManager.notifySubscribers(EditorEvent.NEW_FILE_EVENT);
     }
+
+    @FXML
+    public void onCut() {
+        eventManager.notifySubscribers(EditorEvent.CUT_EVENT);
+    }
+
+    @FXML
+    public void onCopy(ActionEvent actionEvent) {
+        eventManager.notifySubscribers(EditorEvent.COPY_EVENT);
+    }
+
+    @FXML
+    public void onPaste() {
+        eventManager.notifySubscribers(EditorEvent.PASTE_EVENT);
+    }
+
+    @FXML
+    public void onRedo() {
+        eventManager.notifySubscribers(EditorEvent.REDO_EVENT);
+    }
+
+    @FXML
+    public void onUndo() {
+        eventManager.notifySubscribers(EditorEvent.UNDO_EVENT);
+    }
+
+    @FXML
+    public void onLarger() {
+        eventManager.notifySubscribers(EditorEvent.BIGGER_EVENT);
+    }
+
+    @FXML
+    public void onSmaller() {
+        eventManager.notifySubscribers(EditorEvent.SMALLER_EVENT);
+    }
+
+    @FXML
+    public void onDark() {
+        eventManager.notifySubscribers(EditorEvent.DARK_EVENT);
+    }
+
+    @FXML
+    public void onBright() {
+        eventManager.notifySubscribers(EditorEvent.BRIGHT_EVENT);
+    }
+
 }

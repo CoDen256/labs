@@ -52,6 +52,7 @@ public class MainController {
 
         manager.subscribe(tabPaneController);
         manager.subscribe(treeViewController);
+        manager.subscribe(footerController);
 
         footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));
     }
