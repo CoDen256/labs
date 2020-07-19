@@ -2,6 +2,7 @@ package editor.controllers;
 
 import editor.events.EditorEvent;
 import editor.events.EventManager;
+import editor.events.NewFileEvent;
 import editor.events.Subscriber;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -28,7 +29,7 @@ public class ToolBarController implements Subscriber {
 
     @FXML
     public void onCreate() {
-
+        manager.notifySubscribers(new NewFileEvent());
     }
 
     @FXML
