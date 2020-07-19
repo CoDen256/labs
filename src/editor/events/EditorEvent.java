@@ -17,7 +17,12 @@ public enum  EditorEvent {
     UNDO_EVENT,
 
     BIGGER_EVENT,
-    SMALLER_EVENT
+    SMALLER_EVENT,
+    DARK_EVENT,
+    BRIGHT_EVENT,
+
+    CURSOR_CHANGED,
+    FILE_LENGTH_CHANGED
     ;
 
     protected Object content;

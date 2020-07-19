@@ -3,16 +3,16 @@ package editor.controllers;
 import editor.FileUtils;
 import editor.TextFile;
 import editor.events.EditorEvent;
-import editor.events.EditorEvent.*;
 import editor.events.EventManager;
 import editor.events.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
+import javafx.scene.input.KeyCode;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
-import javax.xml.soap.Text;
+import javax.swing.text.Caret;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -41,6 +41,7 @@ public class TabPaneController implements Subscriber {
 
     @FXML
     public void initialize() {
+
     }
 
     public Tab getCurrentTab() {
@@ -74,7 +75,14 @@ public class TabPaneController implements Subscriber {
                 updateFont(currentFont);
                 break;
             }
-
+            case DARK_EVENT: {
+                tabPane.getScene().getRoot().setStyle("-fx-base:#323232");
+                break;
+            }
+            case BRIGHT_EVENT: {
+                tabPane.getScene().getRoot().setStyle("-fx-base:white");
+                break;
+            }
 
         }
 
@@ -153,8 +161,12 @@ public class TabPaneController implements Subscriber {
 
     private TextArea createTextArea(String content) {
         TextArea textArea = new TextArea(content);
-        textArea.setWrapText(true);
-
+        textArea.setFont(new Font(currentFont));
+        textArea.positionCaret(0);
+        textArea.caretPositionProperty().addListener((ob, old1, new1) -> {
+            eventManager.notifySubscribers(EditorEvent.CURSOR_CHANGED.setContent(new1));
+            eventManager.notifySubscribers(EditorEvent.FILE_LENGTH_CHANGED.setContent(textArea.getText().length()));
+        });
         return textArea;
     }
 
