@@ -1,4 +1,4 @@
-package sample;
+package editor;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -32,4 +32,6 @@ public class EditorModel {
     public void close() {
         System.exit(0);
     }
+
+
 }

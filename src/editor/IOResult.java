@@ -1,4 +1,4 @@
-package sample;
+package editor;
 
 /**
  * @author Almas Baimagambetov (almaslvl@gmail.com)

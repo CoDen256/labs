@@ -1,14 +1,14 @@
-package sample.controllers;
+package editor.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 public class TreeViewController  {
+    public TreeViewController() {
+        System.out.println(getClass()+" created");
+    }
+
     @FXML
     TreeView<String> treeView;
 
@@ -20,7 +20,7 @@ public class TreeViewController  {
         TreeItem<String> root2 = new TreeItem<>("root2");
         TreeItem<String> root3 = new TreeItem<>("root3");
 
-        System.out.println("hui");
+        System.out.println(getClass()+" initialized");
 
         root.getChildren().addAll(root1, root2, root3);
 
