@@ -6,6 +6,5 @@
           fx:controller="editor.controllers.TreeViewController"
           prefWidth="200">
 
-
 </TreeView>
 

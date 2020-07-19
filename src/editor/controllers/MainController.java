@@ -3,12 +3,14 @@ package editor.controllers;
 import editor.EditorModel;
 import editor.events.EventManager;
 import javafx.fxml.FXML;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 public class MainController {
 
+    public ToolBar toolBar;
     @FXML
     private BorderPane borderPane;
 
@@ -45,9 +47,11 @@ public class MainController {
         menuBarController.setEventManager(manager);
         tabPaneController.setEventManager(manager);
         toolBarController.setEventManager(manager);
+        treeViewController.setEventManager(manager);
 
 
         manager.subscribe(tabPaneController);
+        manager.subscribe(treeViewController);
 
         footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));
     }

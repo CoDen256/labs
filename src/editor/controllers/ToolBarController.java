@@ -1,11 +1,15 @@
 package editor.controllers;
 
-import editor.events.*;
-import javafx.event.ActionEvent;
+import editor.FileUtils;
+import editor.events.EditorEvent;
+import editor.events.EventManager;
+
+import editor.events.Subscriber;
 import javafx.fxml.FXML;
-import javafx.stage.FileChooser;
 
 import java.io.File;
+
+import static editor.events.EditorEvent.*;
 
 public class ToolBarController implements Subscriber {
     public ToolBarController() {
@@ -29,65 +33,65 @@ public class ToolBarController implements Subscriber {
 
     @FXML
     public void onCreate() {
-        manager.notifySubscribers(new NewFileEvent());
+        manager.notifySubscribers(NEW_FILE_EVENT);
     }
 
     @FXML
     public void onLoad() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("./"));
-        File file = fileChooser.showOpenDialog(null);
-
-        manager.notifySubscribers(new LoadFileEvent(file));
+        File file = FileUtils.loadFileDialog();
+        manager.notifySubscribers(LOAD_FILE_EVENT.setContent(file));
     }
 
     @FXML
     public void onOpenDirectory() {
-
+        File path = FileUtils.loadDirectoryDialog();
+        manager.notifySubscribers(LOAD_DIR_EVENT.setContent(path));
     }
 
     @FXML
     public void onSave() {
-
+        manager.notifySubscribers(SAVE_FILE_EVENT);
     }
 
     @FXML
     public void onCut() {
+        manager.notifySubscribers(CUT_EVENT);
 
     }
 
     @FXML
     public void onCopy() {
-
+        manager.notifySubscribers(COPY_EVENT);
     }
 
     @FXML
     public void onPaste() {
-
+        manager.notifySubscribers(PASTE_EVENT);
     }
 
     @FXML
     public void onUndo() {
-
+        manager.notifySubscribers(UNDO_EVENT);
     }
 
     @FXML
     public void onRedo() {
-
+        manager.notifySubscribers(REDO_EVENT);
     }
 
     @FXML
     public void onBigger() {
-
+        manager.notifySubscribers(BIGGER_EVENT);
     }
 
     @FXML
     public void onSmaller() {
-
+        manager.notifySubscribers(SMALLER_EVENT);
     }
 
     @Override
     public void update(EditorEvent event) {
 
     }
+
 }

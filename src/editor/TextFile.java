@@ -1,5 +1,7 @@
 package editor;
 
+import javafx.scene.control.Tab;
+
 import java.nio.file.Path;
 import java.util.List;
 

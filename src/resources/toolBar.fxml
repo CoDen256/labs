@@ -22,7 +22,7 @@
     <Button onAction="#onLoad">
         <graphic>
             <ImageView>
-                <Image url="@icons/import.png" requestedWidth="15" requestedHeight="15"/>
+                <Image url="@./icons/import.png" requestedWidth="15" requestedHeight="15"/>
             </ImageView>
         </graphic>
     </Button>
