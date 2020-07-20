@@ -5,13 +5,11 @@ import editor.events.EditorEvent;
 import editor.events.EditorPath;
 import editor.events.EventManager;
 import editor.events.Subscriber;
-import javafx.beans.Observable;
 import javafx.fxml.FXML;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseEvent;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,9 +29,6 @@ public class TreeViewController implements Subscriber {
     public void initialize() {
     }
 
-    public void setHandler() {
-
-    }
 
     public void setEventManager(EventManager manager) {
         this.manager = manager;
