@@ -1,6 +1,8 @@
 package editor.controllers;
 
 import editor.EditorModel;
+import editor.LoginManager;
+import editor.database.User;
 import editor.events.EventManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToolBar;
@@ -10,7 +12,10 @@ import javafx.scene.layout.HBox;
 
 public class MainController {
 
+    private User user;
+
     public ToolBar toolBar;
+
     @FXML
     private BorderPane borderPane;
 
@@ -34,6 +39,15 @@ public class MainController {
 
     private EditorModel model = new EditorModel();
 
+    public void setUser(User user) {
+        this.user = user;
+        footerController.setUsername(user.getUsername());
+        tabPaneController.setUser(user);
+    }
+
+    public void initManager(LoginManager loginManager) {
+
+    }
 
     @FXML
     public void initialize() {
@@ -51,10 +65,13 @@ public class MainController {
 
 
         manager.subscribe(tabPaneController);
+        manager.subscribe(toolBarController);
         manager.subscribe(treeViewController);
         manager.subscribe(footerController);
 
-        footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("hui"));
+        footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("Username: " + user.getUsername()));
+
+
     }
 
 }

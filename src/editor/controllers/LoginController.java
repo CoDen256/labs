@@ -1,11 +1,13 @@
 package editor.controllers;
 
+import editor.LoginManager;
 import editor.database.User;
 import editor.database.UserDataAccessor;
 import editor.events.EventManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -20,6 +22,10 @@ public class LoginController {
 
 
     public TextField textField;
+
+    @FXML
+    public Button submitBtn;
+
     @FXML
     private PasswordField passwordField;
 
@@ -29,21 +35,30 @@ public class LoginController {
     @FXML
     private Text actionTarget;
 
-    private UserDataAccessor userDataAccessor;
+    private UserDataAccessor userDataAccessor = UserDataAccessor.getInstance();
 
-    @FXML
-    public void initialize() throws SQLException {
-        userDataAccessor = new UserDataAccessor("jdbc:mysql://127.0.0.1:3306/editor", "root", "root");
-        List<User> list = userDataAccessor.getPersonList();
-        list.forEach(user -> System.out.println(user.getUsername()));
+    public void initManager(LoginManager loginManager) {
+        submitBtn.setOnAction(e -> {
+            User user = null;
+
+            user = userDataAccessor.checkUser(textField.getText(), passwordField.getText());
+
+            if (user != null) {
+                try {
+                    loginManager.showMainView(user);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+            else
+                actionTarget.setText("Wrong username or password");
+        });
     }
 
     @FXML
-    private void handleSubmitButtonAction() throws IOException, SQLException {
-        if (userDataAccessor.checkUser(textField.getText(), passwordField.getText()))
-            changeScene("../../resources/main.fxml");
-        else
-            actionTarget.setText("Wrong username or password");
+    public void initialize() throws SQLException {
+        List<User> list = userDataAccessor.getPersonList();
+        list.forEach(user -> System.out.println(user.getUsername()));
     }
 
     private void changeScene(String fxml) throws IOException {

@@ -29,7 +29,11 @@
     </HBox>
 
 
+    <HBox alignment="CENTER_LEFT" prefWidth="300">
 
+        <Text text="  User:  " />
+        <Text fx:id="username" />
+    </HBox>
 
 
 

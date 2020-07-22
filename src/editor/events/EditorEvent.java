@@ -23,7 +23,11 @@ public enum  EditorEvent {
 
     CURSOR_CHANGED,
     FILE_LENGTH_CHANGED,
-    NULL_FOOTER
+    NULL_FOOTER,
+
+    TEXT_SELECTED,
+    TEXT_UNSELECTED,
+    TEXT_MODIFIED
     ;
 
     protected Object content;

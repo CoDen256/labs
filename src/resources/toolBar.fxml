@@ -35,7 +35,7 @@
         </graphic>
     </Button>
 
-    <Button onAction="#onSave">
+    <Button fx:id="saveBtn" onAction="#onSave" disable="true">
         <graphic>
             <ImageView>
                 <Image url="@icons/save.png" requestedWidth="15" requestedHeight="15"/>
@@ -43,14 +43,14 @@
         </graphic>
     </Button>
     <Separator orientation="VERTICAL"/>
-    <Button onAction="#onCut">
+    <Button fx:id="cutBtn" onAction="#onCut" disable="true">
         <graphic>
             <ImageView>
                 <Image url="@icons/scissors.png" requestedWidth="15" requestedHeight="15"/>
             </ImageView>
         </graphic>
     </Button>
-    <Button onAction="#onCopy">
+    <Button fx:id="copyBtn" onAction="#onCopy" disable="true">
         <graphic>
             <ImageView>
                 <Image url="@icons/copy.png" requestedWidth="15" requestedHeight="15"/>

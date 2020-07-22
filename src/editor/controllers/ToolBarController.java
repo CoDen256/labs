@@ -6,7 +6,9 @@ import editor.events.EventManager;
 
 import editor.events.Subscriber;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 
+import javax.swing.*;
 import java.io.File;
 
 import static editor.events.EditorEvent.*;
@@ -15,6 +17,15 @@ public class ToolBarController implements Subscriber {
     public ToolBarController() {
         System.out.println(getClass()+" created");
     }
+
+    @FXML
+    private Button copyBtn;
+
+    @FXML
+    private Button cutBtn;
+
+    @FXML
+    private Button saveBtn;
 
     private EventManager manager;
 
@@ -89,9 +100,18 @@ public class ToolBarController implements Subscriber {
         manager.notifySubscribers(SMALLER_EVENT);
     }
 
+    private void changeButtonsState(boolean state) {
+        copyBtn.setDisable(state);
+        cutBtn.setDisable(state);
+    }
+
     @Override
     public void update(EditorEvent event) {
-
+        switch (event) {
+            case TEXT_SELECTED: changeButtonsState(false); break;
+            case TEXT_UNSELECTED: changeButtonsState(true); break;
+            case TEXT_MODIFIED: saveBtn.setDisable(false); break;
+        }
     }
 
 }

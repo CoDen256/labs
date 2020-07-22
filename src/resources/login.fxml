@@ -29,8 +29,7 @@
                    GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     <HBox spacing="10" alignment="bottom_right"
           GridPane.columnIndex="1" GridPane.rowIndex="4">
-        <Button text="Sign In"
-                onAction="#handleSubmitButtonAction"/>
+        <Button fx:id="submitBtn" text="Sign In"/>
     </HBox>
 
     <Text fx:id="actionTarget"
