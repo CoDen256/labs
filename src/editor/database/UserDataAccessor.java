@@ -10,8 +10,13 @@ import java.util.ArrayList ;
 
 public class UserDataAccessor {
     private Connection connection ;
+    private static final String URL = "jdbc:mysql://127.0.0.1:3306/editor?" +
+            "useUnicode=true&" +
+            "useJDBCCompliantTimezoneShift=true&" +
+            "useLegacyDatetimeCode=false&" +
+            "serverTimezone=UTC";
 
-    private static final UserDataAccessor instance = new UserDataAccessor("jdbc:mysql://127.0.0.1:3306/editor", "root", "root");
+    private static final UserDataAccessor instance = new UserDataAccessor(URL, "root", "root");
 
     public static UserDataAccessor getInstance() {
         return instance;
