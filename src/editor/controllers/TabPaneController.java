@@ -44,9 +44,7 @@ public class TabPaneController implements Subscriber {
 
     private double currentFont = Font.getDefault().getSize();
 
-    private UserDataAccessor userDataAccessor = UserDataAccessor.getInstance();
-
-    //private Clipboard clipboard = Clipboard.getSystemClipboard();
+    private final UserDataAccessor userDataAccessor = UserDataAccessor.getInstance();
 
     @FXML
     private TabPane tabPane;
@@ -143,39 +141,34 @@ public class TabPaneController implements Subscriber {
     }
 
     private void handleSave() {
-        try {
-            Path path;
-            TextFile currentFile = tabTextFileMap.get(getCurrentTab());
-            if (currentFile == null) {
-                File file = FileUtils.saveFileDialog(new FileChooser.ExtensionFilter("TXT, XML", "*.txt", "*.xml"));
-                path = file.toPath();
-            }
-            else {
-                path = currentFile.getFile();
-            }
-            TextArea areaText = getCurrentTextArea();
-            currentFile = new TextFile(path, Arrays.asList(areaText.getText().split("\\\n")));
-
-            tabTextFileMap.putIfAbsent(getCurrentTab(), currentFile);
-            Files.write(currentFile.getFile(), currentFile.getContent());
-            getCurrentTab().setText(path.getFileName().toString());
-            // Put file in DB
-            userDataAccessor.createFile(user, path.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        Path path;
+        TextFile currentFile = tabTextFileMap.get(getCurrentTab());
+        if (currentFile == null) {
+            File file = FileUtils.saveFileDialog(new FileChooser.ExtensionFilter("TXT, XML", "*.txt", "*.xml"));
+            path = file.toPath();
         }
+        else {
+            path = currentFile.getFile();
+        }
+        TextArea areaText = getCurrentTextArea();
+        currentFile = new TextFile(path, Arrays.asList(areaText.getText().split("\\\n")));
+
+        tabTextFileMap.putIfAbsent(getCurrentTab(), currentFile);
+        try {
+            Files.write(currentFile.getFile(), currentFile.getContent());
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+        }
+        getCurrentTab().setText(path.getFileName().toString());
+        // Put file in DB
+        userDataAccessor.createFile(user, path.toString());
     }
 
     private Tab createTab(String name) {
-
-
         Tab tab = new Tab(name);
-
         tab.textProperty().addListener(e -> {
             if (tab.getText().contains("*")) eventManager.notifySubscribers(TEXT_MODIFIED);
-
         });
-
         tab.setOnCloseRequest(event -> {
             if (tab.getText().contains("*")) {
                 popDialog(tab);
@@ -185,7 +178,6 @@ public class TabPaneController implements Subscriber {
                 tabTextFileMap.remove(tab);
             }
         });
-
         return tab;
     }
 

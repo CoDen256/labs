@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
+
 public class MainController {
 
     private User user;
@@ -46,7 +48,13 @@ public class MainController {
     }
 
     public void initManager(LoginManager loginManager) {
-
+        menuBarController.getLogout().setOnAction(e -> {
+            try {
+                loginManager.showLoginView();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
     }
 
     @FXML

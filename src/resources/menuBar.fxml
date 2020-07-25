@@ -39,4 +39,8 @@
         <MenuItem text="About" onAction="#onAbout" />
     </Menu>
 
+    <Menu text="Account">
+        <MenuItem text="Log out" fx:id="logout" />
+    </Menu>
+
 </MenuBar>

@@ -39,9 +39,7 @@ public class LoginController {
 
     public void initManager(LoginManager loginManager) {
         submitBtn.setOnAction(e -> {
-            User user = null;
-
-            user = userDataAccessor.checkUser(textField.getText(), passwordField.getText());
+            User user = userDataAccessor.checkUser(textField.getText(), passwordField.getText());
 
             if (user != null) {
                 try {

@@ -5,6 +5,9 @@ import editor.events.EditorEvent;
 import editor.events.EventManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.MenuItem;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -14,8 +17,10 @@ public class MenuBarController {
 
 
     @FXML
+    private MenuItem logout;
+
+    @FXML
     private void onSave() {
-//        TextFile textFile = new TextFile();
         eventManager.notifySubscribers(EditorEvent.SAVE_FILE_EVENT);
     }
 
@@ -26,14 +31,14 @@ public class MenuBarController {
     @FXML
     private void onLoad() {
         File file = FileUtils.loadFileDialog();
-
         eventManager.notifySubscribers(EditorEvent.LOAD_FILE_EVENT.setContent(file));
     }
 
     @FXML
     private void onAbout() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "This is a simple Text Editor", ButtonType.OK);
+        alert.showAndWait();
     }
-
 
     @FXML
     public void onNew() {
@@ -85,4 +90,8 @@ public class MenuBarController {
         eventManager.notifySubscribers(EditorEvent.BRIGHT_EVENT);
     }
 
+
+    public MenuItem getLogout() {
+        return logout;
+    }
 }
