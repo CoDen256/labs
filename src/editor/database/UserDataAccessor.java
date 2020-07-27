@@ -83,7 +83,7 @@ public class UserDataAccessor {
             try {
                 PreparedStatement stmnt = connection.prepareStatement("INSERT INTO user_file_created VALUES (?, ?)");
                 stmnt.setString(1, user_id.toString());
-                stmnt.setString(2, path.toString());
+                stmnt.setString(2, path);
                 int res = stmnt.executeUpdate();
                 if (res > 0) System.out.println("Inserted to DB successfully!");
             } catch (SQLException throwables) {
@@ -110,9 +110,57 @@ public class UserDataAccessor {
         ResultSet rs = execQuery("SELECT * FROM user_file_created as ufc where ufc.user_id = ? and ufc.file_path = ?", user_id.toString(), filePath);
         try {
             if (rs.next()) return true;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return false;
+    }
+
+    public void saveState(User user, String path) {
+        Integer user_id = getUserId(user);
+        if (user_id > 0) {
+            try {
+                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO user_memento VALUES (?, ?)");
+                stmnt.setString(1, user_id.toString());
+                stmnt.setString(2, path);
+                int res = stmnt.executeUpdate();
+                if (res > 0) System.out.println("Inserted to DB successfully!");
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+    }
+
+    public List<String> getSavedState(User user) {
+        Integer user_id = getUserId(user);
+        List<String> pathList = new ArrayList<>();
+        if (user_id > 0) {
+            try {
+                PreparedStatement stmnt = connection.prepareStatement("select um.file_opened from user_memento as um where um.user_id = ?");
+                stmnt.setString(1, user_id.toString());
+                ResultSet rs = stmnt.executeQuery();
+                while (rs.next()) {
+                    String file_path = rs.getString("file_opened");
+                    pathList.add(file_path);
+                }
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+        return pathList;
+    }
+
+    public void removeLastState(User user) {
+        Integer user_id = getUserId(user);
+        if (user_id > 0) {
+            try {
+                PreparedStatement stmnt = connection.prepareStatement("DELETE FROM user_memento as um WHERE um.user_id = ?");
+                stmnt.setString(1, user_id.toString());
+                int res = stmnt.executeUpdate();
+                if (res > 0) System.out.println("Deleted from DB successfully!");
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
     }
 }

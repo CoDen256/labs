@@ -32,6 +32,6 @@
         <Button fx:id="submitBtn" text="Sign In"/>
     </HBox>
 
-    <Text fx:id="actionTarget"
+    <Text fx:id="actionTarget" style="-fx-border-color: red"
           GridPane.columnIndex="1" GridPane.rowIndex="6"/>
 </GridPane>

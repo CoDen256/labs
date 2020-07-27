@@ -10,28 +10,25 @@ import editor.events.Subscriber;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.TextArea;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 
-import javax.swing.text.Caret;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static editor.events.EditorEvent.NULL_FOOTER;
 import static editor.events.EditorEvent.TEXT_MODIFIED;
 
 public class TabPaneController implements Subscriber {
+
     public void setEventManager(EventManager eventManager) {
         this.eventManager = eventManager;
     }
@@ -48,7 +45,6 @@ public class TabPaneController implements Subscriber {
 
     @FXML
     private TabPane tabPane;
-
 
     @FXML
     public void initialize() {
@@ -94,10 +90,13 @@ public class TabPaneController implements Subscriber {
                 tabPane.getScene().getRoot().setStyle("-fx-base:white");
                 break;
             }
-
+            case SAVE_STATE: {
+                for (Map.Entry<Tab, TextFile> entry: tabTextFileMap.entrySet()) {
+                    userDataAccessor.saveState(user, entry.getValue().getFile().toString());
+                }
+                break;
+            }
         }
-
-
     }
 
     private void handleLoad(File file){
@@ -113,9 +112,7 @@ public class TabPaneController implements Subscriber {
             }
             Tab tab = createTab(file.getName());
             TextArea areaText = createTextArea(String.join("\n", content), tab);
-
             tab.setContent(areaText);
-
             tabPane.getTabs().add(0, tab);
             tabTextFileMap.put(tab, currentFile);
             tabPane.getSelectionModel().select(tab);
@@ -238,5 +235,13 @@ public class TabPaneController implements Subscriber {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public void loadState() {
+        List<String> paths = userDataAccessor.getSavedState(user);
+        for (String path: paths) {
+            handleLoad(new File(path));
+            userDataAccessor.removeLastState(user);
+        }
     }
 }

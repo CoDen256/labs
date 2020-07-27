@@ -17,6 +17,7 @@ import java.nio.file.Path;
 public class TreeViewController implements Subscriber {
 
     private  EventManager manager;
+
     public TreeViewController() {
         System.out.println(getClass()+" created");
     }
@@ -24,11 +25,9 @@ public class TreeViewController implements Subscriber {
     @FXML
     TreeView<EditorPath> treeView;
 
-
     @FXML
     public void initialize() {
     }
-
 
     public void setEventManager(EventManager manager) {
         this.manager = manager;
@@ -38,7 +37,6 @@ public class TreeViewController implements Subscriber {
     public void update(EditorEvent event) {
         if (event.equals(EditorEvent.LOAD_DIR_EVENT)) {
             Path file = (Path) event.getContent();
-
             TreeFileVisitor treeFileVisitor = new TreeFileVisitor(new EditorPath(file), this::handleClick);
             treeView.setOnMouseClicked(this::handleClick);
             try {
@@ -46,13 +44,9 @@ public class TreeViewController implements Subscriber {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
             treeView.setRoot(treeFileVisitor.getFirstRoot().getChildren().get(0));
-
         }
     }
-
 
     private void handleClick(MouseEvent event) {
         if (event.getSource() instanceof TreeView && event.getClickCount() == 2){
@@ -66,5 +60,4 @@ public class TreeViewController implements Subscriber {
             }
         }
     }
-
 }

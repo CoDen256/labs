@@ -6,17 +6,20 @@ import editor.database.User;
 import editor.events.EventManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToolBar;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
+
+import static editor.events.EditorEvent.SAVE_STATE;
 
 public class MainController {
 
     private User user;
 
     public ToolBar toolBar;
+
+    private EventManager manager;
 
     @FXML
     private BorderPane borderPane;
@@ -41,15 +44,10 @@ public class MainController {
 
     private EditorModel model = new EditorModel();
 
-    public void setUser(User user) {
-        this.user = user;
-        footerController.setUsername(user.getUsername());
-        tabPaneController.setUser(user);
-    }
-
     public void initManager(LoginManager loginManager) {
         menuBarController.getLogout().setOnAction(e -> {
             try {
+                manager.notifySubscribers(SAVE_STATE);
                 loginManager.showLoginView();
             } catch (IOException ioException) {
                 ioException.printStackTrace();
@@ -59,7 +57,7 @@ public class MainController {
 
     @FXML
     public void initialize() {
-        EventManager manager = new EventManager();
+        manager = new EventManager();
         System.out.println("borderPane"+ toolBarController);
         System.out.println("menubar: "+menuBarController);
         System.out.println("tree: "+treeViewController);
@@ -76,10 +74,11 @@ public class MainController {
         manager.subscribe(toolBarController);
         manager.subscribe(treeViewController);
         manager.subscribe(footerController);
-
-        footer.addEventHandler(MouseEvent.MOUSE_CLICKED, (e) -> System.out.println("Username: " + user.getUsername()));
-
-
     }
 
+    public void populateAllWithUser(User user) {
+        footerController.setUsername(user.getUsername());
+        tabPaneController.setUser(user);
+        tabPaneController.loadState();
+    }
 }
