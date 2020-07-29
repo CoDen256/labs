@@ -19,13 +19,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static editor.events.EditorEvent.NULL_FOOTER;
-import static editor.events.EditorEvent.TEXT_MODIFIED;
+import static editor.events.EditorEvent.*;
 
 public class TabPaneController implements Subscriber {
 
@@ -92,7 +92,11 @@ public class TabPaneController implements Subscriber {
             }
             case SAVE_STATE: {
                 for (Map.Entry<Tab, TextFile> entry: tabTextFileMap.entrySet()) {
-                    userDataAccessor.saveState(user, entry.getValue().getFile().toString());
+                    try {
+                        userDataAccessor.saveState(user, entry.getValue().getFile().toString(), "file");
+                    } catch (SQLException throwable) {
+                        throwable.printStackTrace();
+                    }
                 }
                 break;
             }
@@ -238,9 +242,12 @@ public class TabPaneController implements Subscriber {
     }
 
     public void loadState() {
-        List<String> paths = userDataAccessor.getSavedState(user);
-        for (String path: paths) {
-            handleLoad(new File(path));
+        Map<String, String> paths = userDataAccessor.getSavedState(user);
+        for (Map.Entry<String, String> entry: paths.entrySet()) {
+            if (entry.getValue().equals("file"))
+                handleLoad(new File(entry.getKey()));
+            else
+                eventManager.notifySubscribers(LOAD_DIR_EVENT.setContent(Paths.get(entry.getKey())));
             userDataAccessor.removeLastState(user);
         }
     }

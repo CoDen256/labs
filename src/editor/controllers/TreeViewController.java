@@ -1,6 +1,8 @@
 package editor.controllers;
 
 import editor.TreeFileVisitor;
+import editor.database.User;
+import editor.database.UserDataAccessor;
 import editor.events.EditorEvent;
 import editor.events.EditorPath;
 import editor.events.EventManager;
@@ -13,10 +15,15 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.SQLException;
 
 public class TreeViewController implements Subscriber {
 
     private  EventManager manager;
+
+    private User user;
+
+    private UserDataAccessor userDataAccessor = UserDataAccessor.getInstance();
 
     public TreeViewController() {
         System.out.println(getClass()+" created");
@@ -45,6 +52,18 @@ public class TreeViewController implements Subscriber {
                 e.printStackTrace();
             }
             treeView.setRoot(treeFileVisitor.getFirstRoot().getChildren().get(0));
+            try {
+                userDataAccessor.saveState(user, file.toString(), "dir");
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+        else if (event.equals(EditorEvent.SAVE_STATE)) {
+            try {
+                userDataAccessor.saveState(user, treeView.getRoot().getValue().getPath().toString(), "dir");
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
         }
     }
 
@@ -59,5 +78,9 @@ public class TreeViewController implements Subscriber {
                 );
             }
         }
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

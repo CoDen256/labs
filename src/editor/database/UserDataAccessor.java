@@ -5,8 +5,8 @@ import javafx.scene.control.PasswordField;
 import java.awt.*;
 import java.sql.*;
 
-import java.util.List ;
-import java.util.ArrayList ;
+import java.util.*;
+import java.util.List;
 
 public class UserDataAccessor {
     private Connection connection ;
@@ -116,38 +116,37 @@ public class UserDataAccessor {
         return false;
     }
 
-    public void saveState(User user, String path) {
+    public void saveState(User user, String path, String fileType) throws SQLException {
         Integer user_id = getUserId(user);
         if (user_id > 0) {
-            try {
-                PreparedStatement stmnt = connection.prepareStatement("INSERT INTO user_memento VALUES (?, ?)");
-                stmnt.setString(1, user_id.toString());
-                stmnt.setString(2, path);
-                int res = stmnt.executeUpdate();
-                if (res > 0) System.out.println("Inserted to DB successfully!");
-            } catch (SQLException throwable) {
-                throwable.printStackTrace();
-            }
+            PreparedStatement stmnt = connection.prepareStatement("INSERT INTO user_memento VALUES (?, ?, ?)");
+            stmnt.setString(1, user_id.toString());
+            stmnt.setString(2, path);
+            stmnt.setString(3, fileType);
+
+            int res = stmnt.executeUpdate();
+            if (res > 0) System.out.println("Inserted to DB successfully!");
         }
     }
 
-    public List<String> getSavedState(User user) {
+    public Map<String, String> getSavedState(User user) {
         Integer user_id = getUserId(user);
-        List<String> pathList = new ArrayList<>();
+        Map<String, String> pathMap = new HashMap<>();
         if (user_id > 0) {
             try {
-                PreparedStatement stmnt = connection.prepareStatement("select um.file_opened from user_memento as um where um.user_id = ?");
+                PreparedStatement stmnt = connection.prepareStatement("select * from user_memento as um where um.user_id = ?");
                 stmnt.setString(1, user_id.toString());
                 ResultSet rs = stmnt.executeQuery();
                 while (rs.next()) {
                     String file_path = rs.getString("file_opened");
-                    pathList.add(file_path);
+                    String fileType = rs.getString("file_type");
+                    pathMap.put(file_path, fileType);
                 }
             } catch (SQLException throwable) {
                 throwable.printStackTrace();
             }
         }
-        return pathList;
+        return pathMap;
     }
 
     public void removeLastState(User user) {

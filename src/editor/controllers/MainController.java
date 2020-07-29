@@ -79,6 +79,7 @@ public class MainController {
     public void populateAllWithUser(User user) {
         footerController.setUsername(user.getUsername());
         tabPaneController.setUser(user);
+        treeViewController.setUser(user);
         tabPaneController.loadState();
     }
 }
