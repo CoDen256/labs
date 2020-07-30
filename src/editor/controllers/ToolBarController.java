@@ -111,6 +111,7 @@ public class ToolBarController implements Subscriber {
             case TEXT_SELECTED: changeButtonsState(false); break;
             case TEXT_UNSELECTED: changeButtonsState(true); break;
             case TEXT_MODIFIED: saveBtn.setDisable(false); break;
+            case TEXT_UNMODIFIED: saveBtn.setDisable(true); break;
         }
     }
 

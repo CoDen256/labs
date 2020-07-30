@@ -48,10 +48,18 @@ public class TabPaneController implements Subscriber {
 
     @FXML
     public void initialize() {
-
+        tabPane.getSelectionModel().selectedItemProperty().addListener(e -> {
+            if (getCurrentTab() != null && getCurrentTab().getText().contains("*")) {
+                eventManager.notifySubscribers(TEXT_MODIFIED);
+            }
+            else {
+                eventManager.notifySubscribers(TEXT_UNMODIFIED);
+            }
+        });
     }
 
     public Tab getCurrentTab() {
+
         return tabPane.getSelectionModel().getSelectedItem();
     }
 
@@ -220,6 +228,7 @@ public class TabPaneController implements Subscriber {
             eventManager.notifySubscribers(EditorEvent.FILE_LENGTH_CHANGED.setContent(textArea.getText().length()));
         });
         textArea.textProperty().addListener(e -> {
+            eventManager.notifySubscribers(TEXT_MODIFIED);
             if (!parent.getText().contains("*")) parent.setText(parent.getText() + " *");
         });
         textArea.setOnContextMenuRequested(e -> System.out.println(textArea.getSelectedText()));

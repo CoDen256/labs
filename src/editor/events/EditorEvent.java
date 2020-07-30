@@ -28,6 +28,7 @@ public enum  EditorEvent {
     TEXT_SELECTED,
     TEXT_UNSELECTED,
     TEXT_MODIFIED,
+    TEXT_UNMODIFIED,
 
     SAVE_STATE
     ;
