@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/fx"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.8.0_231/lib/ext/jfxrt.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files (x86)/MySQL/Connector J 8.0/mysql-connector-java-8.0.21.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
