@@ -6,6 +6,7 @@ import java.util.List;
 public class EventManager {
 
     List<Subscriber> subscriberList = new ArrayList<>();
+
     public void notifySubscribers(EditorEvent event) {
         subscriberList.forEach((s) -> s.update(event));
     }

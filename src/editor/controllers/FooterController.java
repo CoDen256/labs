@@ -16,24 +16,24 @@ public class FooterController implements Subscriber {
     private Text username;
 
     public void setEventManager(EventManager eventManager) {
-        this.eventManager = eventManager;
-    }
+            this.eventManager = eventManager;
+        }
 
-    private EventManager eventManager;
+        private EventManager eventManager;
 
-    @FXML
-    private Text currentPosition;
-    @FXML
-    private Text fileLength;
+        @FXML
+        private Text currentPosition;
+        @FXML
+        private Text fileLength;
 
-    private Integer len = 0;
-    private Integer position = 0;
+        private Integer len = 0;
+        private Integer position = 0;
 
-    @FXML
-    public void initialize() {
-        fileLength.setText("0");
-        currentPosition.setText("0");
-        username.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
+        @FXML
+        public void initialize() {
+            fileLength.setText("0");
+            currentPosition.setText("0");
+            username.setFont(Font.font("Verdana", FontPosture.ITALIC, 16));
     }
 
 

@@ -87,7 +87,7 @@ CREATE TABLE `user_memento` (
 
 LOCK TABLES `user_memento` WRITE;
 /*!40000 ALTER TABLE `user_memento` DISABLE KEYS */;
-INSERT INTO `user_memento` VALUES (1,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\controllers\\LoginController.java','file'),(1,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\controllers\\MainController.java','file'),(1,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\controllers\\FooterController.java','file'),(1,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\controllers','dir'),(2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database\\User.java','file'),(2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database\\UserDataAccessor.java','file'),(2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database','dir');
+INSERT INTO `user_memento` VALUES (2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database\\User.java','file'),(2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database\\UserDataAccessor.java','file'),(2,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\database','dir'),(1,'C:\\Users\\user\\IdeaProjects\\TextVerarbeiter\\src\\editor\\controllers','dir');
 /*!40000 ALTER TABLE `user_memento` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -100,4 +100,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-07-29 21:24:37
+-- Dump completed on 2020-09-10  9:13:47
