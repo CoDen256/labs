@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%% TOKENIZER %%%%%%%%%%%%%%%%%%%%%%%%
 
 % list of unified char sequences are merged and converted to atoms representing tokens.
+% whitespaces are skipped
 merge_tokens([], []).    
 merge_tokens([[Char0|_]|UnifiedChars], Tokens):-
     whitespace(Char0), merge_tokens(UnifiedChars, Tokens).
@@ -11,18 +12,27 @@ merge_tokens([[Char0|CharSeq]|UnifiedChars], [Token|RemainingTokens]):-
 
 % unify sequences of chars to multiple lists depending on the type of char
 % alphanumeric chars are unified in one list
-% non alphanumerics are not unified with other chars like whitespace or '{'
+% non alphanumerics are not unified with other chars (like whitespace or '{')
 unify_sequences([A], [[A]]).
 unify_sequences([NextChar|Source],  NextTokens):-
     unify_sequences(Source, [PrevToken|PrevTokens]),
     process_next_char(NextChar, PrevToken, PrevTokens, NextTokens).
  
 process_next_char(NextChar, [PrevChar|CurrentToken], Tokens, [[NextChar,PrevChar|CurrentToken]|Tokens]):-
-    alphanumeric(NextChar), alphanumeric(PrevChar).
+    can_be_unified(NextChar, PrevChar).
 process_next_char(NextChar, [PrevChar|CurrentToken], Tokens, [[NextChar],[PrevChar|CurrentToken]|Tokens]):-
-    alphanumeric(NextChar), not(alphanumeric(PrevChar)).
-process_next_char(NextChar, [PrevChar|CurrentToken], Tokens, [[NextChar],[PrevChar|CurrentToken]|Tokens]):-
-    not(alphanumeric(NextChar)).
+    cannot_be_unified(NextChar, PrevChar).
+
+can_be_unified(Char0, Char1):-
+    alphanumeric(Char0), alphanumeric(Char1).
+can_be_unified('=', '=').
+can_be_unified('<', '=').
+can_be_unified('>', '=').
+can_be_unified('!', '=').
+cannot_be_unified(Char0, Char1):-
+    alphanumeric(Char0), not(alphanumeric(Char1));
+    not(alphanumeric(Char0)), alphanumeric(Char1);
+    not(alphanumeric(Char0)),not(alphanumeric(Char1)).
 
 alphanumeric(Char):-alpha(Char); numeric(Char).
 whitespace(Char):-char_code(Char, N),N =< 32.    
@@ -42,6 +52,7 @@ lex_token('=',    'ASSIGN').
 lex_token(if,     'IF').
 lex_token(else,   'ELSE').
 lex_token(print,  'PRINT').
+lex_token(while,  'WHILE').
 lex_token('+',    'PLUS').
 lex_token('-',    'MINUS').
 lex_token('*',    'MUL').
@@ -52,7 +63,13 @@ lex_token(')',    'CLOSE_P').
 lex_token('{',    'OPEN_B').
 lex_token('}',    'CLOSE_B').
 lex_token(';',    'SEMI').
-lex_token(while,  'WHILE').
+
+lex_token('==',    'EQ').
+lex_token('!=',    'NE').
+lex_token('>=',    'GE').
+lex_token('<=',    'LE').
+lex_token('>',    'GT').
+lex_token('<',    'LT').
 
 lex_token(Number, 'INTEGER') :-
   atom_number(Number, Integer),
@@ -78,14 +95,15 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 %             | print_statement
 %             | while_statement
 %                  
-% if_else_statement : IF OPEN_P expr CLOSE_P OPEN_B statement_list CLOSE_B 
+% if_else_statement : IF OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B 
 %                     (ELSE OPEN statement_list CLOSE)
-% while_statement : WHILE OPEN_P expr CLOSE_P OPEN_B statement_list CLOSE_B
+% while_statement : WHILE OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B
 %                             
 % print_statement : PRINT expr                            
 % assignment_statement : variable ASSIGN expr                            
 %                             
-% variable : ID                            
+% variable : ID
+% bool   : expr (EQ|NE|GE|LE|GT|LT) expr                            
 % expr   : term ((PLUS | MINUS) expr)                            
 % term 	 : factor ((MUL | DIV) term)                            
 % factor : PLUS  factor
@@ -147,6 +165,8 @@ assignment_statement(assign_stmt(Variable, Expression),A, D):-
     eat('ASSIGN', B, C),
     expr(Expression, C, D).
 
+bool_expr(bool(Expression, Operator, Expression), A, D):-
+    expr(Expression,A,B)
 expr(expr(P), A, B):-term(P,A,B).
 expr(expr(Term, Operator, Expression),A,D):-
     term(Term, A,B), 
@@ -342,7 +362,3 @@ interpret(Source, AbstractSyntaxTree) :-
 %           else { 
 %           		print c
 %           }", X).
-
-%% maybe shorten it somehow the PARSING???? AND LEXER ???
-%%% MAYBE INSTAD OF LISTS MAKE MEAININGFUL FUNCTORS????                  
-% stop lexer generating lists replacing everything with ID
