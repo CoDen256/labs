@@ -76,9 +76,11 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % statement : assignment_statement
 %             | if_else_statement
 %             | print_statement
+%             | while_statement
 %                  
-% if_else_statement : IF OPEN_P expr CLOSE_P OPEN statement_list CLOSE 
+% if_else_statement : IF OPEN_P expr CLOSE_P OPEN_B statement_list CLOSE_B 
 %                     (ELSE OPEN statement_list CLOSE)
+% while_statement : WHILE OPEN_P expr CLOSE_P OPEN_B statement_list CLOSE_B
 %                             
 % print_statement : PRINT expr                            
 % assignment_statement : variable ASSIGN expr                            
@@ -107,10 +109,11 @@ statement_list(list(Statement, StatementList),A,C):-
     eat('SEMI', B, B0),
     statement_list(StatementList, B0,C).
 
-statement(stmt(P),A,B):-
-    assignment_statement(P, A,B);
-    if_else_statement(P,A,B);
-    print_statement(P, A, B).
+statement(stmt(Statement),A,B):-
+    assignment_statement(Statement, A, B);
+    if_else_statement(Statement, A, B);
+    while_statement(Statement, A, B);
+    print_statement(Statement, A, B).
     
 print_statement(print(Expression), A, B):-
     eat('PRINT', A, B0),
@@ -131,6 +134,13 @@ if_else_statement(if_stmt(Expression, TrueStatementList, FalseStatementList),A,K
     eat(['CLOSE_B', 'ELSE', 'OPEN_B'], F, G),
     statement_list(FalseStatementList, G, H), 
     eat('CLOSE_B', H, K).
+
+while_statement(while_stmt(Expression, TrueStatementList), A, G):-
+    eat(['WHILE', 'OPEN_P'], A, B),
+    expr(Expression, B, C),
+    eat(['CLOSE_P', 'OPEN_B'], C, D),
+    statement_list(TrueStatementList, D, F),
+    eat('CLOSE_B', F, G).
 
 assignment_statement(assign_stmt(Variable, Expression),A, D):- 
     variable(Variable, A, B),
@@ -200,7 +210,8 @@ handle_list(list(Statement, StatementList), Scope, NewScope):-
 handle_stmt(stmt(Statement), Scope, NewScope):-
     handle_assign_stmt(Statement, Scope, NewScope);
     handle_print_stmt(Statement, Scope), clone_variables(Scope, NewScope);
-    handle_if_statement(Statement, Scope, NewScope).
+    handle_if_statement(Statement, Scope, NewScope);
+    handle_while_statement(Statement, Scope, NewScope).
 
 handle_assign_stmt(assign_stmt(var(VariableName), Expression), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
@@ -223,7 +234,14 @@ handle_if_statement(if_stmt(Expression, TrueStatementList, FalseStatementList), 
     	Value > 0, handle_list(TrueStatementList, Scope, NewScope); 
     	Value =< 0, handle_list(FalseStatementList, Scope, NewScope)
     ).
-
+handle_while_statement(while_stmt(Expression, TrueStatementList), Scope, NewScope):-
+    handle_expr(Expression, Value, Scope),
+    (   
+    	Value > 0, handle_list(TrueStatementList, Scope, Scope0),
+    	handle_while_statement(while_stmt(Expression, TrueStatementList), Scope0, NewScope);
+    
+    	Value =< 0, clone_variables(Scope, NewScope)
+    ).
 
 %%% Expression, Term, Factor handlers %%%
 handle_expr(expr(P), Value, Scope):-handle_term(P, Value, Scope).
