@@ -263,7 +263,10 @@ setVariable([A|VariableList], Variable, NewScopeValue, [A|NewScopeVariableList])
 get_variable([entry(Variable, Value)|_], Variable, Value).
 get_variable([_|VariableList], Variable, Value):-
     get_variable(VariableList, Variable, Value).
-get_variable([], VariableName, 0):-write("Variable not defined: "), write(VariableName), nl,!, false.
+get_variable([], VariableName, 0):-
+    write("Variable not defined: "),
+    write(VariableName), nl, 
+    throw(error(syntax_error(var(VariableName)), 0)).
 
 clone_variables(X, X).
 
