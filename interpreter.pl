@@ -39,9 +39,9 @@ tokenize(Source, Tokens):-
 
 % mapping of tokens to their lexeme.
 lex_token('=',    'ASSIGN').
-lex_token(if,   'IF').
-lex_token(else, 'ELSE').
-lex_token(print, 'PRINT').
+lex_token(if,     'IF').
+lex_token(else,   'ELSE').
+lex_token(print,  'PRINT').
 lex_token('+',    'PLUS').
 lex_token('-',    'MINUS').
 lex_token('*',    'MUL').
@@ -52,6 +52,7 @@ lex_token(')',    'CLOSE_P').
 lex_token('{',    'OPEN_B').
 lex_token('}',    'CLOSE_B').
 lex_token(';',    'SEMI').
+lex_token(while,  'WHILE').
 
 lex_token(Number, 'INTEGER') :-
   atom_number(Number, Integer),
@@ -122,7 +123,7 @@ if_else_statement(if_stmt(Expression, TrueStatementList),A,G):-
     statement_list(TrueStatementList, D,F), 
     eat('CLOSE_B', F, G).
 
-if_else_statement(if_else_stmt(Expression, TrueStatementList, FalseStatementList),A,K):-
+if_else_statement(if_stmt(Expression, TrueStatementList, FalseStatementList),A,K):-
     eat(['IF', 'OPEN_P'], A, B),
     expr(Expression, B, C),
     eat(['CLOSE_P', 'OPEN_B'], C, D),
@@ -184,10 +185,6 @@ as_lex([], []).
                            
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTERPRETER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-
 interpreter(AST):-
     handle_program(AST, [], _).
 
@@ -203,8 +200,7 @@ handle_list(list(Statement, StatementList), Scope, NewScope):-
 handle_stmt(stmt(Statement), Scope, NewScope):-
     handle_assign_stmt(Statement, Scope, NewScope);
     handle_print_stmt(Statement, Scope), clone_variables(Scope, NewScope);
-    handle_if_statement(Statement, Scope, NewScope);
-    handle_if_else_statement(Statement, Scope, NewScope).
+    handle_if_statement(Statement, Scope, NewScope).
 
 handle_assign_stmt(assign_stmt(var(VariableName), Expression), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
@@ -221,13 +217,12 @@ handle_if_statement(if_stmt(Expression, TrueStatementList), Scope, NewScope):-
     Value =< 0, clone_variables(Scope, NewScope)
     ).   
 
-handle_if_else_statement(if_else_stmt(Expression, TrueStatementList, FalseStatementList), Scope, NewScope):-
+handle_if_statement(if_stmt(Expression, TrueStatementList, FalseStatementList), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
     (  
     	Value > 0, handle_list(TrueStatementList, Scope, NewScope); 
     	Value =< 0, handle_list(FalseStatementList, Scope, NewScope)
     ).
-
 
 
 %%% Expression, Term, Factor handlers %%%
@@ -318,6 +313,18 @@ interpret(Source, AbstractSyntaxTree) :-
     lexer(TokenList, LexedList), !,
     parser(LexedList, AbstractSyntaxTree),
     interpreter(AbstractSyntaxTree), !.
+
+%interpret("a = 1 - 2;
+%           b = 2 + a;
+%           c = 3 + 4;
+%           if
+%           (a + b*2 * -++-(-0)) {
+%           		print a * b*2
+%           } 
+%           else { 
+%           		print c
+%           }", X).
+
 %% maybe shorten it somehow the PARSING???? AND LEXER ???
 %%% MAYBE INSTAD OF LISTS MAKE MEAININGFUL FUNCTORS????                  
 % stop lexer generating lists replacing everything with ID
