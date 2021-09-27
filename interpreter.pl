@@ -68,8 +68,8 @@ lex_token('==',    'EQ').
 lex_token('!=',    'NE').
 lex_token('>=',    'GE').
 lex_token('<=',    'LE').
-lex_token('>',    'GT').
-lex_token('<',    'LT').
+lex_token('>',     'GT').
+lex_token('<',     'LT').
 
 lex_token(Number, 'INTEGER') :-
   atom_number(Number, Integer),
@@ -104,7 +104,7 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 %                             
 % variable : ID
 % bool   : expr (EQ|NE|GE|LE|GT|LT) expr                            
-% expr   : term ((PLUS | MINUS) expr)                            
+% expr   : term ((PLUS | MINUS) expr)           SHOULD BE expr : term ((PLUS|MINUS) term)*   bc term contains only MULDIV              
 % term 	 : factor ((MUL | DIV) term)                            
 % factor : PLUS  factor
 %         | MINUS factor
@@ -137,25 +137,25 @@ print_statement(print(Expression), A, B):-
     eat('PRINT', A, B0),
     expr(Expression, B0, B).
 
-if_else_statement(if_stmt(Expression, TrueStatementList),A,G):-
+if_else_statement(if_stmt(BoolExpression, TrueStatementList),A,G):-
     eat(['IF', 'OPEN_P'], A, B),
-    expr(Expression, B, C),
+    bool_expr(BoolExpression, B, C),
     eat(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D,F), 
     eat('CLOSE_B', F, G).
 
-if_else_statement(if_stmt(Expression, TrueStatementList, FalseStatementList),A,K):-
+if_else_statement(if_stmt(BoolExpression, TrueStatementList, FalseStatementList),A,K):-
     eat(['IF', 'OPEN_P'], A, B),
-    expr(Expression, B, C),
+    bool_expr(BoolExpression, B, C),
     eat(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D,F), 
     eat(['CLOSE_B', 'ELSE', 'OPEN_B'], F, G),
     statement_list(FalseStatementList, G, H), 
     eat('CLOSE_B', H, K).
 
-while_statement(while_stmt(Expression, TrueStatementList), A, G):-
+while_statement(while_stmt(BoolExpression, TrueStatementList), A, G):-
     eat(['WHILE', 'OPEN_P'], A, B),
-    expr(Expression, B, C),
+    bool_expr(BoolExpression, B, C),
     eat(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D, F),
     eat('CLOSE_B', F, G).
@@ -165,8 +165,11 @@ assignment_statement(assign_stmt(Variable, Expression),A, D):-
     eat('ASSIGN', B, C),
     expr(Expression, C, D).
 
-bool_expr(bool(Expression, Operator, Expression), A, D):-
-    expr(Expression,A,B)
+bool_expr(bool(ExpressionA, BoolOperator, ExpressionB), A, D):-
+    expr(ExpressionA, A, B),
+    operator_bool(BoolOperator, B, C),
+    expr(ExpressionB, C, D).
+         
 expr(expr(P), A, B):-term(P,A,B).
 expr(expr(Term, Operator, Expression),A,D):-
     term(Term, A,B), 
@@ -202,6 +205,12 @@ operator_mul(operator('DIV'), [lex(_, 'DIV')|A], A).
 operator_plus(operator('PLUS'), [lex(_, 'PLUS')|A], A).
 operator_plus(operator('MINUS'), [lex(_, 'MINUS')|A], A).
 
+operator_bool(bool_operator('EQ'), [lex(_, 'EQ')|A], A).
+operator_bool(bool_operator('NE'), [lex(_, 'NE')|A], A).
+operator_bool(bool_operator('GE'), [lex(_, 'GE')|A], A).
+operator_bool(bool_operator('LE'), [lex(_, 'LE')|A], A).
+operator_bool(bool_operator('GT'), [lex(_, 'GT')|A], A).
+operator_bool(bool_operator('LT'), [lex(_, 'LT')|A], A).
 
 eat(TOKEN_LIST, CURRENT, NEXT):-
     is_list(TOKEN_LIST),
@@ -226,7 +235,7 @@ handle_list(list(Statement), Scope, NewScope):-
 handle_list(list(Statement, StatementList), Scope, NewScope):-
     handle_stmt(Statement, Scope, Scope1),
     handle_list(StatementList, Scope1, NewScope).
-
+%%% Statements %%%
 handle_stmt(stmt(Statement), Scope, NewScope):-
     handle_assign_stmt(Statement, Scope, NewScope);
     handle_print_stmt(Statement, Scope), clone_variables(Scope, NewScope);
@@ -241,29 +250,32 @@ handle_print_stmt(print(Expression), Scope):-
     handle_expr(Expression, Value, Scope), 
     write(Value),nl.
 
-handle_if_statement(if_stmt(Expression, TrueStatementList), Scope, NewScope):-
-    handle_expr(Expression, Value, Scope),
-    (   
-    Value > 0, handle_list(TrueStatementList, Scope, NewScope);
-    Value =< 0, clone_variables(Scope, NewScope)
-    ).   
-
-handle_if_statement(if_stmt(Expression, TrueStatementList, FalseStatementList), Scope, NewScope):-
-    handle_expr(Expression, Value, Scope),
-    (  
-    	Value > 0, handle_list(TrueStatementList, Scope, NewScope); 
-    	Value =< 0, handle_list(FalseStatementList, Scope, NewScope)
+handle_if_statement(if_stmt(BoolExpression, TrueStatementList), Scope, NewScope):-
+    handle_bool_expr(BoolExpression, Scope, BoolValue),
+    ( 
+      BoolValue == 1, handle_list(TrueStatementList, Scope, NewScope);
+      BoolValue == 0, clone_variables(Scope, NewScope)
     ).
-handle_while_statement(while_stmt(Expression, TrueStatementList), Scope, NewScope):-
-    handle_expr(Expression, Value, Scope),
-    (   
-    	Value > 0, handle_list(TrueStatementList, Scope, Scope0),
-    	handle_while_statement(while_stmt(Expression, TrueStatementList), Scope0, NewScope);
-    
-    	Value =< 0, clone_variables(Scope, NewScope)
+handle_if_statement(if_stmt(BoolExpression, TrueStatementList, FalseStatementList), Scope, NewScope):-
+    handle_bool_expr(BoolExpression, Scope, BoolValue),
+     ( 
+      BoolValue == 1, handle_list(TrueStatementList, Scope, NewScope);
+      BoolValue == 0, handle_list(FalseStatementList, Scope, NewScope)
     ).
-
+   
+handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope, NewScope):-
+    handle_bool_expr(BoolExpression, Scope, BoolValue),
+    ( 
+      BoolValue == 1, handle_list(TrueStatementList, Scope, Scope0),
+    				  handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope0, NewScope);
+      BoolValue == 0, clone_variables(Scope, NewScope)
+    ).
 %%% Expression, Term, Factor handlers %%%
+handle_bool_expr(bool(Expression1, bool_operator(BoolOperator), Expression2), Scope, BoolValue):-
+    handle_expr(Expression1, Value1, Scope),
+    handle_expr(Expression2, Value2, Scope),
+    evaluate_bool(Value1, BoolOperator, Value2, BoolValue).
+
 handle_expr(expr(P), Value, Scope):-handle_term(P, Value, Scope).
 handle_expr(expr(Term, operator(Operator), Expression), Value, Scope):-
     handle_term(Term, Value1, Scope), 
@@ -304,7 +316,17 @@ evaluate(Value1, 'MUL', Value2, Result):-
     Result is Value1 * Value2.
 evaluate(Value1, 'DIV', Value2, Result):-
     Result is div(Value1, Value2).
+evaluate(Value1, 'MOD', Value2, Result):-
+    Result is mod(Value1, Value2).
 
+evaluate_bool(Value1, 'EQ', Value1, 1).
+evaluate_bool(Value1, 'NE', Value2, 1):-not(Value1 is Value2). 
+evaluate_bool(Value1, 'GT', Value2, 1):-Value1 > Value2.
+evaluate_bool(Value1, 'GE', Value2, 1):-Value1 >= Value2.
+evaluate_bool(Value1, 'LT', Value2, 1):-Value1 < Value2.
+evaluate_bool(Value1, 'LE', Value2, 1):-Value1 =< Value2.
+evaluate_bool(_, _, _, 0).
+            
 %%%%% Variables %%%%%%%
 setVariable([], Variable, NewScopeValue, [entry(Variable, NewScopeValue)]).
 setVariable([entry(Variable, _)|VariableList], Variable, NewScopeValue, [entry(Variable, NewScopeValue)|VariableList]).
