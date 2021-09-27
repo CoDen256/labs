@@ -200,9 +200,11 @@ handle_list(list(Statement, StatementList), Scope, NewScope):-
     handle_stmt(Statement, Scope, Scope1),
     handle_list(StatementList, Scope1, NewScope).
 
-handle_stmt(stmt(P), Scope, NewScope):-
-    handle_assign_stmt(P, Scope, NewScope);
-    handle_print_stmt(P, Scope), clone_variables(Scope, NewScope).
+handle_stmt(stmt(Statement), Scope, NewScope):-
+    handle_assign_stmt(Statement, Scope, NewScope);
+    handle_print_stmt(Statement, Scope), clone_variables(Scope, NewScope);
+    handle_if_statement(Statement, Scope, NewScope);
+    handle_if_else_statement(Statement, Scope, NewScope).
 
 handle_assign_stmt(assign_stmt(var(VariableName), Expression), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
@@ -212,6 +214,23 @@ handle_print_stmt(print(Expression), Scope):-
     handle_expr(Expression, Value, Scope), 
     write(Value),nl.
 
+handle_if_statement(if_stmt(Expression, TrueStatementList), Scope, NewScope):-
+    handle_expr(Expression, Value, Scope),
+    (   
+    Value > 0, handle_list(TrueStatementList, Scope, NewScope);
+    Value =< 0, clone_variables(Scope, NewScope)
+    ).   
+
+handle_if_else_statement(if_else_stmt(Expression, TrueStatementList, FalseStatementList), Scope, NewScope):-
+    handle_expr(Expression, Value, Scope),
+    (  
+    	Value > 0, handle_list(TrueStatementList, Scope, NewScope); 
+    	Value =< 0, handle_list(FalseStatementList, Scope, NewScope)
+    ).
+
+
+
+%%% Expression, Term, Factor handlers %%%
 handle_expr(expr(P), Value, Scope):-handle_term(P, Value, Scope).
 handle_expr(expr(Term, operator(Operator), Expression), Value, Scope):-
     handle_term(Term, Value1, Scope), 
