@@ -74,16 +74,17 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % 
 % statement : assignment_statement
 %             | if_else_statement
+%             | print_statement
 %                  
 % if_else_statement : IF OPEN_P expr CLOSE_P OPEN statement_list CLOSE 
 %                     (ELSE OPEN statement_list CLOSE)
 %                             
-%                             
+% print_statement : PRINT expr                            
 % assignment_statement : variable ASSIGN expr                            
 %                             
 % variable : ID                            
 % expr   : term ((PLUS | MINUS) expr)                            
-% term : factor ((MUL | DIV) term)                            
+% term 	 : factor ((MUL | DIV) term)                            
 % factor : PLUS  factor
 %         | MINUS factor
 %         | INTEGER
@@ -196,12 +197,12 @@ handle_program(program(StatementList), Scope, NewScope):-
 handle_list(list(Statement), Scope, NewScope):-
     handle_stmt(Statement, Scope, NewScope).
 handle_list(list(Statement, StatementList), Scope, NewScope):-
-    handle_stmt(Statement, Scope, NewScope),
-    handle_list(StatementList, Scope, NewScope).
+    handle_stmt(Statement, Scope, Scope1),
+    handle_list(StatementList, Scope1, NewScope).
 
 handle_stmt(stmt(P), Scope, NewScope):-
     handle_assign_stmt(P, Scope, NewScope);
-    handle_print_stmt(P, Scope).
+    handle_print_stmt(P, Scope), clone_variables(Scope, NewScope).
 
 handle_assign_stmt(assign_stmt(var(VariableName), Expression), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
@@ -223,10 +224,10 @@ handle_term(term(Factor, operator(Operator), Term), Value, Scope):-
     handle_term(Term, Value2, Scope),
     evaluate(Value1, Operator, Value2, Value).
 
-handle_factor(factor(operator('-'), Factor), Value, Scope):-
+handle_factor(factor(operator('MINUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
     Value is Value1 - Value1 * 2. % negate
-handle_factor(factor(operator('+'), Factor), Value, Scope):-
+handle_factor(factor(operator('PLUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value, Scope).
 
 
@@ -262,9 +263,10 @@ setVariable([A|VariableList], Variable, NewScopeValue, [A|NewScopeVariableList])
 get_variable([entry(Variable, Value)|_], Variable, Value).
 get_variable([_|VariableList], Variable, Value):-
     get_variable(VariableList, Variable, Value).
-get_variable([], _, 0).
+get_variable([], VariableName, 0):-write("Variable not defined: "), write(VariableName), nl,!, false.
 
-%
+clone_variables(X, X).
+
 %
 %  [int, main, '(', int, input, ')', (=), '3', (+), input]
 %  ['TYPE_INT', 'ID', 'OPEN_P', 'TYPE_INT', 'ID', 'CLOSE_P', 'ASSIGN', 'INTEGER', 'ARITH_ADD', 'ID']
