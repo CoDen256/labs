@@ -187,8 +187,8 @@ as_lex([], []).
 
 
 
-interpreter(AST, Scope, New):-
-    handle_program(AST, Scope, _).
+interpreter(AST):-
+    handle_program(AST, [], _).
 
 handle_program(program(StatementList), Scope, NewScope):-
     handle_list(StatementList, Scope, NewScope).
@@ -259,10 +259,10 @@ setVariable([A|VariableList], Variable, NewScopeValue, [A|NewScopeVariableList])
     setVariable(VariableList, Variable, NewScopeValue, NewScopeVariableList).
     
 
-getVariable([entry(Variable, Value)|_], Variable, Value).
-getVariable([_|VariableList], Variable, Value):-
-    getVariable(VariableList, Variable, Value).
-getVariable([], _, 0).
+get_variable([entry(Variable, Value)|_], Variable, Value).
+get_variable([_|VariableList], Variable, Value):-
+    get_variable(VariableList, Variable, Value).
+get_variable([], _, 0).
 
 %
 %
@@ -293,7 +293,7 @@ interpret(Source, AbstractSyntaxTree) :-
     tokenize(SourceList, TokenList),
     lexer(TokenList, LexedList), !,
     parser(LexedList, AbstractSyntaxTree),
-    interpreter(AbstractSyntaxTree, [], _), !.
+    interpreter(AbstractSyntaxTree), !.
 %% maybe shorten it somehow the PARSING???? AND LEXER ???
 %%% MAYBE INSTAD OF LISTS MAKE MEAININGFUL FUNCTORS????                  
 % stop lexer generating lists replacing everything with ID
