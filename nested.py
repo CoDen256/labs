@@ -26,7 +26,7 @@ for chr in sys.argv[1]:
         print(chr, end="")
         print("\n", end="")
         print(" "*level, end="")
-    elif chr = " ":
+    elif chr == " ":
         continue
     else:
         print(chr, end="")

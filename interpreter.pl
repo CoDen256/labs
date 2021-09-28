@@ -170,18 +170,19 @@ bool_expr(bool(ExpressionA, BoolOperator, ExpressionB), A, D):-
     operator_bool(BoolOperator, B, C),
     expr(ExpressionB, C, D).
          
-expr(expr(P), A, B):-term(P,A,B).
+
 expr(expr(Term, Operator, Expression),A,D):-
     term(Term, A,B), 
     operator_plus(Operator, B, C),
     expr(Expression,C,D).
+expr(expr(P), A, B):-term(P,A,B).
 
-term(term(P),A,B):-factor(P,A,B).
+
 term(term(Factor, Operator, Term),A,D):-
     factor(Factor,A,B), 
     operator_mul(Operator, B, C),
     term(Term,C,D).
-
+term(term(P),A,B):-factor(P,A,B).
 factor(factor(Sign, Factor),A,C):-
     operator_plus(Sign, A, B),
     factor(Factor,B,C).
