@@ -22,6 +22,13 @@
 %            ")
 %
 
+% 'a = 1; print a'
+% [a, (=), '1', (;), print, a],
+% [t(a, 'ID'), t((=), 'ASSIGN'), t('1', 'INTEGER'), t((;), 'SEMI'), t(print, 'PRINT'), t(a, 'ID')]
+% program(list(stmt(assign_stmt(var(a), expr(term(factor(int('1')), product()), sum()))), 
+% 		 	   list(stmt(print(expr(term(factor(var(a)), product()), sum()))))))
+% [entry(a, 1)]
+
 interpret(Source, LexedList, TokenList,  AbstractSyntaxTree, GlobalScope) :-
     string_chars(Source, SourceList), 			% convert input to list of chars
     lexer(SourceList, LexedList),				% convert list of chars to lexemes
@@ -32,7 +39,7 @@ interpret(Source):- interpret(Source, _, _, _, _).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Converts list of chars to list of lexemes(atoms) 
+% Converts list of chars to list of lexemes
 % 
 % In: 	'a = 1; print (12 + a)' 
 % Out: 	[a, (=), '1', (;), print, '(', '12', (+), a, ')']
@@ -191,8 +198,8 @@ lex_token(_, 'ID'). % any other atoms are not reserved words, so they are identi
 % parser(+TokenList, -ParsedList)
 parser(TokenList, ParsedList):-
     program(ParsedList, TokenList, []).
-  % program(-Program, +CurrentTokens, +NextTokens).
 
+ % program(-Program, +CurrentTokens, +NextTokens).
 % program: statement_list
 program(program(Program), A, B):- 
     statement_list(Program, A, B). 
