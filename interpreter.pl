@@ -1,18 +1,72 @@
-%%%%%%%%%%%%%%%%%%%%%% TOKENIZER %%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  [int, main, '(', int, input, ')', (=), '3', (+), input]
+%  ['TYPE_INT', 'ID', 'OPEN_P', 'TYPE_INT', 'ID', 'CLOSE_P', 'ASSIGN', 'INTEGER', 'ARITH_ADD', 'ID']
+%  
+% [[[int, id], '(', [[int, id], []], ')', (=), [[integer], [[(+), [id, []]]]]], []]
+% [[[int, main], '(', [[int, input], []], ')', (=), [['3'], [[(+), [input, []]]]]], []]
 
-% list of unified char sequences are merged and converted to atoms representing tokens.
-% whitespaces are skipped
-merge_tokens([], []).    
-merge_tokens([[Char0|_]|UnifiedChars], Tokens):-
-    whitespace(Char0), merge_tokens(UnifiedChars, Tokens).
-merge_tokens([[Char0|CharSeq]|UnifiedChars], [Token|RemainingTokens]):-
-    not(whitespace(Char0)), atom_chars(Token, [Char0|CharSeq]),
-    merge_tokens(UnifiedChars, RemainingTokens).
-   
+% a = 1; c = a + 2 * 3; print c
+% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), 
+% lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'), lex((*), 'MUL'), lex('3', 'INTEGER')]
+% 
+% [[lex(a, 'ID'), lex((=), 'ASSIGN'), [lex('1', 'INTEGER')]], lex((;), 'SEMI'), [lex(c, 'ID'), lex((=), 'ASSIGN'), 
+% [[lex(a, 'ID')], lex((+), 'PLUS'), [[lex('2', 'INTEGER')], lex((*), 'MUL'), [lex('3', 'INTEGER')]]]]]
+% 
+% 
+% 
+% 
+% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'),
+%  lex((*), 'MUL'), lex('3', 'INTEGER'), lex((;), 'SEMI'), lex(print, 'PRINT'), lex(c, 'ID')]
+% 
+% input string is converted to list of list of chars and then to
+% tokens(the same as prolog atoms). 
+% Then each token is converted to lexeme, defining meaning of the token.
+interpret(Source, TokenList, LexedList, AbstractSyntaxTree) :-
+    string_chars(Source, SourceList), % convert input to list of chars
+    tokenizer(SourceList, TokenList),
+    lexer(TokenList, LexedList), !,
+    parser(LexedList, AbstractSyntaxTree),
+    interpreter(AbstractSyntaxTree), !.
+interpret(Source):- interpret(Source, _, _, _).
 
-% unify sequences of chars to multiple lists depending on the type of char
-% alphanumeric chars are unified in one list
-% non alphanumerics are not unified with other chars (like whitespace or '{')
+% interpret("
+%            a = 1; 
+%            b = 2;
+%            c = a - b*2;
+%            d = a * 4 / 10 * 10 - 10 * 2;
+%            print a;
+%            print b;
+%            print c;
+%            print d;
+%            if (a-a*4 <= c){
+%            		print 99999
+%            };
+%            e = 100;
+%            while (e > 10){
+%           		if (e == 50){
+%            			print 88888
+%            		}else{
+%            			print e
+%            		};
+%            		e = e - 10
+%            }
+%            ")
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOKENIZER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Converts list of chars to list of tokens(atoms) 
+% 
+% In: 	'a = 1; print (12 + a)' 
+% Out: 	[a, (=), '1', (;), print, '(', '12', (+), a, ')']
+% 
+% tokenize(+Source, -Tokens).
+tokenizer(Source, Tokens):-
+    unify_sequences(Source, Sequences),
+    merge_tokens(Sequences, Tokens).
+
+% Unify sequences of chars to lists depending on the type of char
+% In: 	'print (12+a)' 
+% Out: 	[[p,r,i,n,t], [' '], ['('], [1,2], [+], [a], [)]]
 unify_sequences([A], [[A]]).
 unify_sequences([NextChar|Source],  NextTokens):-
     unify_sequences(Source, [PrevToken|PrevTokens]),
@@ -35,17 +89,21 @@ cannot_be_unified(Char0, Char1):-
     not(alphanumeric(Char0)),not(alphanumeric(Char1)).
 
 alphanumeric(Char):-alpha(Char); numeric(Char).
-whitespace(Char):-char_code(Char, N),N =< 32.    
+whitespace(Char):-char_code(Char, N), N =< 32.    
 numeric(Char):- char_code(Char, N), N =< 57, N >= 48.
 alpha(Char):- char_code(Char, N), (   (   N =< 90, N >= 65) ; (   N =< 122, N >= 97)).  
 
-% convert list of chars to list of tokens
-tokenize(Source, Tokens):-
-    unify_sequences(Source, Sequences),
-    merge_tokens(Sequences, Tokens).
+% Join lists of chars to atoms and skip whitespaces
+% In : 		[[p,r,i,n,t], [' '], ['('], [1,2], [+], [a], [)]]
+% Out: 		[print, '(', '12', (+), a, ')']
+merge_tokens([], []).    
+merge_tokens([[Char0|_]|UnifiedChars], Tokens):-
+    whitespace(Char0), merge_tokens(UnifiedChars, Tokens).
+merge_tokens([[Char0|CharSeq]|UnifiedChars], [Token|RemainingTokens]):-
+    not(whitespace(Char0)), atom_chars(Token, [Char0|CharSeq]),
+    merge_tokens(UnifiedChars, RemainingTokens).
 
-% [int, main, '(', int, input, ')', (=), '3', (+), input]
-%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % mapping of tokens to their lexeme.
 lex_token('=',    'ASSIGN').
@@ -107,6 +165,7 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % operator_bool: EQ | NE | GE | LE | GT | LT
 %                                                 
 % expr   : term sum             % 'expr: expr (PLUS|MINUS) term' doesn't work, because expr is being expanded forever
+% 								% it is left-recursive.
 % sum    : (PLUS | MINUS) term sum
 %      | <empty>   
 %                 
@@ -127,9 +186,9 @@ parser(LexedList, ParsedList):-
 program(program(Program), A, B):- 
     statement_list(Program, A, B).
 
-statement_list(list(Statement), A,B0):-
-    statement(Statement, A, B0).
-    %(   clone_variables(B0, B); eat('SEMI', B0, B)).
+statement_list(list(Statement), A,B):-
+    statement(Statement, A, B0),
+    (  eat('SEMI', B0, B); clone_variables(B0, B)).
 
 statement_list(list(Statement, StatementList),A,C):-
     statement(Statement, A,B), 
@@ -380,56 +439,3 @@ get_variable([], VariableName, 0):-
 
 clone_variables(X, X).
 
-%
-%  [int, main, '(', int, input, ')', (=), '3', (+), input]
-%  ['TYPE_INT', 'ID', 'OPEN_P', 'TYPE_INT', 'ID', 'CLOSE_P', 'ASSIGN', 'INTEGER', 'ARITH_ADD', 'ID']
-%  
-% [[[int, id], '(', [[int, id], []], ')', (=), [[integer], [[(+), [id, []]]]]], []]
-% [[[int, main], '(', [[int, input], []], ')', (=), [['3'], [[(+), [input, []]]]]], []]
-
-% a = 1; c = a + 2 * 3; print c
-% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), 
-% lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'), lex((*), 'MUL'), lex('3', 'INTEGER')]
-% 
-% [[lex(a, 'ID'), lex((=), 'ASSIGN'), [lex('1', 'INTEGER')]], lex((;), 'SEMI'), [lex(c, 'ID'), lex((=), 'ASSIGN'), 
-% [[lex(a, 'ID')], lex((+), 'PLUS'), [[lex('2', 'INTEGER')], lex((*), 'MUL'), [lex('3', 'INTEGER')]]]]]
-% 
-% 
-% 
-% 
-% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'),
-%  lex((*), 'MUL'), lex('3', 'INTEGER'), lex((;), 'SEMI'), lex(print, 'PRINT'), lex(c, 'ID')]
-% 
-% input string is converted to list of words(group of chars) and then to
-% tokens(the same as prolog atoms). 
-% Then each token is converted to lexeme, defining meaning of the token.
-interpret(Source, TokenList, LexedList, AbstractSyntaxTree) :-
-    string_chars(Source, SourceList), % convert input to list of chars
-    tokenize(SourceList, TokenList),
-    lexer(TokenList, LexedList), !,
-    parser(LexedList, AbstractSyntaxTree),
-    interpreter(AbstractSyntaxTree), !.
-interpret(Source):- interpret(Source, _, _, _).
-
-% interpret("
-%            a = 1; 
-%            b = 2;
-%            c = a - b*2;
-%            d = a * 4 / 10 * 10 - 10 * 2;
-%            print a;
-%            print b;
-%            print c;
-%            print d;
-%            if (a-a*4 <= c){
-%            		print 99999
-%            };
-%            e = 100;
-%            while (e > 10){
-%           		if (e == 50){
-%            			print 88888
-%            		}else{
-%            			print e
-%            		};
-%            		e = e - 10
-%            }
-%            ")
