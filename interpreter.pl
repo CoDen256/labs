@@ -1,34 +1,3 @@
-%
-%  [int, main, '(', int, input, ')', (=), '3', (+), input]
-%  ['TYPE_INT', 'ID', 'OPEN_P', 'TYPE_INT', 'ID', 'CLOSE_P', 'ASSIGN', 'INTEGER', 'ARITH_ADD', 'ID']
-%  
-% [[[int, id], '(', [[int, id], []], ')', (=), [[integer], [[(+), [id, []]]]]], []]
-% [[[int, main], '(', [[int, input], []], ')', (=), [['3'], [[(+), [input, []]]]]], []]
-
-% a = 1; c = a + 2 * 3; print c
-% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), 
-% lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'), lex((*), 'MUL'), lex('3', 'INTEGER')]
-% 
-% [[lex(a, 'ID'), lex((=), 'ASSIGN'), [lex('1', 'INTEGER')]], lex((;), 'SEMI'), [lex(c, 'ID'), lex((=), 'ASSIGN'), 
-% [[lex(a, 'ID')], lex((+), 'PLUS'), [[lex('2', 'INTEGER')], lex((*), 'MUL'), [lex('3', 'INTEGER')]]]]]
-% 
-% 
-% 
-% 
-% [lex(a, 'ID'), lex((=), 'ASSIGN'), lex('1', 'INTEGER'), lex((;), 'SEMI'), lex(c, 'ID'), lex((=), 'ASSIGN'), lex(a, 'ID'), lex((+), 'PLUS'), lex('2', 'INTEGER'),
-%  lex((*), 'MUL'), lex('3', 'INTEGER'), lex((;), 'SEMI'), lex(print, 'PRINT'), lex(c, 'ID')]
-% 
-% input string is converted to list of list of chars and then to
-% tokens(the same as prolog atoms). 
-% Then each token is converted to lexeme, defining meaning of the token.
-interpret(Source, TokenList, LexedList, AbstractSyntaxTree) :-
-    string_chars(Source, SourceList), % convert input to list of chars
-    tokenizer(SourceList, TokenList),
-    lexer(TokenList, LexedList), !,
-    parser(LexedList, AbstractSyntaxTree),
-    interpreter(AbstractSyntaxTree), !.
-interpret(Source):- interpret(Source, _, _, _).
-
 % interpret("
 %            a = 1; 
 %            b = 2;
@@ -51,20 +20,29 @@ interpret(Source):- interpret(Source, _, _, _).
 %            		e = e - 10
 %            }
 %            ")
+%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOKENIZER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+interpret(Source, LexedList, TokenList,  AbstractSyntaxTree) :-
+    string_chars(Source, SourceList), 			% convert input to list of chars
+    lexer(SourceList, LexedList),				% convert list of chars to lexemes
+    tokenizer(LexedList, TokenList),!,			% convert lexemes to corresponding tokens
+    parser(TokenList, AbstractSyntaxTree),		% parse tokens using grammar and build Abstract Syntax Tree 
+    interpreter(AbstractSyntaxTree), !.			% interpret Abstract Syntax Tree
+interpret(Source):- interpret(Source, _, _, _).
 
-% Converts list of chars to list of tokens(atoms) 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Converts list of chars to list of lexemes(atoms) 
 % 
 % In: 	'a = 1; print (12 + a)' 
 % Out: 	[a, (=), '1', (;), print, '(', '12', (+), a, ')']
 % 
-% tokenize(+Source, -Tokens).
-tokenizer(Source, Tokens):-
+% lexer(+Source, -Tokens).
+lexer(Source, Tokens):-
     unify_sequences(Source, Sequences),
-    merge_tokens(Sequences, Tokens).
+    join_lexemes(Sequences, Tokens).
 
-% Unify sequences of chars to lists depending on the type of char
+% Unify sequences of chars to groups.
 % In: 	'print (12+a)' 
 % Out: 	[[p,r,i,n,t], [' '], ['('], [1,2], [+], [a], [)]]
 unify_sequences([A], [[A]]).
@@ -93,19 +71,30 @@ whitespace(Char):-char_code(Char, N), N =< 32.
 numeric(Char):- char_code(Char, N), N =< 57, N >= 48.
 alpha(Char):- char_code(Char, N), (   (   N =< 90, N >= 65) ; (   N =< 122, N >= 97)).  
 
-% Join lists of chars to atoms and skip whitespaces
+% Join lists of chars to atoms(lexemes) and skip whitespaces
 % In : 		[[p,r,i,n,t], [' '], ['('], [1,2], [+], [a], [)]]
 % Out: 		[print, '(', '12', (+), a, ')']
-merge_tokens([], []).    
-merge_tokens([[Char0|_]|UnifiedChars], Tokens):-
-    whitespace(Char0), merge_tokens(UnifiedChars, Tokens).
-merge_tokens([[Char0|CharSeq]|UnifiedChars], [Token|RemainingTokens]):-
-    not(whitespace(Char0)), atom_chars(Token, [Char0|CharSeq]),
-    merge_tokens(UnifiedChars, RemainingTokens).
+join_lexemes([], []).    
+join_lexemes([[Char0|_]|UnifiedChars], Tokens):-
+    whitespace(Char0), join_lexemes(UnifiedChars, Tokens). 				% skip whitespace
+join_lexemes([[Char0|CharSeq]|UnifiedChars], [Token|RemainingTokens]):-
+    not(whitespace(Char0)), atom_chars(Token, [Char0|CharSeq]),			% join to atom
+    join_lexemes(UnifiedChars, RemainingTokens).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% mapping of tokens to their lexeme.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% TOKENIZER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Converts list of lexemes to list of corresponding tokens
+%
+% In: 	[a, (=), '1', (;)]
+% Out:  [t(a, 'ID'), t((=), 'ASSIGN'), t('1', 'INTEGER'), t((;), 'SEMI')],
+% 
+% tokenizer(+Lexemes, -Tokens)
+tokenizer([], []).
+tokenizer([Lexeme|Lexemes], [t(Lexeme, Token)|Tokens]):-
+    lex_token(Lexeme,Token),
+    tokenizer(Lexemes, Tokens).
+
+% lex_token(Lexeme, Token) - mapping of a lexeme to its token.
 lex_token('=',    'ASSIGN').
 lex_token(if,     'IF').
 lex_token(else,   'ELSE').
@@ -133,19 +122,15 @@ lex_token(Number, 'INTEGER') :-
   integer(Integer).
 lex_token(_, 'ID'). % any other atoms are not reserved words, so they are identificators
 
-%lex(X):-lex(X, _). %
-lexer([], []).
-lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
-    lex_token(Token,Lexeme),
-    lexer(TokenList, LexedList).
 
-
-% ['TYPE_INT', 'ID', 'OPEN_P', 'TYPE_INT', 'ID', 'CLOSE_P', 'ASSIGN', 'INTEGER', 'ARITH_ADD', 'ID']
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARSER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PARSER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Grammar
-% statement_list : statement (SEMI statement_list)
+%
+% program: statement_list
+% 
+% statement_list : statement 
+% 				   | statement SEMI
+% 				   | statement SEMI statement_list
 % 
 % statement : assignment_statement
 %             | if_else_statement
@@ -163,48 +148,82 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % 
 % bool   : expr operator_bool expr    
 % operator_bool: EQ | NE | GE | LE | GT | LT
-%                                                 
-% expr   : term sum             % 'expr: expr (PLUS|MINUS) term' doesn't work, because expr is being expanded forever
-% 								% it is left-recursive.
+%  									                                             
+% expr   : term sum             		'expr: expr (PLUS|MINUS) term' doesn't work, epxr is being expanded forever, it is left-recursive   								
 % sum    : (PLUS | MINUS) term sum
-%      | <empty>   
+%      	 | <empty>   
 %                 
-% term   : factor 
+% term   : factor product
 % product: (MUL | DIV) factor product
-%      | <empty>      
+%        | <empty>      
 %                            
-% factor : PLUS  factor
-%         | MINUS factor
+% factor : (PLUS | MINUS)  factor
 %         | INTEGER
 %         | OPEN_P expr CLOSE_P
 %         | variable                            
 
 
-parser(LexedList, ParsedList):-
-    program(ParsedList, LexedList, []).
+% Parses a given token list and creates a parsed tree, which is a AbstractSyntaxTree
+% 
+% Source :	'a = 1 - 2 * 3;'
+% In: 		[t(a, 'ID'), t((=), 'ASSIGN'), t('1', 'INTEGER'), t((-), 'MINUS'), t('2', 'INTEGER'), t((*), 'MUL'), t('3', 'INTEGER'), t((;), 'SEMI')],
+% Out: 
+% program(
+% 	list(
+% 		stmt(
+% 			assign_stmt(
+% 				var(a), 
+% 				expr(
+% 					 term(
+% 					 	factor(int('1')), 
+% 					 	product()),
+% 					 sum(
+% 					 	operator('MINUS'), 
+% 					 	term(
+% 					 		factor(int('2')), 
+% 					 		product(
+% 					 			operator('MUL'), 
+% 					 			factor(int('3')), 
+% 					 			product())
+% 					 	), 
+% 					 	sum()))))))
+% 					 	
+% parser(+TokenList, -ParsedList)
+parser(TokenList, ParsedList):-
+    program(ParsedList, TokenList, []).
+  % program(-Program, +CurrentTokens, +NextTokens).
 
+% program: statement_list
 program(program(Program), A, B):- 
-    statement_list(Program, A, B).
+    statement_list(Program, A, B). 
 
+% statement_list : statement (SEMI)
 statement_list(list(Statement), A,B):-
     statement(Statement, A, B0),
     (  eat('SEMI', B0, B); clone_variables(B0, B)).
 
+% statement_list : statement SEMI statement_list
 statement_list(list(Statement, StatementList),A,C):-
     statement(Statement, A,B), 
     eat('SEMI', B, B0),
     statement_list(StatementList, B0,C).
 
+% statement : assignment_statement | if_else_statement | print_statement | while_statement
 statement(stmt(Statement),A,B):-
     assignment_statement(Statement, A, B);
     if_else_statement(Statement, A, B);
     while_statement(Statement, A, B);
     print_statement(Statement, A, B).
-    
+
+
+      
+
+% print_statement : PRINT expr  
 print_statement(print(Expression), A, B):-
     eat('PRINT', A, B0),
     expr(Expression, B0, B).
 
+% if_else_statement : IF OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B 
 if_else_statement(if_stmt(BoolExpression, TrueStatementList),A,G):-
     eat(['IF', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
@@ -212,6 +231,8 @@ if_else_statement(if_stmt(BoolExpression, TrueStatementList),A,G):-
     statement_list(TrueStatementList, D,F), 
     eat('CLOSE_B', F, G).
 
+% if_else_statement : IF OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B 
+% 					  ELSE OPEN statement_list CLOSE
 if_else_statement(if_stmt(BoolExpression, TrueStatementList, FalseStatementList),A,K):-
     eat(['IF', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
@@ -221,6 +242,7 @@ if_else_statement(if_stmt(BoolExpression, TrueStatementList, FalseStatementList)
     statement_list(FalseStatementList, G, H), 
     eat('CLOSE_B', H, K).
 
+% while_statement : WHILE OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B
 while_statement(while_stmt(BoolExpression, TrueStatementList), A, G):-
     eat(['WHILE', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
@@ -228,43 +250,54 @@ while_statement(while_stmt(BoolExpression, TrueStatementList), A, G):-
     statement_list(TrueStatementList, D, F),
     eat('CLOSE_B', F, G).
 
+% assignment_statement : variable ASSIGN expr     
 assignment_statement(assign_stmt(Variable, Expression),A, D):- 
     variable(Variable, A, B),
     eat('ASSIGN', B, C),
     expr(Expression, C, D).
 
+% bool: expr operator_bool expr   
 bool_expr(bool(ExpressionA, BoolOperator, ExpressionB), A, D):-
     expr(ExpressionA, A, B),
     operator_bool(BoolOperator, B, C),
     expr(ExpressionB, C, D).
          
-% EXPRESSIONS %
+% expr: term sum  								
 expr(expr(Term, Sum),A,C):-
     term(Term, A, B), 
     sum(Sum, B, C).
 
+% sum: (PLUS | MINUS) term sum 
 sum(sum(Operator, Term, Sum),A,D):-
-    operator_plus(Operator, A, B),
+    operator_sum(Operator, A, B),
     term(Term, B, C),
     sum(Sum, C, D).
-
-sum(expr(), A, A).
+% sum: <empty>
+sum(sum(), A, A).
 
          
-% TERMS %
+
+% product: (MUL | DIV) factor product
+%        | <empty>      
+%                            
+% factor : (PLUS | MINUS)  factor
+%         | INTEGER
+%         | OPEN_P expr CLOSE_P
+%         | variable   
+% term   : factor product
 term(term(Factor, Product),A,C):-
     factor(Factor,A,B),
     product(Product, B, C).
 
 product(product(Operator, Factor, Product), A, D):-
-    operator_mul(Operator, A, B),
+    operator_product(Operator, A, B),
     factor(Factor,B,C),
     product(Product, C, D).
 product(product(), A, A).                   
 
 % FACTORS %
 factor(factor(Sign, Factor),A,C):-
-    operator_plus(Sign, A, B),
+    operator_sum(Sign, A, B),
     factor(Factor,B,C).
 
 factor(factor(Expression),A,D):-
@@ -277,31 +310,34 @@ factor(factor(Integer),A,B):-
 factor(factor(Variable),A,B):-
     variable(Variable,A,B).
 
-integer(int(IntegerValue), [lex(IntegerValue, 'INTEGER')|A], A).
 
-variable(var(VariableName), [lex(VariableName, 'ID')|A], A).
+% variable : ID
+% 			-TreeNode		   +CurrentToken          +RestTokens
+variable(var(VariableName), [t(VariableName, 'ID')|A], A).
+integer(int(IntegerValue), [t(IntegerValue, 'INTEGER')|A], A).
 
-operator_mul(operator('MUL'), [lex(_, 'MUL')|A], A).
-operator_mul(operator('DIV'), [lex(_, 'DIV')|A], A).
-operator_plus(operator('PLUS'), [lex(_, 'PLUS')|A], A).
-operator_plus(operator('MINUS'), [lex(_, 'MINUS')|A], A).
+operator_product(operator('MUL'), [t(_, 'MUL')|A], A).
+operator_product(operator('DIV'), [t(_, 'DIV')|A], A).
+operator_sum(operator('PLUS'), [t(_, 'PLUS')|A], A).
+operator_sum(operator('MINUS'), [t(_, 'MINUS')|A], A).
 
-operator_bool(bool_operator('EQ'), [lex(_, 'EQ')|A], A).
-operator_bool(bool_operator('NE'), [lex(_, 'NE')|A], A).
-operator_bool(bool_operator('GE'), [lex(_, 'GE')|A], A).
-operator_bool(bool_operator('LE'), [lex(_, 'LE')|A], A).
-operator_bool(bool_operator('GT'), [lex(_, 'GT')|A], A).
-operator_bool(bool_operator('LT'), [lex(_, 'LT')|A], A).
+% operator_bool: EQ | NE | GE | LE | GT | LT
+operator_bool(bool_operator('EQ'), [t(_, 'EQ')|A], A).
+operator_bool(bool_operator('NE'), [t(_, 'NE')|A], A).
+operator_bool(bool_operator('GE'), [t(_, 'GE')|A], A).
+operator_bool(bool_operator('LE'), [t(_, 'LE')|A], A).
+operator_bool(bool_operator('GT'), [t(_, 'GT')|A], A).
+operator_bool(bool_operator('LT'), [t(_, 'LT')|A], A).
 
 eat(TOKEN_LIST, CURRENT, NEXT):-
     is_list(TOKEN_LIST),
-    as_lex(TOKEN_LIST, LEX_LIST),
+    as_t(TOKEN_LIST, LEX_LIST),
     append(LEX_LIST,NEXT,CURRENT).
 eat(TOKEN, CURRENT, NEXT):-
     not(is_list(TOKEN)),
     eat([TOKEN], CURRENT, NEXT).
-as_lex([Token|A], [lex(_, Token)|B]):-as_lex(A, B).
-as_lex([], []).    
+as_t([Token|A], [t(_, Token)|B]):-as_t(A, B).
+as_t([], []).    
                            
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTERPRETER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -368,7 +404,7 @@ handle_sum(sum(operator(Operator), Term, TermSum), Value, Scope):-
     handle_term(Term, Value1, Scope),
     handle_sum(TermSum, Value2, Scope),
     evaluate(Value2, Operator, Value1, Value).
-handle_sum(expr(), 0, _Scope).
+handle_sum(sum(), 0, _Scope).
 
 % TERMS %
 handle_term(term(Factor, Product), Value, Scope):-
