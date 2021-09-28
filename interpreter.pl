@@ -106,14 +106,14 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % bool   : expr operator_bool expr    
 % operator_bool: EQ | NE | GE | LE | GT | LT
 %                                                 
-% expr   : term sum							% 'expr: expr (PLUS|MINUS) term' doesn't work, because expr is being expanded forever
+% expr   : term sum             % 'expr: expr (PLUS|MINUS) term' doesn't work, because expr is being expanded forever
 % sum    : (PLUS | MINUS) term sum
-% 		 | <empty>   
-% 		            
-% term 	 : factor 
+%      | <empty>   
+%                 
+% term   : factor 
 % product: (MUL | DIV) factor product
-% 		 | <empty>      
-% 		                       
+%      | <empty>      
+%                            
 % factor : PLUS  factor
 %         | MINUS factor
 %         | INTEGER
@@ -289,7 +289,7 @@ handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope, New
     handle_bool_expr(BoolExpression, Scope, BoolValue),
     ( 
       BoolValue == 1, handle_list(TrueStatementList, Scope, Scope0),
-    				  handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope0, NewScope);
+              handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope0, NewScope);
       BoolValue == 0, clone_variables(Scope, NewScope)
     ).
 %%% Expression, Term, Factor handlers %%%
@@ -403,20 +403,33 @@ clone_variables(X, X).
 % input string is converted to list of words(group of chars) and then to
 % tokens(the same as prolog atoms). 
 % Then each token is converted to lexeme, defining meaning of the token.
-interpret(Source, AbstractSyntaxTree) :-
+interpret(Source, TokenList, LexedList, AbstractSyntaxTree) :-
     string_chars(Source, SourceList), % convert input to list of chars
     tokenize(SourceList, TokenList),
     lexer(TokenList, LexedList), !,
     parser(LexedList, AbstractSyntaxTree),
     interpreter(AbstractSyntaxTree), !.
+interpret(Source):- interpret(Source, _, _, _).
 
-%interpret("a = 1 - 2;
-%           b = 2 + a;
-%           c = 3 + 4;
-%           if
-%           (a + b*2 * -++-(-0)) {
-%           		print a * b*2
-%           } 
-%           else { 
-%           		print c
-%           }", X).
+% interpret("
+%            a = 1; 
+%            b = 2;
+%            c = a - b*2;
+%            d = a * 4 / 10 * 10 - 10 * 2;
+%            print a;
+%            print b;
+%            print c;
+%            print d;
+%            if (a-a*4 <= c){
+%            		print 99999
+%            };
+%            e = 100;
+%            while (e > 10){
+%           		if (e == 50){
+%            			print 88888
+%            		}else{
+%            			print e
+%            		};
+%            		e = e - 10
+%            }
+%            ")
