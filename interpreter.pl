@@ -94,7 +94,7 @@ tokenizer([Lexeme|Lexemes], [t(Lexeme, Token)|Tokens]):-
     lex_token(Lexeme,Token),
     tokenizer(Lexemes, Tokens).
 
-% lex_token(Lexeme, Token) - mapping of a lexeme to its token.
+% lex_token(Lexeme, Token) - mapping of a lexeme to its name(category).
 lex_token('=',    'ASSIGN').
 lex_token(if,     'IF').
 lex_token(else,   'ELSE').
@@ -149,7 +149,7 @@ lex_token(_, 'ID'). % any other atoms are not reserved words, so they are identi
 % bool   : expr operator_bool expr    
 % operator_bool: EQ | NE | GE | LE | GT | LT
 %  									                                             
-% expr   : term sum             		'expr: expr (PLUS|MINUS) term' doesn't work, epxr is being expanded forever, it is left-recursive   								
+% expr   : term sum             		'expr: expr (PLUS|MINUS) term' - left-recursive   								
 % sum    : (PLUS | MINUS) term sum
 %      	 | <empty>   
 %                 
@@ -200,12 +200,12 @@ program(program(Program), A, B):-
 % statement_list : statement (SEMI)
 statement_list(list(Statement), A,B):-
     statement(Statement, A, B0),
-    (  eat('SEMI', B0, B); clone_variables(B0, B)).
+    (  skip('SEMI', B0, B); clone_variables(B0, B)).
 
 % statement_list : statement SEMI statement_list
 statement_list(list(Statement, StatementList),A,C):-
     statement(Statement, A,B), 
-    eat('SEMI', B, B0),
+    skip('SEMI', B, B0),
     statement_list(StatementList, B0,C).
 
 % statement : assignment_statement | if_else_statement | print_statement | while_statement
@@ -214,46 +214,43 @@ statement(stmt(Statement),A,B):-
     if_else_statement(Statement, A, B);
     while_statement(Statement, A, B);
     print_statement(Statement, A, B).
-
-
-      
-
+ 
 % print_statement : PRINT expr  
 print_statement(print(Expression), A, B):-
-    eat('PRINT', A, B0),
+    skip('PRINT', A, B0),
     expr(Expression, B0, B).
 
 % if_else_statement : IF OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B 
 if_else_statement(if_stmt(BoolExpression, TrueStatementList),A,G):-
-    eat(['IF', 'OPEN_P'], A, B),
+    skip(['IF', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
-    eat(['CLOSE_P', 'OPEN_B'], C, D),
+    skip(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D,F), 
-    eat('CLOSE_B', F, G).
+    skip('CLOSE_B', F, G).
 
 % if_else_statement : IF OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B 
 % 					  ELSE OPEN statement_list CLOSE
 if_else_statement(if_stmt(BoolExpression, TrueStatementList, FalseStatementList),A,K):-
-    eat(['IF', 'OPEN_P'], A, B),
+    skip(['IF', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
-    eat(['CLOSE_P', 'OPEN_B'], C, D),
+    skip(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D,F), 
-    eat(['CLOSE_B', 'ELSE', 'OPEN_B'], F, G),
+    skip(['CLOSE_B', 'ELSE', 'OPEN_B'], F, G),
     statement_list(FalseStatementList, G, H), 
-    eat('CLOSE_B', H, K).
+    skip('CLOSE_B', H, K).
 
 % while_statement : WHILE OPEN_P bool CLOSE_P OPEN_B statement_list CLOSE_B
 while_statement(while_stmt(BoolExpression, TrueStatementList), A, G):-
-    eat(['WHILE', 'OPEN_P'], A, B),
+    skip(['WHILE', 'OPEN_P'], A, B),
     bool_expr(BoolExpression, B, C),
-    eat(['CLOSE_P', 'OPEN_B'], C, D),
+    skip(['CLOSE_P', 'OPEN_B'], C, D),
     statement_list(TrueStatementList, D, F),
-    eat('CLOSE_B', F, G).
+    skip('CLOSE_B', F, G).
 
 % assignment_statement : variable ASSIGN expr     
 assignment_statement(assign_stmt(Variable, Expression),A, D):- 
     variable(Variable, A, B),
-    eat('ASSIGN', B, C),
+    skip('ASSIGN', B, C),
     expr(Expression, C, D).
 
 % bool: expr operator_bool expr   
@@ -262,6 +259,7 @@ bool_expr(bool(ExpressionA, BoolOperator, ExpressionB), A, D):-
     operator_bool(BoolOperator, B, C),
     expr(ExpressionB, C, D).
          
+
 % expr: term sum  								
 expr(expr(Term, Sum),A,C):-
     term(Term, A, B), 
@@ -275,38 +273,34 @@ sum(sum(Operator, Term, Sum),A,D):-
 % sum: <empty>
 sum(sum(), A, A).
 
-         
 
-% product: (MUL | DIV) factor product
-%        | <empty>      
-%                            
-% factor : (PLUS | MINUS)  factor
-%         | INTEGER
-%         | OPEN_P expr CLOSE_P
-%         | variable   
 % term   : factor product
 term(term(Factor, Product),A,C):-
     factor(Factor,A,B),
     product(Product, B, C).
 
+% product: (MUL | DIV) factor product
 product(product(Operator, Factor, Product), A, D):-
     operator_product(Operator, A, B),
     factor(Factor,B,C),
     product(Product, C, D).
+% product:  <empty>   
 product(product(), A, A).                   
 
-% FACTORS %
+% factor : (PLUS | MINUS)  factor
 factor(factor(Sign, Factor),A,C):-
     operator_sum(Sign, A, B),
     factor(Factor,B,C).
 
+% factor: OPEN_P expr CLOSE_P 
 factor(factor(Expression),A,D):-
-    eat('OPEN_P', A, B),
+    skip('OPEN_P', A, B),
     expr(Expression, B, C), 
-    eat('CLOSE_P', C, D).
+    skip('CLOSE_P', C, D).
+% factor: INTEGER
 factor(factor(Integer),A,B):-
     integer(Integer, A, B).
-
+% factor: variable
 factor(factor(Variable),A,B):-
     variable(Variable,A,B).
 
@@ -316,8 +310,10 @@ factor(factor(Variable),A,B):-
 variable(var(VariableName), [t(VariableName, 'ID')|A], A).
 integer(int(IntegerValue), [t(IntegerValue, 'INTEGER')|A], A).
 
+% operator_product: MUL|DIV
 operator_product(operator('MUL'), [t(_, 'MUL')|A], A).
 operator_product(operator('DIV'), [t(_, 'DIV')|A], A).
+% operator_sum: PLUS|MINUS
 operator_sum(operator('PLUS'), [t(_, 'PLUS')|A], A).
 operator_sum(operator('MINUS'), [t(_, 'MINUS')|A], A).
 
@@ -329,15 +325,23 @@ operator_bool(bool_operator('LE'), [t(_, 'LE')|A], A).
 operator_bool(bool_operator('GT'), [t(_, 'GT')|A], A).
 operator_bool(bool_operator('LT'), [t(_, 'LT')|A], A).
 
-eat(TOKEN_LIST, CURRENT, NEXT):-
-    is_list(TOKEN_LIST),
-    as_t(TOKEN_LIST, LEX_LIST),
-    append(LEX_LIST,NEXT,CURRENT).
-eat(TOKEN, CURRENT, NEXT):-
-    not(is_list(TOKEN)),
-    eat([TOKEN], CURRENT, NEXT).
-as_t([Token|A], [t(_, Token)|B]):-as_t(A, B).
-as_t([], []).    
+% Is used to skip given token name. The Tree Node is not needed but the next tokens have to be processed properly.
+% skip(+TokenNames, +CurrenTokens, -NextTokens) 
+skip(TokenNames, CurrenTokens, NextTokens):-
+    is_list(TokenNames),
+    as_tokens(TokenNames, Tokens),
+    append(Tokens,NextTokens,CurrenTokens).
+% Same as skip but only for one Token 
+skip(TokenName, CurrenTokens, NextTokens):-
+    not(is_list(TokenName)),
+    skip([TokenName], CurrenTokens, NextTokens).
+
+% Converts list of tokens names to list of tokens
+% In: ['SEMI', 'OPEN_P']
+% Out: [t(';', 'SEMI'), t('(', 'OPEN_P')]
+% as_tokens(+TokenNames, -Tokens)
+as_tokens([Token|A], [t(_, Token)|B]):-as_tokens(A, B).
+as_tokens([], []).    
                            
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTERPRETER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
