@@ -22,13 +22,13 @@
 %            ")
 %
 
-interpret(Source, LexedList, TokenList,  AbstractSyntaxTree) :-
+interpret(Source, LexedList, TokenList,  AbstractSyntaxTree, GlobalScope) :-
     string_chars(Source, SourceList), 			% convert input to list of chars
     lexer(SourceList, LexedList),				% convert list of chars to lexemes
     tokenizer(LexedList, TokenList),!,			% convert lexemes to corresponding tokens
     parser(TokenList, AbstractSyntaxTree),		% parse tokens using grammar and build Abstract Syntax Tree 
-    interpreter(AbstractSyntaxTree), !.			% interpret Abstract Syntax Tree
-interpret(Source):- interpret(Source, _, _, _).
+    interpreter(AbstractSyntaxTree, GlobalScope), !.			% interpret Abstract Syntax Tree
+interpret(Source):- interpret(Source, _, _, _, _).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LEXER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -339,15 +339,23 @@ skip(TokenName, CurrenTokens, NextTokens):-
 % Converts list of tokens names to list of tokens
 % In: ['SEMI', 'OPEN_P']
 % Out: [t(';', 'SEMI'), t('(', 'OPEN_P')]
+% 
 % as_tokens(+TokenNames, -Tokens)
 as_tokens([Token|A], [t(_, Token)|B]):-as_tokens(A, B).
 as_tokens([], []).    
                            
                         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%% INTERPRETER %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-interpreter(AST):-
-    handle_program(AST, [], _).
+% Interprets the Abstract Syntax Tree and returns the Variable Table
+% interpreter(+AST, -GlobalScope)
+interpreter(AST, GlobalScope):-
+    handle_program(AST, [], GlobalScope).
 
+% handles program node in Abstract Syntax Tree.
+% The Global Scope is all the variables from Global Scope before executing the program
+% The New Global Scope is all the variables from Global Scope after executing the program.
+% 
+% handle_program(+ProgramNode, +GlobalScope, -NewGlobalScope) 
 handle_program(program(StatementList), Scope, NewScope):-
     handle_list(StatementList, Scope, NewScope).
 
@@ -365,7 +373,7 @@ handle_stmt(stmt(Statement), Scope, NewScope):-
 
 handle_assign_stmt(assign_stmt(var(VariableName), Expression), Scope, NewScope):-
     handle_expr(Expression, Value, Scope),
-    setVariable(Scope, VariableName, Value, NewScope).
+    set_variable(Scope, VariableName, Value, NewScope).
 
 handle_print_stmt(print(Expression), Scope):-
     handle_expr(Expression, Value, Scope), 
@@ -392,6 +400,12 @@ handle_while_statement(while_stmt(BoolExpression, TrueStatementList), Scope, New
       BoolValue == 0, clone_variables(Scope, NewScope)
     ).
 %%% Expression, Term, Factor handlers %%%
+
+% Handles bool expression, reads variables from scope to evaluate expressions and compare them.
+% BoolValue = 0, if expression is false 
+% BoolValue = 1, if expression is true
+% 
+% handle_bool_expr(+BoolExpression, +Scope, -BoolValue)
 handle_bool_expr(bool(Expression1, bool_operator(BoolOperator), Expression2), Scope, BoolValue):-
     handle_expr(Expression1, Value1, Scope),
     handle_expr(Expression2, Value2, Scope),
@@ -399,11 +413,14 @@ handle_bool_expr(bool(Expression1, bool_operator(BoolOperator), Expression2), Sc
 
 
 % EXPRESSIONS %
+
+% handle_expr(+Expression, -Value, +Scope) 
 handle_expr(expr(Term, Sum), Value, Scope):-
     handle_term(Term, Value1, Scope), 
     handle_sum(Sum, Value2, Scope),
     Value is Value1 + Value2.
 
+%handle_sum(+Sum, -Value, +Scope)
 handle_sum(sum(operator(Operator), Term, TermSum), Value, Scope):-
     handle_term(Term, Value1, Scope),
     handle_sum(TermSum, Value2, Scope),
@@ -411,11 +428,13 @@ handle_sum(sum(operator(Operator), Term, TermSum), Value, Scope):-
 handle_sum(sum(), 0, _Scope).
 
 % TERMS %
+%handle_term(+Term, -Value, +Scope)
 handle_term(term(Factor, Product), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
     handle_product(Product, Value2, Scope),
     Value is Value1 * Value2.
 
+%handle_product(+Product, -Value, +Scope)
 handle_product(product(operator(Operator), Factor, Product), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
     handle_product(Product, Value2, Scope),
@@ -424,27 +443,27 @@ handle_product(product(), 1, _Scope).
 
 
 % FACTORS %
+%handle_factor(+Factor, -Value, +Scope)
 handle_factor(factor(operator('MINUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
-    Value is - Value1. % negate
+    Value is -Value1.
+%handle_factor(+Factor, -Value, +Scope)
 handle_factor(factor(operator('PLUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value, Scope).
 
-
+%handle_factor(+Factor, -Value, +Scope)
 handle_factor(factor(Expression), Value, Scope):-
     handle_expr(Expression, Value, Scope).
-handle_factor(factor(Integer), Value, _):-
-    handle_integer(Integer, Value).
 
-handle_factor(factor(Variable), Value, Scope):-
-    handle_variable(Variable, Value, Scope).
+%handle_factor(+Factor, -Value, +Scope)
+handle_factor(factor(int(Integer)), Value, _Scope):-
+    atom_number(Integer, Value).
 
-handle_integer(int(IntegerValue), Value):-
-    atom_number(IntegerValue, Value).
-
-handle_variable(var(VariableName), Value, Scope):-
+%handle_factor(+Variable, -Value, +Scope)
+handle_factor(factor(var(VariableName)), Value, Scope):-
     get_variable(Scope, VariableName, Value).
 
+% evaluate(+Value1, +Operator, +Value2, -Result)
 evaluate(Value1, 'PLUS', Value2, Result):-
     Result is Value1 + Value2.
 evaluate(Value1, 'MINUS', Value2, Result):-
@@ -454,6 +473,7 @@ evaluate(Value1, 'MUL', Value2, Result):-
 evaluate(Value1, 'DIV', Value2, Result):-
     Result is Value1 / Value2.
 
+% evaluate(+Value1, +BoolOperator, +Value2, -BoolResult)
 evaluate_bool(Value1, 'EQ', Value1, 1).
 evaluate_bool(Value1, 'NE', Value2, 1):-not(Value1 is Value2). 
 evaluate_bool(Value1, 'GT', Value2, 1):-Value1 > Value2.
@@ -462,13 +482,17 @@ evaluate_bool(Value1, 'LT', Value2, 1):-Value1 < Value2.
 evaluate_bool(Value1, 'LE', Value2, 1):-Value1 =< Value2.
 evaluate_bool(_, _, _, 0).
             
-%%%%% Variables %%%%%%%
-setVariable([], Variable, NewScopeValue, [entry(Variable, NewScopeValue)]).
-setVariable([entry(Variable, _)|VariableList], Variable, NewScopeValue, [entry(Variable, NewScopeValue)|VariableList]).
-setVariable([A|VariableList], Variable, NewScopeValue, [A|NewScopeVariableList]):-
-    setVariable(VariableList, Variable, NewScopeValue, NewScopeVariableList).
+%%%%%%%%%%%%%%%%%%%%% Variables %%%%%%%%%%%%%%%%%%%%%
+% Sets a given Variable with the given Value in the given associative list (scope) [entry(Variable, Value),...]
+% 
+% setVariable(+VariableScope, +Variable, +NewValue, -NewScope)
+set_variable([], Variable, NewValue, [entry(Variable, NewValue)]).
+set_variable([entry(Variable, _)|VariableList], Variable, NewValue, [entry(Variable, NewValue)|VariableList]).
+set_variable([A|VariableList], Variable, NewScopeValue, [A|NewScopeVariableList]):-
+    set_variable(VariableList, Variable, NewScopeValue, NewScopeVariableList).
     
-
+% Gets a variable from the given VariableScope for the given Variable
+% get_variable(+VariableScope, +Variable, -Value)
 get_variable([entry(Variable, Value)|_], Variable, Value).
 get_variable([_|VariableList], Variable, Value):-
     get_variable(VariableList, Variable, Value).
@@ -476,6 +500,5 @@ get_variable([], VariableName, 0):-
     write("Variable not defined: "),
     write(VariableName), nl, 
     throw(error(syntax_error(var(VariableName)), 0)).
-
+% Clones variable
 clone_variables(X, X).
-
