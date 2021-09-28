@@ -57,7 +57,6 @@ lex_token('+',    'PLUS').
 lex_token('-',    'MINUS').
 lex_token('*',    'MUL').
 lex_token('/',    'DIV').
-lex_token('%',    'MOD').
 lex_token('(',    'OPEN_P').
 lex_token(')',    'CLOSE_P').
 lex_token('{',    'OPEN_B').
@@ -103,9 +102,18 @@ lexer([Token|TokenList], [lex(Token, Lexeme)|LexedList]):-
 % assignment_statement : variable ASSIGN expr                            
 %                             
 % variable : ID
-% bool   : expr (EQ|NE|GE|LE|GT|LT) expr                            
-% expr   : term ((PLUS | MINUS) expr)           SHOULD BE expr : term ((PLUS|MINUS) term)*   bc term contains only MULDIV              
-% term 	 : factor ((MUL | DIV) term)                            
+% 
+% bool   : expr operator_bool expr    
+% operator_bool: EQ | NE | GE | LE | GT | LT
+%                                                 
+% expr   : term sum							% 'expr: expr (PLUS|MINUS) term' doesn't work, because expr is being expanded forever
+% sum    : (PLUS | MINUS) term sum
+% 		 | <empty>   
+% 		            
+% term 	 : factor 
+% product: (MUL | DIV) factor product
+% 		 | <empty>      
+% 		                       
 % factor : PLUS  factor
 %         | MINUS factor
 %         | INTEGER
@@ -119,8 +127,9 @@ parser(LexedList, ParsedList):-
 program(program(Program), A, B):- 
     statement_list(Program, A, B).
 
-statement_list(list(Statement), A,B):-
-    statement(Statement, A, B).
+statement_list(list(Statement), A,B0):-
+    statement(Statement, A, B0).
+    %(   clone_variables(B0, B); eat('SEMI', B0, B)).
 
 statement_list(list(Statement, StatementList),A,C):-
     statement(Statement, A,B), 
@@ -318,7 +327,7 @@ handle_product(product(), 1, _Scope).
 % FACTORS %
 handle_factor(factor(operator('MINUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
-    Value is Value1 - Value1 * 2. % negate
+    Value is - Value1. % negate
 handle_factor(factor(operator('PLUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value, Scope).
 
@@ -333,6 +342,7 @@ handle_factor(factor(Variable), Value, Scope):-
 
 handle_integer(int(IntegerValue), Value):-
     atom_number(IntegerValue, Value).
+
 handle_variable(var(VariableName), Value, Scope):-
     get_variable(Scope, VariableName, Value).
 
@@ -343,9 +353,7 @@ evaluate(Value1, 'MINUS', Value2, Result):-
 evaluate(Value1, 'MUL', Value2, Result):-
     Result is Value1 * Value2.
 evaluate(Value1, 'DIV', Value2, Result):-
-    Result is div(Value1, Value2).
-evaluate(Value1, 'MOD', Value2, Result):-
-    Result is mod(Value1, Value2).
+    Result is Value1 / Value2.
 
 evaluate_bool(Value1, 'EQ', Value1, 1).
 evaluate_bool(Value1, 'NE', Value2, 1):-not(Value1 is Value2). 
