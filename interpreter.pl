@@ -170,19 +170,32 @@ bool_expr(bool(ExpressionA, BoolOperator, ExpressionB), A, D):-
     operator_bool(BoolOperator, B, C),
     expr(ExpressionB, C, D).
          
-
-expr(expr(Term, Operator, Expression),A,D):-
+% EXPRESSIONS %
+expr(expr(Term, TermSum),A,C):-
     term(Term, A,B), 
-    operator_plus(Operator, B, C),
-    expr(Expression,C,D).
-expr(expr(P), A, B):-term(P,A,B).
+    term_sum(TermSum,B,C).
+% expr(expr(Operator, Term, Expression),A,C):-
 
+term_sum(term_sum(Operator, Term, TermSum), A, D):-
+	operator_plus(Operator, A, B),
+    term(Term, B, C),
+    term_sum(TermSum, C, D).
 
-term(term(Factor, Operator, Term),A,D):-
-    factor(Factor,A,B), 
-    operator_mul(Operator, B, C),
-    term(Term,C,D).
-term(term(P),A,B):-factor(P,A,B).
+term_sum(term_sum(), A,A).
+
+         
+% TERMS %
+term(term(Factor, FactorProduct),A,C):-
+    factor(Factor,A,B),
+    factor_product(FactorProduct, B, C).
+
+factor_product(factor_product(Operator, Factor, FactorProduct), A, D):-
+    operator_mul(Operator, A, B),
+    factor(Factor,B,C),
+    factor_product(FactorProduct, C, D).
+factor_product(factor_product(), A, A).                   
+
+% FACTORS %
 factor(factor(Sign, Factor),A,C):-
     operator_plus(Sign, A, B),
     factor(Factor,B,C).
@@ -277,18 +290,33 @@ handle_bool_expr(bool(Expression1, bool_operator(BoolOperator), Expression2), Sc
     handle_expr(Expression2, Value2, Scope),
     evaluate_bool(Value1, BoolOperator, Value2, BoolValue).
 
-handle_expr(expr(P), Value, Scope):-handle_term(P, Value, Scope).
-handle_expr(expr(Term, operator(Operator), Expression), Value, Scope):-
+
+% EXPRESSIONS %
+handle_expr(expr(Term, TermSum), Value, Scope):-
     handle_term(Term, Value1, Scope), 
-    handle_expr(Expression, Value2, Scope),
-    evaluate(Value1, Operator, Value2, Value).
+    handle_term_sum(TermSum, Value2, Scope),
+    Value is Value1 + Value2.
 
-handle_term(term(P), Value, Scope):-handle_factor(P, Value, Scope).
-handle_term(term(Factor, operator(Operator), Term), Value, Scope):-
+handle_term_sum(term_sum(operator(Operator), Term, TermSum), Value, Scope):-
+    handle_term(Term, Value1, Scope),
+    handle_term_sum(TermSum, Value2, Scope),
+    evaluate(Value2, Operator, Value1, Value).
+handle_term_sum(term_sum(), 0, _Scope).
+
+% TERMS %
+handle_term(term(Factor, FactorProduct), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
-    handle_term(Term, Value2, Scope),
-    evaluate(Value1, Operator, Value2, Value).
+    handle_factor_product(FactorProduct, Value2, Scope),
+    Value is Value1 * Value2.
 
+handle_factor_product(factor_product(operator(Operator), Factor, FactorProduct), Value, Scope):-
+    handle_factor(Factor, Value1, Scope),
+    handle_factor_product(FactorProduct, Value2, Scope),
+    evaluate(Value2, Operator, Value1, Value).
+handle_factor_product(factor_product(), 1, _Scope).
+
+
+% FACTORS %
 handle_factor(factor(operator('MINUS'), Factor), Value, Scope):-
     handle_factor(Factor, Value1, Scope),
     Value is Value1 - Value1 * 2. % negate

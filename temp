@@ -1,0 +1,1 @@
+program(list(stmt(print(expr(term(factor(int('12')), factor_product()), term_sum(operator('MINUS'), term(factor(int('100')), factor_product()), term_sum(operator('PLUS'), term(factor(int('1000')), factor_product()), term_sum())))))))
