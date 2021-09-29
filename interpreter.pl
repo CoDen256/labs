@@ -199,7 +199,6 @@ lex_token(_, 'ID'). % any other atoms are not reserved words, so they are identi
 parser(TokenList, ParsedList):-
     program(ParsedList, TokenList, []).
 
- % program(-Program, +CurrentTokens, +NextTokens).
 % program: statement_list
 program(program(Program), A, B):- 
     statement_list(Program, A, B). 
@@ -210,7 +209,7 @@ statement_list(list(Statement), A,B):-
     (  skip('SEMI', B0, B); clone_variables(B0, B)).
 
 % statement_list : statement SEMI statement_list
-statement_list(list(Statement, StatementList),A,C):-
+statement_list(list(Statement, StatementList), A, C):-
     statement(Statement, A,B), 
     skip('SEMI', B, B0),
     statement_list(StatementList, B0,C).
@@ -255,7 +254,8 @@ while_statement(while_stmt(BoolExpression, TrueStatementList), A, G):-
     skip('CLOSE_B', F, G).
 
 % assignment_statement : variable ASSIGN expr     
-assignment_statement(assign_stmt(Variable, Expression),A, D):- 
+%					-TreeNode	      	+CurrentTokens +NextTokens
+assignment_statement(assign_stmt(Variable, Expression), A, D):- 
     variable(Variable, A, B),
     skip('ASSIGN', B, C),
     expr(Expression, C, D).
