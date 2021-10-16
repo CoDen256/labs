@@ -1,0 +1,2 @@
+tasks/vs/task1/Task1.java
+ tasks.vs.task1.Task1
