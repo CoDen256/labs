@@ -118,5 +118,4 @@ fabric.properties
 /task1/gradle/
 /task2/.gradle/
 /task2/build/
-/task2/.gradle/
 /task2/gradle/
