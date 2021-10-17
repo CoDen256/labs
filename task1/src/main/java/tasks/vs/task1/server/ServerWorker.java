@@ -30,8 +30,7 @@ public class ServerWorker extends Thread{
         log("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
 
         while (true){
-            InputStream inputStream = socket.getInputStream();
-            int length = readRequestLength(inputStream);
+            int length = readRequestLength();
             String request = readRequest(length);
             Thread.sleep(2000);
             String response = request;
@@ -44,8 +43,9 @@ public class ServerWorker extends Thread{
         }
     }
 
-    private int readRequestLength(InputStream inputStream) throws IOException {
+    private int readRequestLength() throws IOException {
         byte[] lengthBuffer = new byte[BUFFER_SIZE];
+        InputStream inputStream = socket.getInputStream();
         int index = 0;
         byte character;
         while ((character = (byte) inputStream.read()) != '\n'){
