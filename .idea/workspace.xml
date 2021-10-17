@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1d76c741-b9af-4854-a059-c1570108d528" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task1/src/main/java/tasks/vs/task1/Task1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/task2/src/main/java/tasks/vs/task2/Task2.java" afterDir="false" />
+    <list default="true" id="1d76c741-b9af-4854-a059-c1570108d528" name="Default Changelist" comment="Add task1 and task2 module">
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +56,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SONARLINT_PRECOMMIT_ANALYSIS" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="jdk.selected.JAVA_MODULE" value="11" />
@@ -104,8 +104,17 @@
       <option name="presentableId" value="Default" />
       <updated>1634367743631</updated>
       <workItem from="1634367745994" duration="94000" />
-      <workItem from="1634368163658" duration="447000" />
+      <workItem from="1634368163658" duration="1103000" />
+      <workItem from="1634468437957" duration="483000" />
     </task>
+    <task id="LOCAL-00001" summary="Add task1 and task2 module">
+      <created>1634368654892</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1634368654892</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -118,5 +127,10 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add task1 and task2 module" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add task1 and task2 module" />
   </component>
 </project>
