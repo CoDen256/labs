@@ -6,13 +6,13 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class SocketClientV2 {
     public static final String ADDRESS = "localhost";
     public static final int PORT = 5555;
-    public static final String requestTemplate = "%d\n%s";
+    public static final String REQUEST_TEMPLATE = "%d\n%s";
+
 
     public static void main(String[] args) throws Exception {
         System.out.println("Running Client v2...");
@@ -56,7 +56,7 @@ public class SocketClientV2 {
     }
 
     private static void sendRequest(String request, Socket socket) throws IOException {
-        String requestWithHeader = String.format(requestTemplate, request.length(), request);
+        String requestWithHeader = String.format(REQUEST_TEMPLATE, request.length(), request);
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(requestWithHeader.getBytes());
         System.out.printf("Request sent: %s%nWaiting for response...%n", requestWithHeader);
@@ -64,7 +64,7 @@ public class SocketClientV2 {
 
     private static String readResponse(Socket socket, int length) throws IOException {
         InputStream inputStream = socket.getInputStream();
-        byte[] buffer = new byte[2048];
+        byte[] buffer = new byte[length];
         int bytesRead = inputStream.read(buffer);
         String responseString = bytesToString(buffer, bytesRead);
         System.out.printf("Bytes read: %d.%nResponse:%s%n", bytesRead, responseString);

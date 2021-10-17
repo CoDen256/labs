@@ -19,6 +19,7 @@ public class ServerWorker extends Thread{
     public void run() {
         try {
             handleConnection();
+            socket.close();
         } catch (IOException|InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -26,18 +27,20 @@ public class ServerWorker extends Thread{
 
     private void handleConnection() throws IOException, InterruptedException {
         InetSocketAddress clientAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
-        System.out.printf("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
+        log("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
 
         while (true){
             InputStream inputStream = socket.getInputStream();
             int length = readRequestLength(inputStream);
-            String request = readRequest(inputStream, length);
+            String request = readRequest(length);
             Thread.sleep(2000);
+            String response = request;
             if (request.endsWith("9")){
                 sendResponse(socket, "END");
                 return;
             }
-            sendResponse(socket, request);
+            sendResponse(socket, response);
+            System.out.println();
         }
     }
 
@@ -49,28 +52,32 @@ public class ServerWorker extends Thread{
             lengthBuffer[index++] = character;
         }
         int length = Integer.parseInt(new String(lengthBuffer, 0, index));
-        System.out.printf("Length of the request: %d%n", length);
+        log("Length of the request: %d%n", length);
         return length;
     }
 
 
-    private String readRequest(InputStream inputStream, int length) throws IOException {
+    private String readRequest(int length) throws IOException {
         byte[] buffer = new byte[length];
-//        InputStream inputStream = socket.getInputStream(); but it should work as well
+        InputStream inputStream = socket.getInputStream();
         int bytesRead = inputStream.read(buffer);
         String request = bytesToString(buffer, bytesRead);
-        System.out.printf("Bytes read:%d.%nRequest:%s%n", bytesRead, request);
+        log("Bytes read:%d%n", bytesRead);
+        log("Request:%s%n", request);
         return request;
     }
 
     private void sendResponse(Socket socket, String response) throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(response.getBytes());
-        System.out.printf("Response sent: %s%n", response);
+        log("Response sent: %s%n", response);
     }
 
     private String bytesToString(byte[] bytes, int length){
         return new String(bytes, 0, length);
     }
-
+    private void log(String format, Object... objects){
+        System.out.printf("[%s] ", Thread.currentThread().getName());
+        System.out.printf(format, objects);
+    }
 }
