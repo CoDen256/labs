@@ -28,11 +28,17 @@ public class ServerWorker extends Thread{
         InetSocketAddress clientAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
         System.out.printf("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
 
-        InputStream inputStream = socket.getInputStream();
-        int length = readRequestLength(inputStream);
-        String request = readRequest(inputStream, length);
-        sendResponse(socket, request);
-        sendResponse(socket, "END");
+        while (true){
+            InputStream inputStream = socket.getInputStream();
+            int length = readRequestLength(inputStream);
+            String request = readRequest(inputStream, length);
+            Thread.sleep(2000);
+            if (request.endsWith("9")){
+                sendResponse(socket, "END");
+                return;
+            }
+            sendResponse(socket, request);
+        }
     }
 
     private int readRequestLength(InputStream inputStream) throws IOException {

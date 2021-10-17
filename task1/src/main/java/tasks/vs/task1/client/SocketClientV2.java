@@ -42,16 +42,16 @@ public class SocketClientV2 {
         }
     }
 
-    private static void sendMultipleRequests(String request, Socket socket) throws IOException {
+    private static void sendMultipleRequests(String requestContent, Socket socket) throws IOException {
         System.out.println("Connection established successfully.");
         String response;
         int current = 0;
         do {
-            String nextRequest = request + current++;
-            sendRequest(nextRequest, socket);
-            response = readResponse(socket, nextRequest.length());
+            String request = requestContent + current++;
+            sendRequest(request, socket);
+            response = readResponse(socket, Math.max(3, request.length()));
             System.out.println();
-        } while (false && !"END".equals(response));
+        } while (!"END".equals(response));
         System.out.println("Server sent 'END'");
     }
 
@@ -64,7 +64,7 @@ public class SocketClientV2 {
 
     private static String readResponse(Socket socket, int length) throws IOException {
         InputStream inputStream = socket.getInputStream();
-        byte[] buffer = new byte[length];
+        byte[] buffer = new byte[2048];
         int bytesRead = inputStream.read(buffer);
         String responseString = bytesToString(buffer, bytesRead);
         System.out.printf("Bytes read: %d.%nResponse:%s%n", bytesRead, responseString);
