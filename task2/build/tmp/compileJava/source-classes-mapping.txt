@@ -1,2 +1,0 @@
-tasks/vs/task2/Task2.java
- tasks.vs.task2.Task2

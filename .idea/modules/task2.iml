@@ -5,6 +5,7 @@
     <content url="file://$MODULE_DIR$/../../task2">
       <excludeFolder url="file://$MODULE_DIR$/../../task2/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../task2/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../task2/gradle" />
     </content>
     <orderEntry type="jdk" jdkName="11" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
