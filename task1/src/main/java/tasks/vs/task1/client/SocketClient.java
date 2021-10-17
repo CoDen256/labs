@@ -15,7 +15,7 @@ public class SocketClient {
     public static final int PORT = 5555;
 
     public static void main(String[] args) throws Exception {
-        System.out.println("Running SocketClient...");
+        System.out.println("Running Client...");
 
         InetAddress remoteAddress;
         try {
@@ -44,12 +44,16 @@ public class SocketClient {
     private static void sendRequest(String request, Socket socket) throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(request.getBytes());
-        System.out.printf("Request has been sent to the server:%s %n...", Arrays.toString(request.getBytes()));
+        System.out.printf("Request has been sent to the server:%s%n", Arrays.toString(request.getBytes(StandardCharsets.UTF_8)));
 
         System.out.println("Reading response...");
-        byte[] readBytes = new byte[4098];
+        byte[] readBytes = new byte[3];
         InputStream inputStream = socket.getInputStream();
         int read = inputStream.read(readBytes);
-        System.out.printf("Bytes read: %d%n. Response:%s", read, new String(readBytes));
+        System.out.printf("Bytes read: %d.%nResponse:%s%n", read, bytesToString(readBytes));
+    }
+
+    private static String bytesToString(byte[] bytes){
+        return new String(bytes, 0, 3);
     }
 }

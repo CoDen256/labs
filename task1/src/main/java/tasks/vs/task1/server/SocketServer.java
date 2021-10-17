@@ -3,14 +3,17 @@ package tasks.vs.task1.server;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 
 public class SocketServer {
 
     public static final int PORT = 5555;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Running Server...");
         try (ServerSocket listenSocket = new ServerSocket(PORT)){
             System.out.printf("Server socket for port %d created successfully.%n", PORT);
@@ -21,23 +24,33 @@ public class SocketServer {
         }
     }
 
-    private static void acceptConnections(ServerSocket listenSocket) throws IOException {
+    private static void acceptConnections(ServerSocket listenSocket) throws IOException, InterruptedException {
         while(true){
+            System.out.printf("Waiting for incoming connections on port %d...%n", PORT);
             try(Socket socket = listenSocket.accept()){
                 handleConnection(socket);
             } catch (IOException e){
-                System.out.println("Accepting incoming connection failed");
-                throw e;
+                System.out.println("Accepting incoming connection failed\nTrying again in 5s...");
+                Thread.sleep(5000);
             }
         }
     }
 
     private static void handleConnection(Socket socket) throws IOException {
-        byte[] buffer = new byte[4096];
+        InetSocketAddress clientAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
+        System.out.printf("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
+        System.out.println("Reading Request...");
+        byte[] readBytes = new byte[3];
         InputStream inputStream = socket.getInputStream();
-        OutputStream outputStream = socket.getOutputStream();
+        int bytesRead = inputStream.read(readBytes);
+        System.out.printf("Bytes:%d.%nRequest:%s%n", bytesRead, bytesToString(readBytes));
 
-        int read = inputStream.read(buffer);
-        outputStream.write(buffer);
+        OutputStream outputStream = socket.getOutputStream();
+        outputStream.write(readBytes);
+        System.out.printf("Sending back: %s%n", bytesToString(readBytes));
+    }
+
+    private static String bytesToString(byte[] bytes){
+        return new String(bytes, 0, 3);
     }
 }
