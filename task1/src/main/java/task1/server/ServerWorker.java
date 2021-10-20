@@ -55,20 +55,25 @@ public class ServerWorker extends Thread{
         }
 
         // remove EOF from the request body
-        String request = requestBuilder.delete(requestBuilder.length()-5, requestBuilder.length()).toString();
-        log("Length:%d%n", request.length());
-        log("Request:%s%n", request);
-        return request;
+        log("Length:%d%n", requestBuilder.length());
+        log("Request:%s%n", escape(requestBuilder.toString()));
+        return requestBuilder.delete(requestBuilder.length()-5, requestBuilder.length()).toString();
     }
+
 
     private void sendResponse(Socket socket, String response) throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(response.getBytes());
-        log("Response sent: %s%n", response);
+        log("Response sent: %s%n", escape(response));
     }
 
     private void log(String format, Object... objects){
         System.out.printf("[%s] ", Thread.currentThread().getName());
         System.out.printf(format, objects);
+    }
+
+    private static String escape(String string) {
+        return string.replace("\n", "\\n")
+                .replace("\r", "\\r");
     }
 }

@@ -7,7 +7,6 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
-
 public class SocketClientV2 {
     public static final String ADDRESS = "localhost";
     public static final int PORT = 5555;
@@ -64,7 +63,7 @@ public class SocketClientV2 {
         OutputStream outputStream = socket.getOutputStream();
         String requestWithEOF = request + EOF;
         outputStream.write(requestWithEOF.getBytes());
-        System.out.printf("Request sent: %s%nWaiting for response...%n", requestWithEOF);
+        System.out.printf("Request sent: %s%nWaiting for response...%n", escape(requestWithEOF));
     }
 
     private static String readResponse(Socket socket, int length) throws IOException {
@@ -72,7 +71,7 @@ public class SocketClientV2 {
         byte[] buffer = new byte[Math.max(3, length)]; // for END
         int bytesRead = inputStream.read(buffer);
         String responseString = bytesToString(buffer, bytesRead);
-        System.out.printf("Response(%dB):%s%n", bytesRead, responseString);
+        System.out.printf("Response(%dB):%s%n", bytesRead, escape(responseString));
 
         return responseString;
     }
@@ -93,5 +92,10 @@ public class SocketClientV2 {
             stringBuilder.append(nextLine).append("\r\n");
         }
         return stringBuilder.toString();
+    }
+
+    private static String escape(String string) {
+        return string.replace("\n", "\\n")
+                .replace("\r", "\\r");
     }
 }
