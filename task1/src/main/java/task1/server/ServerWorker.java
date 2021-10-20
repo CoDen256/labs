@@ -1,4 +1,4 @@
-package tasks.vs.task1.server;
+package task1.server;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +8,7 @@ import java.net.Socket;
 
 public class ServerWorker extends Thread{
     public static final int BUFFER_SIZE = 10;
+    public static final String EOF = "\r\n.\r\n";
     private final Socket socket;
 
 
@@ -30,11 +31,10 @@ public class ServerWorker extends Thread{
         log("Connection with the client established successfully: Address: %s%n", clientAddress.getAddress().toString());
 
         while (true){
-            int length = readRequestLength();
-            String request = readRequest(length);
+            String request = readRequest();
             Thread.sleep(2000);
             String response = request;
-            if (request.endsWith("9")){
+            if (request.startsWith("9")){
                 sendResponse(socket, "END");
                 return;
             }
@@ -43,26 +43,20 @@ public class ServerWorker extends Thread{
         }
     }
 
-    private int readRequestLength() throws IOException {
-        byte[] lengthBuffer = new byte[BUFFER_SIZE];
+
+    private String readRequest() throws IOException {
+        StringBuilder requestBuilder = new StringBuilder();
         InputStream inputStream = socket.getInputStream();
-        int index = 0;
-        byte character;
-        while ((character = (byte) inputStream.read()) != '\n'){
-            lengthBuffer[index++] = character;
+        while (true){
+            requestBuilder.append((char)inputStream.read());
+            int length = requestBuilder.length();
+            if (length >= 5 && EOF.equals(requestBuilder.substring(length - 5)))
+                break;
         }
-        int length = Integer.parseInt(new String(lengthBuffer, 0, index));
-        log("Length of the request: %d%n", length);
-        return length;
-    }
 
-
-    private String readRequest(int length) throws IOException {
-        byte[] buffer = new byte[length];
-        InputStream inputStream = socket.getInputStream();
-        int bytesRead = inputStream.read(buffer);
-        String request = bytesToString(buffer, bytesRead);
-        log("Bytes read:%d%n", bytesRead);
+        // remove EOF from the request body
+        String request = requestBuilder.delete(requestBuilder.length()-5, requestBuilder.length()).toString();
+        log("Length:%d%n", request.length());
         log("Request:%s%n", request);
         return request;
     }
@@ -73,9 +67,6 @@ public class ServerWorker extends Thread{
         log("Response sent: %s%n", response);
     }
 
-    private String bytesToString(byte[] bytes, int length){
-        return new String(bytes, 0, length);
-    }
     private void log(String format, Object... objects){
         System.out.printf("[%s] ", Thread.currentThread().getName());
         System.out.printf(format, objects);

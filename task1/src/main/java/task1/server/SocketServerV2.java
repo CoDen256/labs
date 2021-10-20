@@ -1,4 +1,4 @@
-package tasks.vs.task1.server;
+package task1.server;
 
 import java.io.IOException;
 import java.net.ServerSocket;
