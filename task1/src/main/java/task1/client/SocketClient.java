@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class SocketClient {
     public static final String ADDRESS = "localhost";
     public static final int PORT = 5555;
-    public static final int BUFFER_SIZE = 10;
+    public static final int BUFFER_SIZE = 2048;
 
     public static void main(String[] args) throws Exception {
         System.out.println("Running Client...");
@@ -32,7 +32,7 @@ public class SocketClient {
             System.out.printf("Trying to connect to %s:%s...%n", ADDRESS, PORT);
             try(Socket socket = new Socket(remoteAddress, PORT)){
                 sendMultipleRequests(request, socket);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.out.printf("Unable to connect to %s:%s.%nTrying again in 5s...%n", ADDRESS, PORT);
                 Thread.sleep(5000);
             }finally {
@@ -56,7 +56,7 @@ public class SocketClient {
     private static void sendRequest(String request, Socket socket) throws IOException {
         OutputStream outputStream = socket.getOutputStream();
         outputStream.write(request.getBytes());
-        System.out.printf("Request sent: %s%nWaiting for response...", request);
+        System.out.printf("Request sent: %s%nWaiting for response...%n", request);
     }
 
     private static String readResponse(Socket socket) throws IOException {
@@ -64,7 +64,7 @@ public class SocketClient {
         byte[] buffer = new byte[BUFFER_SIZE];
         int bytesRead = inputStream.read(buffer);
         String responseString = bytesToString(buffer, bytesRead);
-        System.out.printf("Bytes read: %d.%nResponse:%s%n", bytesRead, responseString);
+        System.out.printf("Response(%dB):%s%n", bytesRead, responseString);
 
         return responseString;
     }

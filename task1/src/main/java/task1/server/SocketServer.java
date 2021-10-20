@@ -10,7 +10,7 @@ import java.net.Socket;
 public class SocketServer {
 
     public static final int PORT = 5555;
-    public static final int BUFFER_SIZE = 10;
+    public static final int BUFFER_SIZE = 2048;
 
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Running Server...");
@@ -28,8 +28,10 @@ public class SocketServer {
             System.out.printf("Waiting for incoming connections on port %d...%n", PORT);
             try(Socket socket = listenSocket.accept()){
                 handleConnection(socket);
-            } catch (IOException e){
-                System.out.println("Accepting incoming connection failed\nTrying again in 5s...");
+            } catch (Exception e){
+                System.out.println("Accepting incoming connection failed");
+                e.printStackTrace();
+                System.out.println("Trying again in 5s...");
                 Thread.sleep(5000);
             }
         }
@@ -57,7 +59,7 @@ public class SocketServer {
         InputStream inputStream = socket.getInputStream();
         int bytesRead = inputStream.read(buffer);
         String request = bytesToString(buffer, bytesRead);
-        System.out.printf("Bytes read:%d.%nRequest:%s%n", bytesRead, request);
+        System.out.printf("Request(%dB):%s%n", bytesRead, request);
         return request;
     }
 

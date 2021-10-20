@@ -54,7 +54,7 @@ public class SocketClientV2 {
         do {
             String request = currentRequest++ + requestContent; // just add a new number each time
             sendRequest(request, socket);
-            response = readResponse(socket, request.length() * 2); // server will duplicate it
+            response = readResponse(socket, request.length()); // server will echo it
             System.out.println();
         } while (!"END".equals(response));
         System.out.println("Server sent 'END'");
@@ -72,7 +72,7 @@ public class SocketClientV2 {
         byte[] buffer = new byte[Math.max(3, length)]; // for END
         int bytesRead = inputStream.read(buffer);
         String responseString = bytesToString(buffer, bytesRead);
-        System.out.printf("Bytes read: %d.%nResponse:%s%n", bytesRead, responseString);
+        System.out.printf("Response(%dB):%s%n", bytesRead, responseString);
 
         return responseString;
     }
