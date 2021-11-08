@@ -1,7 +1,9 @@
 package mathe3;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
@@ -13,7 +15,7 @@ public class Task21 {
 
     public static void main(String[] args) {
 
-        List<Point> points = generateEvenly(START, END, N)
+        List<Point> points = generateExponentially(START, END, N)
                 .mapToObj(Task21::calculatePoint)
                 .collect(Collectors.toList());
 
@@ -27,6 +29,18 @@ public class Task21 {
         return DoubleStream
                 .iterate(start, s -> Math.max(start, Math.min(end, s + step))) // sometimes t > end because of adding floats
                 .limit(n + 1);
+    }
+
+    private static DoubleStream generateExponentially(double start, double end, int n) {
+        double step = 1;
+        double current = start;
+        List<Double> doubleList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            doubleList.add(current);
+            current += step;
+            step /= 2;
+        }
+        return doubleList.stream().mapToDouble(Double::doubleValue);
     }
 
     private static double calculateLengthBetweenPoints(List<Point> points){
