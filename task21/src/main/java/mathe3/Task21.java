@@ -9,7 +9,7 @@ public class Task21 {
 
     private static final double START = 0;
     private static final double END = 2;
-    private static final int N = 20;
+    private static final int N = 5000;
 
     public static void main(String[] args) {
 
@@ -25,7 +25,7 @@ public class Task21 {
     private static DoubleStream generateEvenly(double start, double end, int n) {
         double step = (end - start) / n;
         return DoubleStream
-                .iterate(start, s -> s + step)
+                .iterate(start, s -> Math.max(start, Math.min(end, s + step))) // sometimes t > end because of adding floats
                 .limit(n + 1);
     }
 
