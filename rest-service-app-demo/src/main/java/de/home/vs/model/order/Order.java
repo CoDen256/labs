@@ -1,5 +1,6 @@
-package de.home.vs.model;
+package de.home.vs.model.order;
 
+import de.home.vs.model.article.Article;
 import java.util.Objects;
 import java.util.Set;
 import javax.xml.bind.annotation.XmlRootElement;

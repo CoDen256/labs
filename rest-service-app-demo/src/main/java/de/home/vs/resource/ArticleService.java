@@ -1,6 +1,7 @@
 package de.home.vs.resource;
 
-import de.home.vs.model.Article;
+import de.home.vs.model.article.AddArticleRequest;
+import de.home.vs.model.article.Article;
 import de.home.vs.model.DataSource;
 import java.util.Set;
 import javax.ws.rs.Consumes;
@@ -15,12 +16,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/article")
 public class ArticleService {
+    private DataSource dataSource = DataSource.getInstance();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response articles(){
         try {
-            DataSource dataSource = DataSource.getInstance();
             return Response
                     .ok()
                     .entity(new GenericEntity<Set<Article>>(dataSource.getArticles()){})
@@ -36,12 +37,11 @@ public class ArticleService {
     public Response article(@PathParam("id") int id){
         try {
             Article article = DataSource.getInstance().findArticleById(id);
-            if (article == null){
+            if (article == null)
                 return Response
                         .status(Response.Status.NOT_FOUND)
                         .entity(String.format("Article with id %d not found", id))
                         .build();
-            }
             return Response
                     .ok()
                     .entity(article)
@@ -54,12 +54,12 @@ public class ArticleService {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postNotification(Article article) {
-        DataSource dataSource = DataSource.getInstance();
+    public Response addArticleRequest(AddArticleRequest article) {
         try {
-            dataSource.addArticle(article);
+            Article newArticle = createNewArticle(article);
+            dataSource.addArticle(newArticle);
             return Response.ok()
-                    .entity(String.format("Article with id %s created successfully", article.getId()))
+                    .entity(String.format("Article with id %s created successfully", newArticle.getId()))
                     .build();
         }catch (DataSource.ArticleAlreadyExistsException e){
             return Response.status(Response.Status.CONFLICT)
@@ -70,6 +70,18 @@ public class ArticleService {
                     .entity(e.getMessage())
                     .build();
         }
+    }
+
+    private Article createNewArticle(AddArticleRequest request){
+        return new Article(
+                getNextArticleId(),
+                request.getName(),
+                request.getDescription(),
+                request.getPrice());
+    }
+
+    private int getNextArticleId() {
+        return dataSource.getArticles().size() + 1;
     }
 
 }

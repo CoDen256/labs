@@ -1,8 +1,7 @@
 package de.home.vs.resource;
 
-import de.home.vs.model.Article;
 import de.home.vs.model.DataSource;
-import de.home.vs.model.Order;
+import de.home.vs.model.order.Order;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;

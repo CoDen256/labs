@@ -1,7 +1,6 @@
-package de.home.vs.model;
+package de.home.vs.model.article;
 
 import java.util.Objects;
-import javax.xml.bind.annotation.XmlRootElement;
 
 public class Article {
     private int id;

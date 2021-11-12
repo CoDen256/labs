@@ -1,5 +1,7 @@
 package de.home.vs.model;
 
+import de.home.vs.model.article.Article;
+import de.home.vs.model.order.Order;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
