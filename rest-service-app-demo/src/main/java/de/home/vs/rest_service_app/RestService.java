@@ -30,7 +30,7 @@ public class RestService
         
         serHol.setInitOrder(1);
         serHol.setInitParameter("jersey.config.server.provider.packages", "de.home.vs.resource");
-        serHol.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
+//        serHol.setInitParameter("com.sun.jersey.api.json.POJOMappingFeature", "true");
 
         DataSource ds = DataSource.getInstance();
         ds.prefillData();
