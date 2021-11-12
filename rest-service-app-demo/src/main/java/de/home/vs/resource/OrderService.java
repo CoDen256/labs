@@ -6,9 +6,7 @@ import de.home.vs.model.order.AddOrderRequest;
 import de.home.vs.model.order.MultipleArticles;
 import de.home.vs.model.order.Order;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -70,6 +68,8 @@ public class OrderService {
         List<Article> articles = new ArrayList<Article>();
         for (MultipleArticles multipleArticles: request.getArticles()){
             Article article = dataSource.findArticleById(multipleArticles.getArticleId());
+            if (article == null)
+                throw new IllegalArgumentException(String.format("Article with id %s does not exist", multipleArticles.getArticleId()));
             for (int i = 0; i < multipleArticles.getCount(); i++) {
                 articles.add(article);
             }
