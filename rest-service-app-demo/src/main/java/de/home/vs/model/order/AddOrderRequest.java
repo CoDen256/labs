@@ -1,23 +1,22 @@
 package de.home.vs.model.order;
 
-import de.home.vs.model.article.Article;
 import java.util.Set;
 
 public class AddOrderRequest {
-    private Set<Article> articles;
+    private Set<MultipleArticles> multipleArticles;
 
-    public AddOrderRequest(Set<Article> articles) {
-        this.articles = articles;
+    public AddOrderRequest(Set<MultipleArticles> multipleArticles) {
+        this.multipleArticles = multipleArticles;
     }
 
     private AddOrderRequest() {
     }
 
-    public Set<Article> getArticles() {
-        return articles;
+    public Set<MultipleArticles> getArticles() {
+        return multipleArticles;
     }
 
-    public void setArticles(Set<Article> articles) {
-        this.articles = articles;
+    public void setArticles(Set<MultipleArticles> multipleArticles) {
+        this.multipleArticles = multipleArticles;
     }
 }

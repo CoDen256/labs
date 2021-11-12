@@ -36,7 +36,7 @@ public class ArticleService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response article(@PathParam("id") int id){
         try {
-            Article article = DataSource.getInstance().findArticleById(id);
+            Article article = dataSource.findArticleById(id);
             if (article == null)
                 return Response
                         .status(Response.Status.NOT_FOUND)

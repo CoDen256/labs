@@ -48,14 +48,14 @@ public class DataSource {
 
 
 	public void addOrder(Order a){
-		if (findOrderById(a.getId()) != null)
-			throw new OrderAlreadyExistsException(String.format("Article with id %s already exists", a.getId()));
+		if (findOrderById(a.getOrderId()) != null)
+			throw new OrderAlreadyExistsException(String.format("Article with id %s already exists", a.getOrderId()));
 		orders.add(a);
 	}
 
 	public Order findOrderById(int id){
 		for (Order o: orders){
-			if (o.getId() == id){
+			if (o.getOrderId() == id){
 				return o;
 			}
 		}
