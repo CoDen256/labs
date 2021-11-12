@@ -7,6 +7,7 @@ public class DataSource {
 
 	private static DataSource instance = null;
 	private final Set<Article> articles = new LinkedHashSet<Article>();
+	private final Set<Order> orders = new LinkedHashSet<Order>();
 
 	private DataSource() {
 	}
