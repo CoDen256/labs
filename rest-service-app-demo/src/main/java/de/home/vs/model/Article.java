@@ -3,7 +3,6 @@ package de.home.vs.model;
 import java.util.Objects;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Article {
     private int id;
     private String name;
