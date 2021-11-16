@@ -1,12 +1,12 @@
 package de.home.vs.resource;
 
 import de.home.vs.model.item.Item;
+import jakarta.json.Json;
+import jakarta.json.JsonArray;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
 import java.util.Collection;
 import java.util.function.Function;
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
 
 public class ItemSerializer {
 
