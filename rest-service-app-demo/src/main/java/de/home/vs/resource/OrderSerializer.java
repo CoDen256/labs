@@ -31,7 +31,7 @@ public class OrderSerializer {
         return Json.createObjectBuilder()
                 .add("id", order.getId())
                 .add("items", serializeItems(order.getItems()))
-                .add("link", resolveLink(order, baseUrl))
+//                .add("link", resolveLink(order, baseUrl))
                 .build();
     }
 

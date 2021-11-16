@@ -2,6 +2,8 @@ package de.home.vs.resource;
 
 import de.home.vs.model.DataSource;
 import de.home.vs.model.order.Order;
+import de.home.vs.model.order.OrderedItem;
+import java.util.List;
 import java.util.Optional;
 import jakarta.json.JsonObject;
 import jakarta.ws.rs.Consumes;
@@ -36,7 +38,7 @@ public class OrderService {
     public Response getOrderById(@PathParam("id") int id){
         try {
             Optional<Order> order = dataSource.findOrderById(id);
-            if (!order.isPresent()){
+            if (order.isEmpty()){
                 return Response
                         .status(Response.Status.NOT_FOUND)
                         .entity(String.format("Order with id %d not found", id))
@@ -58,11 +60,16 @@ public class OrderService {
     public Response postOrder(JsonObject requestedOrder) {
         try {
             Order newOrder = createNewOrder(requestedOrder);
+            verifyNewOrder(newOrder);
             dataSource.addOrder(newOrder);
             return Response.ok()
                     .entity(String.format("Order with id %s created successfully", newOrder.getId()))
                     .build();
-        }catch (Exception e){
+        }
+        catch (InvalidItemException e){
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        catch (Exception e){
             return Response.serverError()
                     .entity(e.getMessage())
                     .build();
@@ -77,4 +84,19 @@ public class OrderService {
     private int getNextOrderId(){
         return dataSource.getOrders().size() + 1;
     }
+
+    private void verifyNewOrder(Order order){
+        List<OrderedItem> items = order.getItems();
+        items.forEach(this::verifyItem);
+    }
+
+    private void verifyItem(OrderedItem i) {
+        if (dataSource.findItemById(i.getId()).isEmpty()){
+            throw new InvalidItemException(String.format("Item with id %s not found", i.getId()));
+        }
+        if (i.getQuantity() <= 0){
+            throw new InvalidItemException(String.format("Item with id %s has non-positive quantity", i.getId()));
+        }
+    }
+
 }

@@ -28,7 +28,7 @@ public class ItemSerializer {
                 .add("description", item.getDescription())
                 .add("price", item.getPrice())
                 .add("name", item.getName())
-                .add("link", resolveLink(item, baseURL))
+//                .add("link", resolveLink(item, baseURL))
                 .build();
     }
 

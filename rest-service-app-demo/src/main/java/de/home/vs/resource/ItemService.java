@@ -21,13 +21,13 @@ public class ItemService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItems(){
+    public Response getItems() {
         try {
             return Response
                     .ok()
                     .entity(itemSerializer.serializeItems(dataSource.getItems(), itemSerializer::serializeShort))
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
@@ -35,10 +35,10 @@ public class ItemService {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getItemById(@PathParam("id") int id){
+    public Response getItemById(@PathParam("id") int id) {
         try {
             Optional<Item> item = dataSource.findItemById(id);
-            if (!item.isPresent())
+            if (item.isEmpty())
                 return Response
                         .status(Response.Status.NOT_FOUND)
                         .entity(String.format("Item with id %d not found", id))
@@ -47,7 +47,7 @@ public class ItemService {
                     .ok()
                     .entity(itemSerializer.serializeFull(item.get()))
                     .build();
-        }catch (Exception e){
+        } catch (Exception e) {
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
@@ -57,19 +57,24 @@ public class ItemService {
     @Produces(MediaType.TEXT_PLAIN)
     public Response postItem(JsonObject requestedItem) {
         try {
-            Item newItem = createNewArticle(requestedItem);
+            Item newItem = createNewItem(requestedItem);
+            verifyItem(newItem);
             dataSource.addItem(newItem);
             return Response.ok()
                     .entity(String.format("Item with id %s created successfully", newItem.getId()))
                     .build();
-        }catch (Exception e){
+        } catch (InvalidItemException e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(e.getMessage())
+                    .build();
+        } catch (Exception e) {
             return Response.serverError()
                     .entity(e.getMessage())
                     .build();
         }
     }
 
-    private Item createNewArticle(JsonObject requestedItem){
+    private Item createNewItem(JsonObject requestedItem) {
         return itemSerializer.deserializeWithId(requestedItem, getNextArticleId());
     }
 
@@ -77,4 +82,9 @@ public class ItemService {
         return dataSource.getItems().size() + 1;
     }
 
+    private void verifyItem(Item item) {
+        if (item.getPrice() <= 0) {
+            throw new InvalidItemException("Item has non-positive price");
+        }
+    }
 }
