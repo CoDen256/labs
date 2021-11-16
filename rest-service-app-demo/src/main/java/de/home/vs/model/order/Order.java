@@ -1,39 +1,24 @@
 package de.home.vs.model.order;
 
-import de.home.vs.model.article.Article;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Order {
-    private int orderId;
-    private List<Article> articles;
+    private final int id;
+    private final List<OrderedItem> items;
 
-
-    private Order() {
+    public Order(int id, List<OrderedItem> items) {
+        this.id = id;
+        this.items = items;
     }
 
-    public Order(int orderId, List<Article> articles) {
-        this.orderId = orderId;
-        this.articles = articles;
+    public int getId() {
+        return id;
     }
 
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public List<Article> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<Article> articles) {
-        this.articles = articles;
+    public List<OrderedItem> getItems() {
+        return Collections.unmodifiableList(items);
     }
 
     @Override
@@ -41,11 +26,11 @@ public class Order {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
         Order order = (Order) o;
-        return orderId == order.orderId;
+        return id == order.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId);
+        return Objects.hash(id);
     }
 }

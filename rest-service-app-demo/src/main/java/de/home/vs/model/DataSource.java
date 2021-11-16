@@ -1,16 +1,20 @@
 package de.home.vs.model;
 
-import de.home.vs.model.article.Article;
+import de.home.vs.model.item.Item;
 import de.home.vs.model.order.Order;
+import de.home.vs.model.order.OrderedItem;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class DataSource {
 
 	private static DataSource instance = null;
-	private final Set<Article> articles = new LinkedHashSet<Article>();
-	private final Set<Order> orders = new LinkedHashSet<Order>();
+	private final Set<Item> items = new LinkedHashSet<>();
+	private final Set<Order> orders = new LinkedHashSet<>();
 
 	private DataSource() {
 	}
@@ -23,66 +27,43 @@ public class DataSource {
 	}
 	
 	public void prefillData() {
-		addArticle(new Article(0, "Alpha", "AAA", 1000));
-		addArticle(new Article(1, "Beta", "BBB", 0));
-		addArticle(new Article(2, "Gamma", "GGG", 13000));
-		addArticle(new Article(3, "Delta", "DDD", 50));
-		addArticle(new Article(4, "Epsilon", "EEE", 9000));
+		addItem(new Item(0, "Alpha", "AAA", 1000));
+		addItem(new Item(1, "Beta", "BBB", 0));
+		addItem(new Item(2, "Gamma", "GGG", 13000));
+		addItem(new Item(3, "Delta", "DDD", 50));
+		addItem(new Item(4, "Epsilon", "EEE", 9000));
+
+		List<OrderedItem> orderedItems = new ArrayList<>();
+		orderedItems.add(new OrderedItem(0, 10));
+		orderedItems.add(new OrderedItem(2, 2));
+		orderedItems.add(new OrderedItem(4, 1));
 		addOrder(new Order(
 				0,
-				new ArrayList<Article>(articles)
+				orderedItems
 		));
 	}
 
-	public Article findArticleById(int id){
-		for (Article a: articles){
-			if (a.getId() == id){
-				return a;
-			}
-		}
-		return null;
+	public Optional<Item> findItemById(int id){
+		return items.stream().filter(i -> i.getId() == id).findAny();
 	}
 
-	public Set<Article> getArticles(){
-		return new LinkedHashSet<Article>(articles);
+	public Set<Item> getItems(){
+		return Collections.unmodifiableSet(items);
 	}
 
-
-	public void addOrder(Order a){
-		if (findOrderById(a.getOrderId()) != null)
-			throw new OrderAlreadyExistsException(String.format("Article with id %s already exists", a.getOrderId()));
-		orders.add(a);
+	public void addItem(Item a){
+		items.add(a);
 	}
 
-	public Order findOrderById(int id){
-		for (Order o: orders){
-			if (o.getOrderId() == id){
-				return o;
-			}
-		}
-		return null;
+	public Optional<Order> findOrderById(int id){
+		return orders.stream().filter(i -> i.getId() == id).findAny();
 	}
 
 	public Set<Order> getOrders(){
-		return new LinkedHashSet<Order>(orders);
+		return new LinkedHashSet<>(orders);
 	}
 
-	public void addArticle(Article a){
-		if (findOrderById(a.getId()) != null)
-			throw new ArticleAlreadyExistsException(String.format("Article with id %s already exists", a.getId()));
-		articles.add(a);
-	}
-
-
-	public static class ArticleAlreadyExistsException extends RuntimeException{
-		public ArticleAlreadyExistsException(String s) {
-			super(s);
-		}
-	}
-
-	public static class OrderAlreadyExistsException extends RuntimeException{
-		public OrderAlreadyExistsException(String s) {
-			super(s);
-		}
+	public void addOrder(Order a){
+		orders.add(a);
 	}
 }

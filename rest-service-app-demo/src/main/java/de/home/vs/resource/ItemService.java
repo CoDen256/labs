@@ -1,7 +1,7 @@
 package de.home.vs.resource;
 
 import de.home.vs.model.DataSource;
-import de.home.vs.model.order.Order;
+import de.home.vs.model.item.Item;
 import java.util.Optional;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
@@ -13,17 +13,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/orders")
-public class OrderService {
+@Path("/items")
+public class ItemService {
     private final DataSource dataSource = DataSource.getInstance();
-    private final OrderSerializer orderSerializer = new OrderSerializer("/orders/");
+    private final ItemSerializer itemSerializer = new ItemSerializer("/items/");
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrders(){
+    public Response getItems(){
         try {
             return Response
                     .ok()
-                    .entity(orderSerializer.serializeOrders(dataSource.getOrders(), orderSerializer::serializeShort))
+                    .entity(itemSerializer.serializeItems(dataSource.getItems(), itemSerializer::serializeShort))
                     .build();
         }catch (Exception e){
             return Response.serverError().entity(e.getMessage()).build();
@@ -33,34 +34,32 @@ public class OrderService {
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getOrderById(@PathParam("id") int id){
+    public Response getItemById(@PathParam("id") int id){
         try {
-            Optional<Order> order = dataSource.findOrderById(id);
-            if (!order.isPresent()){
+            Optional<Item> item = dataSource.findItemById(id);
+            if (!item.isPresent())
                 return Response
                         .status(Response.Status.NOT_FOUND)
-                        .entity(String.format("Order with id %d not found", id))
+                        .entity(String.format("Item with id %d not found", id))
                         .build();
-            }
             return Response
                     .ok()
-                    .entity(orderSerializer.serializeFull(order.get()))
+                    .entity(itemSerializer.serializeFull(item.get()))
                     .build();
         }catch (Exception e){
             return Response.serverError().entity(e.getMessage()).build();
         }
     }
 
-
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response postOrder(JsonObject requestedOrder) {
+    public Response postItem(JsonObject requestedItem) {
         try {
-            Order newOrder = createNewOrder(requestedOrder);
-            dataSource.addOrder(newOrder);
+            Item newItem = createNewArticle(requestedItem);
+            dataSource.addItem(newItem);
             return Response.ok()
-                    .entity(String.format("Order with id %s created successfully", newOrder.getId()))
+                    .entity(String.format("Item with id %s created successfully", newItem.getId()))
                     .build();
         }catch (Exception e){
             return Response.serverError()
@@ -69,12 +68,12 @@ public class OrderService {
         }
     }
 
-
-    private Order createNewOrder(JsonObject requestedOrder){
-        return orderSerializer.deserializeWithNewId(requestedOrder, getNextOrderId());
+    private Item createNewArticle(JsonObject requestedItem){
+        return itemSerializer.deserializeWithId(requestedItem, getNextArticleId());
     }
 
-    private int getNextOrderId(){
-        return dataSource.getOrders().size() + 1;
+    private int getNextArticleId() {
+        return dataSource.getItems().size() + 1;
     }
+
 }
