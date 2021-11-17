@@ -34,9 +34,11 @@ public class InterpolationCalculator {
         }
         Matrix M = new Matrix(matrix);
         Matrix R = new Matrix(rightSide);
-        Matrix x = M.solve(R);
+        Matrix result = M.solve(R);
 
-        double[] slopes = x.getColumnPackedCopy();
+        double[] slopes = result.getColumnPackedCopy();
+
+        new Plotter(-5, 5, 1000000).plot(x -> Math.sin(x)).save();
         return List.of();
     }
 
