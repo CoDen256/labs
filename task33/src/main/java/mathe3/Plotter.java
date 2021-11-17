@@ -24,7 +24,15 @@ public class Plotter {
         Xmax = xmax;
         Npoint = npoint;
         xStep = (Xmax - Xmin) / Npoint;
-        plot = Plot.plot(null);
+        plot = Plot.plot(Plot.plotOpts().height(1024).width(1024))
+        .xAxis("x", Plot.axisOpts().range(-5, 5))
+        .yAxis("y", Plot.axisOpts().range(-5, 5))
+        .series(UUID.randomUUID().toString(), Plot.data()
+                .xy(0, -5)
+                .xy(0, 5), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK))
+        .series(UUID.randomUUID().toString(), Plot.data()
+                .xy(-5,0)
+                .xy(5, 0), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK));
     }
 
     public Plotter function(DoubleUnaryOperator fx) {

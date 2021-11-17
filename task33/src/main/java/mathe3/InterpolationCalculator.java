@@ -4,6 +4,7 @@ package mathe3;
 import Jama.Matrix;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -40,8 +41,15 @@ public class InterpolationCalculator {
 
         double[] slopes = result.getColumnPackedCopy();
 
-        new Plotter(-5, 5, 100000)
-                .function(x -> Math.sin(x))
+        new Plotter(-5, 5, 1000)
+//                .function(x -> {
+//                    double t = x -1;
+//                    return - cb(t)/4. - 15. * sq(t)/4. + 5 * t + 2;
+//                })
+                .function(x -> {
+                    double t = x - 2;
+                    return cb(t)*19./4. - 9. * sq(t)/2. - 13./4 * t + 3;
+                })
                 .points(points)
                 .save();
         return Arrays.stream(slopes).boxed().collect(Collectors.toList());
@@ -91,7 +99,7 @@ public class InterpolationCalculator {
         return p1 + p2 + p3 + p4;
     }
     // POLYNOMIALS
-    private Function<Double, Double> t(int i){
+    private DoubleUnaryOperator t(int i){
         return x -> (x - x(i)) / (x(i + 1) - x(i));
     }
 

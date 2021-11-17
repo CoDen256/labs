@@ -70,7 +70,7 @@ public class Plot {
 		private Point grids = new Point(10 ,10); // grid lines by x and y
 		private Color gridColor = Color.GRAY;
 		private Stroke gridStroke = new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-		        BasicStroke.JOIN_MITER, 10.0f, new float[] { 5.0f }, 0.0f);
+		        BasicStroke.JOIN_MITER, 1000.0f, new float[] { 5.0f }, 0.0f);
 		private int tickSize = 5;
 		private Font labelFont = new Font("Arial", 0, 12);
 		private LegendFormat legend = LegendFormat.NONE;
