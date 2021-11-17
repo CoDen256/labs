@@ -3,7 +3,6 @@ package mathe3;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
@@ -12,35 +11,41 @@ public class Task21 {
     private static final double START = 0;
     private static final double END = 2;
     private static final int N = 5000;
+    private static final double APPROXIMATE_LENGTH = 29.608;
 
     public static void main(String[] args) {
 
-        List<Point> points = generateExponentially(START, END, N)
+        List<Point> points = generateEvenly(START, END, N)
                 .mapToObj(Task21::calculatePoint)
                 .collect(Collectors.toList());
 
         System.out.println(points);
         System.out.println(calculateLengthBetweenPoints(points));
+
+   
+        List<Double> pts = new ArrayList<>();
+        double step = (END - START)/N;
+        double current = START;
+        Point prev = calculatePoint(0);
+        for (int i = 1; i < N; i++) {
+            Point point = calculatePoint(i);
+
+            double length = length(prev, point);
+            while (length > 0.1){
+
+            }
+
+            prev = point;
+        }
+
     }
 
 
     private static DoubleStream generateEvenly(double start, double end, int n) {
         double step = (end - start) / n;
         return DoubleStream
-                .iterate(start, s -> Math.max(start, Math.min(end, s + step))) // sometimes t > end because of adding floats
+                .iterate(start, s -> Math.max(start, Math.min(end, s + step))) // bound t to be start <= n <= end
                 .limit(n + 1);
-    }
-
-    private static DoubleStream generateExponentially(double start, double end, int n) {
-        double step = 1;
-        double current = start;
-        List<Double> doubleList = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            doubleList.add(current);
-            current += step;
-            step /= 2;
-        }
-        return doubleList.stream().mapToDouble(Double::doubleValue);
     }
 
     private static double calculateLengthBetweenPoints(List<Point> points){
