@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public class Plotter {
@@ -17,7 +15,8 @@ public class Plotter {
     private final int Npoint;
     private final Plot plot;
     private final double xStep;
-
+    private int plotNumber= 0;
+    private Color[] colors = new Color[]{Color.BLACK, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
 
     public Plotter(double xmin, double xmax, int npoint) {
         Xmin = xmin;
@@ -45,7 +44,7 @@ public class Plotter {
         Plot.Data data = Plot.data()
                 .xy(xs, ys);
 
-        plot.series(UUID.randomUUID().toString(), data, null);
+        plot.series(UUID.randomUUID().toString(), data, Plot.seriesOpts().color(colors[plotNumber++]));
         return this;
     }
 

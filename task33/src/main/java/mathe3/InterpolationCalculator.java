@@ -29,7 +29,7 @@ public class InterpolationCalculator {
     public List<Double> calculateSlopes(){
 
         double[][] matrix = new double[nEquations][nEquations];
-        double[][] rightSide = new double[1][nEquations];
+        double[][] rightSide = new double[nEquations][1];
         for (int i = 0; i < nEquations; i++) {
             double[] row = createRow(i);
             System.arraycopy(row, 0, matrix[i], 0, nEquations); // copy first coefficients
@@ -40,15 +40,16 @@ public class InterpolationCalculator {
         Matrix result = M.solve(R);
 
         double[] slopes = result.getColumnPackedCopy();
-
-        Plotter plotter = new Plotter(-5, 5, 1000).points(points);
         List<Double> allSlopes = Arrays.stream(slopes).boxed().collect(Collectors.toList());
+
+        Plotter plotter = new Plotter(-5, 5, 1000);
         allSlopes.add(0, slopeY0);
         allSlopes.add(slopeYN);
 
         for (int i = 0; i < n; i++) {
             plotter.function(p(i, allSlopes));
         }
+        plotter.points(points).save();
         return allSlopes;
     }
 
