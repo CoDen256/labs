@@ -8,11 +8,15 @@ public class InterpolationCalculator {
     private final List<Point> points;
     private final double slopeY0;
     private final double slopeYN;
+    private final int n; // number of splines
+                         // n+1 - points
+                         // n-1 - equations
 
     public InterpolationCalculator(List<Point> points, double slopeY0, double slopeYN) {
         this.points = points;
         this.slopeY0 = slopeY0;
         this.slopeYN = slopeYN;
+        this.n = points.size() - 1;
     }
 
     public List<Double> calculateSlopes(){
@@ -20,7 +24,7 @@ public class InterpolationCalculator {
         return List.of();
     }
 
-
+    // MATRIX
     private double a(int i){
         return 2 / (x(i+1) - x(i));
 
@@ -40,6 +44,19 @@ public class InterpolationCalculator {
         return p1 + p2 + p3 + p4;
     }
 
+    private double rightSide(int i){
+        double rightSide = 0;
+        rightSide += r(i);
+        if (i == 0){
+            rightSide += -a(i)*slopeY0;
+        }
+        if (i >= n-3){
+            rightSide += -c(i)*slopeYN;
+        }
+
+        return rightSide;
+    }
+    // POLYNOMIALS
     private Function<Double, Double> t(int i){
         return x -> (x - x(i)) / (x(i + 1) - x(i));
     }
@@ -60,6 +77,7 @@ public class InterpolationCalculator {
         return - sq(t) + cb(t);
     }
 
+    // COMMON
     private double x(int i){
         return points.get(i).x;
     }
