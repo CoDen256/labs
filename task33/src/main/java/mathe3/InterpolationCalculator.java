@@ -41,18 +41,15 @@ public class InterpolationCalculator {
 
         double[] slopes = result.getColumnPackedCopy();
 
-        new Plotter(-5, 5, 1000)
-                .function(x -> {
-                    double t = t(0).applyAsDouble(x);
-                    return - cb(t)/4. - 15. * sq(t)/4. + 5 * t + 2;
-                })
-                .function(x -> {
-                    double t = t(1).applyAsDouble(x);
-                    return cb(t)*19./4. - 9. * sq(t)/2. - 13./4 * t + 3;
-                })
-                .points(points)
-                .save();
-        return Arrays.stream(slopes).boxed().collect(Collectors.toList());
+        Plotter plotter = new Plotter(-5, 5, 1000).points(points);
+        List<Double> allSlopes = Arrays.stream(slopes).boxed().collect(Collectors.toList());
+        allSlopes.add(0, slopeY0);
+        allSlopes.add(slopeYN);
+
+        for (int i = 0; i < n; i++) {
+            plotter.function(p(i, allSlopes));
+        }
+        return allSlopes;
     }
 
     private double[] createRow(int i){

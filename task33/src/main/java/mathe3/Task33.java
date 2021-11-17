@@ -7,7 +7,8 @@ public class Task33 {
     private static final List<Point> points = List.of(
             new Point(1, 2),
             new Point(2, 3),
-            new Point(3, 0)
+            new Point(3, 0),
+            new Point(4, 1)
     );
     private static final double slopeY0 = 5;
     private static final double slopeYN = 2;
