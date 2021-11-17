@@ -30,11 +30,13 @@ public class InterpolationCalculator {
         for (int i = 0; i < nEquations; i++) {
             double[] row = createRow(i);
             System.arraycopy(row, 0, matrix[i], 0, nEquations); // copy first coefficients
-            rightSide[i][0] = row[nEquations-1];                     // copy right side
+            rightSide[i][0] = row[nEquations];                     // copy right side
         }
         Matrix M = new Matrix(matrix);
         Matrix R = new Matrix(rightSide);
         Matrix x = M.solve(R);
+
+        double[] slopes = x.getColumnPackedCopy();
         return List.of();
     }
 
@@ -50,10 +52,10 @@ public class InterpolationCalculator {
         // Calculate right side depending on the current equation number
         double rightSide = r(i);
         if (i == 0){ // first equation
-            rightSide += coeffs[0] * slopeY0; // move first coefficient to the right side
+            rightSide -= coeffs[0] * slopeY0; // move first coefficient to the right side
         }
         if (i == nEquations - 1){ // last equation
-            rightSide += coeffs[2] * slopeYN; // move last coefficient to the right side
+            rightSide -= coeffs[2] * slopeYN; // move last coefficient to the right side
         }
 
         // add right side value to the end of the array
