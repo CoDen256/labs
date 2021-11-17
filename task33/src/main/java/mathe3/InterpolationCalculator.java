@@ -1,9 +1,11 @@
 package mathe3;
 
+
 import Jama.Matrix;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class InterpolationCalculator {
 
@@ -38,8 +40,11 @@ public class InterpolationCalculator {
 
         double[] slopes = result.getColumnPackedCopy();
 
-        new Plotter(-5, 5, 1000000).plot(x -> Math.sin(x)).save();
-        return List.of();
+        new Plotter(-5, 5, 100000)
+                .function(x -> Math.sin(x))
+                .points(points)
+                .save();
+        return Arrays.stream(slopes).boxed().collect(Collectors.toList());
     }
 
     private double[] createRow(int i){
