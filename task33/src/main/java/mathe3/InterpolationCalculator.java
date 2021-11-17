@@ -1,6 +1,7 @@
 package mathe3;
 
 import Jama.Matrix;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 
@@ -9,26 +10,56 @@ public class InterpolationCalculator {
     private final List<Point> points;
     private final double slopeY0;
     private final double slopeYN;
-    private final int n; // number of splines
-                         // n+1 - points
-                         // n-1 - equations
+    private final int n;                           // number of splines
+    private final int nPoints;                     // n+1 - points
+    private final int nEquations;                  // n-1 - equations (number of slopes to find (y1...y(n-1))
 
     public InterpolationCalculator(List<Point> points, double slopeY0, double slopeYN) {
         this.points = points;
         this.slopeY0 = slopeY0;
         this.slopeYN = slopeYN;
         this.n = points.size() - 1;
+        this.nPoints = n + 1;
+        this.nEquations = n - 1;
     }
 
     public List<Double> calculateSlopes(){
 
-        double[][] aarr = {{1, 1, 1}, {0, 2, 5}, {2, 5, -1}};
-        double[][] barr = {{6}, {-4}, {27}};
-        Matrix A = new Matrix(aarr);
-        Matrix b = new Matrix(barr);
-        Matrix x = A.solve(b);
-
+        double[][] matrix = new double[nEquations][nEquations];
+        double[][] rightSide = new double[1][nEquations];
+        for (int i = 0; i < nEquations; i++) {
+            double[] row = createRow(i);
+            System.arraycopy(row, 0, matrix[i], 0, nEquations); // copy first coefficients
+            rightSide[i][0] = row[nEquations-1];                     // copy right side
+        }
+        Matrix M = new Matrix(matrix);
+        Matrix R = new Matrix(rightSide);
+        Matrix x = M.solve(R);
         return List.of();
+    }
+
+    private double[] createRow(int i){
+        // Copy, shift and truncate the coefficients
+        double[] coeffs = {a(i), b(i), c(i)};
+        double[] shiftedCoeffs = new double[nEquations+2];
+        double[] truncatedCoeffs = new double[nEquations];
+        Arrays.fill(shiftedCoeffs, 0);
+        System.arraycopy(coeffs, 0, shiftedCoeffs, i, coeffs.length); // shift on i position
+        System.arraycopy(shiftedCoeffs, 1, truncatedCoeffs, 0, truncatedCoeffs.length); // remove first and last
+
+        // Calculate right side depending on the current equation number
+        double rightSide = r(i);
+        if (i == 0){ // first equation
+            rightSide += coeffs[0] * slopeY0; // move first coefficient to the right side
+        }
+        if (i == nEquations - 1){ // last equation
+            rightSide += coeffs[2] * slopeYN; // move last coefficient to the right side
+        }
+
+        // add right side value to the end of the array
+        double[] resultArray = Arrays.copyOf(truncatedCoeffs, truncatedCoeffs.length+1);
+        resultArray[truncatedCoeffs.length] = rightSide;
+        return resultArray;
     }
 
     // MATRIX
@@ -49,19 +80,6 @@ public class InterpolationCalculator {
         double p3 = -6 * y(i+1) / sq(x(i + 2) - x(i + 1));
         double p4 = 6 * y(i+2) / sq(x(i + 2) - x(i + 1));
         return p1 + p2 + p3 + p4;
-    }
-
-    private double rightSide(int i){
-        double rightSide = 0;
-        rightSide += r(i);
-        if (i == 0){
-            rightSide += -a(i)*slopeY0;
-        }
-        if (i >= n-3){
-            rightSide += -c(i)*slopeYN;
-        }
-
-        return rightSide;
     }
     // POLYNOMIALS
     private Function<Double, Double> t(int i){
