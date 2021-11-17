@@ -1,5 +1,6 @@
 package mathe3;
 
+import Jama.Matrix;
 import java.util.List;
 import java.util.function.Function;
 
@@ -20,6 +21,12 @@ public class InterpolationCalculator {
     }
 
     public List<Double> calculateSlopes(){
+
+        double[][] aarr = {{1, 1, 1}, {0, 2, 5}, {2, 5, -1}};
+        double[][] barr = {{6}, {-4}, {27}};
+        Matrix A = new Matrix(aarr);
+        Matrix b = new Matrix(barr);
+        Matrix x = A.solve(b);
 
         return List.of();
     }
