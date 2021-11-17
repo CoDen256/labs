@@ -12,7 +12,6 @@ import mathe3.Point;
 
 public class Plotter {
 
-    private static final double PADDING = 0.5;
     private static final int HEIGHT = 768;
     private static final int WIDTH = 768;
     private final Random random = new Random();
@@ -24,12 +23,12 @@ public class Plotter {
     private final double minY;
     private final double maxY;
 
-    public Plotter(List<Point> points, int nPoints) {
+    public Plotter(List<Point> points, int nPoints, double padding) {
         double[] minMax = calculateBounds(points);
-        minX = minMax[0] - PADDING;
-        maxX = minMax[1] + PADDING;
-        minY = minMax[2] - PADDING;
-        maxY = minMax[3] + PADDING;
+        minX = minMax[0] - padding;
+        maxX = minMax[1] + padding;
+        minY = minMax[2] - padding;
+        maxY = minMax[3] + padding;
         step = (maxX - minX) / nPoints;
         plot = Plot
                 .plot(Plot.plotOpts().height(HEIGHT).width(WIDTH))
@@ -37,10 +36,10 @@ public class Plotter {
                 .yAxis("y", Plot.axisOpts().range(minY, maxY))
                 .series(randomName(), Plot.data()
                         .xy(0, minY)
-                        .xy(0, maxY), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK))
+                        .xy(0, maxY), Plot.seriesOpts().line(Plot.Line.DASHED).lineWidth(2).color(Color.BLACK))
                 .series(randomName(), Plot.data()
                         .xy(minX, 0)
-                        .xy(maxX, 0), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK));
+                        .xy(maxX, 0), Plot.seriesOpts().line(Plot.Line.DASHED).lineWidth(2).color(Color.BLACK));
     }
 
     private String randomName() {
