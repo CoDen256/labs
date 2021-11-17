@@ -5,8 +5,8 @@ import Jama.Matrix;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import mathe3.plot.Plotter;
 
 public class InterpolationCalculator {
 
@@ -31,26 +31,24 @@ public class InterpolationCalculator {
         double[][] matrix = new double[nEquations][nEquations];
         double[][] rightSide = new double[nEquations][1];
         for (int i = 0; i < nEquations; i++) {
-            double[] row = createRow(i);
+            double[] row = createRow(i);  // last element is right side, everything else are coefficients
             System.arraycopy(row, 0, matrix[i], 0, nEquations); // copy first coefficients
-            rightSide[i][0] = row[nEquations];                     // copy right side
+            rightSide[i][0] = row[nEquations];                       // copy right side
         }
+        double[] slopes = solveMatrix(matrix, rightSide);
+        List<Double> allSlopes = Arrays.stream(slopes).boxed().collect(Collectors.toList());
+        allSlopes.add(0, slopeY0); // insert first given slope as first
+        allSlopes.add(slopeYN);      // insert last given slope as last
+
+        plotAndSave(allSlopes);
+        return allSlopes;
+    }
+
+    private double[] solveMatrix(double[][] matrix, double[][] rightSide) {
         Matrix M = new Matrix(matrix);
         Matrix R = new Matrix(rightSide);
         Matrix result = M.solve(R);
-
-        double[] slopes = result.getColumnPackedCopy();
-        List<Double> allSlopes = Arrays.stream(slopes).boxed().collect(Collectors.toList());
-
-        Plotter plotter = new Plotter(points, 1000);
-        allSlopes.add(0, slopeY0);
-        allSlopes.add(slopeYN);
-
-        for (int i = 0; i < n; i++) {
-            plotter.function(p(i, allSlopes), x(i), x(i+1));
-        }
-        plotter.points(points).save();
-        return allSlopes;
+        return result.getColumnPackedCopy();
     }
 
     private double[] createRow(int i){
@@ -77,18 +75,31 @@ public class InterpolationCalculator {
         return resultArray;
     }
 
+    private void plotAndSave(List<Double> allSlopes) {
+        Plotter plotter = new Plotter(points, 100000);
+        for (int i = 0; i < n; i++) {
+            plotter.function(p(i, allSlopes), x(i), x(i+1));
+            // uncomment to see how polynomial behaves outside of the bounds
+//            plotter.functionExceptRange(p(i, allSlopes), x(i), x(i+1));
+        }
+        plotter.points(points).save(); // saves to result.png
+    }
+
     // MATRIX
+    // coefficient for yi slope
     private double a(int i){
         return 2 / (x(i+1) - x(i));
 
     }
+    // coefficient for y(i+1) slope
     private double b(int i){
         return 4 * (1/(x(i+1)-x(i)) + 1/(x(i+2)-x(i+1)));
     }
+    // coefficient for y(i+2) slope
     private double c(int i){
         return 2/(x(i+2)-x(i+1));
     }
-
+    // right side of the matrix
     private double r(int i){
         double p1 = -6 * y(i) / sq(x(i + 1) - x(i));
         double p2 = 6 * y(i+1) / sq(x(i + 1) - x(i));
@@ -96,11 +107,13 @@ public class InterpolationCalculator {
         double p4 = 6 * y(i+2) / sq(x(i + 2) - x(i + 1));
         return p1 + p2 + p3 + p4;
     }
+
     // POLYNOMIALS
+    // calculate a function for Pi(x) depending on i and slopes
     private DoubleUnaryOperator p(int i, List<Double> slopes){
         double yPrimeI0 = slopes.get(i);
         double yPrimeI1 = slopes.get(i+1);
-        DoubleUnaryOperator tConversion = t(i);
+        DoubleUnaryOperator tConversion = t(i); // t(x) for i
 
         return x ->{
             double t = tConversion.applyAsDouble(x);

@@ -1,4 +1,4 @@
-package mathe3;
+package mathe3.plot;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

@@ -1,4 +1,4 @@
-package mathe3;
+package mathe3.plot;
 
 import java.awt.Color;
 import java.io.IOException;
@@ -8,23 +8,28 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.DoubleUnaryOperator;
 import java.util.stream.Collectors;
+import mathe3.Point;
 
 public class Plotter {
 
-    private static final double padding = 0.5;
+    private static final double PADDING = 0.5;
     private static final int HEIGHT = 768;
     private static final int WIDTH = 768;
     private final Random random = new Random();
 
     private final Plot plot;
     private final double step;
+    private final double minX;
+    private final double maxX;
+    private final double minY;
+    private final double maxY;
 
     public Plotter(List<Point> points, int nPoints) {
         double[] minMax = calculateBounds(points);
-        double minX = minMax[0] - padding;
-        double maxX = minMax[1] + padding;
-        double minY = minMax[2] - padding;
-        double maxY = minMax[3] + padding;
+        minX = minMax[0] - PADDING;
+        maxX = minMax[1] + PADDING;
+        minY = minMax[2] - PADDING;
+        maxY = minMax[3] + PADDING;
         step = (maxX - minX) / nPoints;
         plot = Plot
                 .plot(Plot.plotOpts().height(HEIGHT).width(WIDTH))
@@ -42,7 +47,7 @@ public class Plotter {
         return UUID.randomUUID().toString();
     }
 
-    private Color randomColor(){
+    private Color randomColor() {
         return new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255));
     }
 
@@ -61,17 +66,38 @@ public class Plotter {
         return new double[]{xMin, xMin + maxDiff, yMin, yMin + maxDiff};
     }
 
-    public Plotter function(DoubleUnaryOperator fx, double leftbound, double rightbound) {
-        List<Double> xs = new ArrayList<>();
-        List<Double> ys = new ArrayList<>();
-        for (double x = leftbound; x <= rightbound; x += step) {
-            xs.add(x);
-            ys.add(fx.applyAsDouble(x));
-        }
-        Plot.Data data = Plot.data().xy(xs, ys);
+    public Plotter function(DoubleUnaryOperator fx) {
+        return function(fx, minX, maxX);
+    }
 
+    public Plotter functionExceptRange(DoubleUnaryOperator px, double left, double right) {
+        Plot.Data leftData = calculateFunctionPoints(px, minX, left, 0.05);
+        Plot.Data rightData = calculateFunctionPoints(px, right, maxX, 0.05);
+
+        Plot.DataSeriesOptions opts = Plot
+                .seriesOpts()
+                .color(Color.GRAY)
+                .line(Plot.Line.DASHED)
+                .lineWidth(1);
+        plot.series(randomName(), leftData, opts);
+        plot.series(randomName(), rightData, opts);
+        return this;
+    }
+
+    public Plotter function(DoubleUnaryOperator px, double left, double right) {
+        Plot.Data data = calculateFunctionPoints(px, left, right, step);
         plot.series(randomName(), data, Plot.seriesOpts().color(randomColor()));
         return this;
+    }
+
+    private Plot.Data calculateFunctionPoints(DoubleUnaryOperator px, double left, double right, double step) {
+        List<Double> xs = new ArrayList<>();
+        List<Double> ys = new ArrayList<>();
+        for (double x = left; x <= right; x += step) {
+            xs.add(x);
+            ys.add(px.applyAsDouble(x));
+        }
+        return Plot.data().xy(xs, ys);
     }
 
     public Plotter point(Point point) {
