@@ -99,6 +99,18 @@ public class InterpolationCalculator {
         return p1 + p2 + p3 + p4;
     }
     // POLYNOMIALS
+    private DoubleUnaryOperator p(int i, List<Double> slopes){
+        double yPrimeI0 = slopes.get(i);
+        double yPrimeI1 = slopes.get(i+1);
+        DoubleUnaryOperator tConversion = t(i);
+
+        return x ->{
+            double t = tConversion.applyAsDouble(x);
+            return y(i) * alpha1(t) + y(i + 1) * alpha2(t)
+                    + (x(i+1) - x(i)) * (yPrimeI0 * alpha3(t) + yPrimeI1 * alpha4(t));
+        };
+    }
+
     private DoubleUnaryOperator t(int i){
         return x -> (x - x(i)) / (x(i + 1) - x(i));
     }
