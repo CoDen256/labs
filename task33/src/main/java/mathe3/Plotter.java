@@ -10,34 +10,54 @@ import java.util.stream.Collectors;
 
 public class Plotter {
 
-    private final double Xmin;
-    private final double Xmax;
-    private final int Npoint;
+    private final int nPoints;
     private final Plot plot;
     private final double xStep;
     private int plotNumber= 0;
     private Color[] colors = new Color[]{Color.BLACK, Color.CYAN, Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.WHITE};
+    private double padding = 0.5;
+    public Plotter(List<Point> points, int nPoints) {
+        double xMin = 0;
+        double xMax = 0;
+        double yMin = 0;
+        double yMax = 0;
+        for (Point point : points){
+            if (point.x > xMax){
+                xMax = point.x;
+            }
+            if (point.x < xMin){
+                xMin = point.x;
+            }
+            if (point.y < yMin){
+                yMin = point.y;
+            }
+            if (point.y > yMax){
+                yMax = point.y;
+            }
+        }
+        double maxDiff = Math.max(xMax - xMin, yMax - yMin);
+        double minX = xMin - padding;
+        double maxX = xMin + maxDiff + padding;
+        double minY = yMin - padding;
+        double maxY = yMin + maxDiff + padding;
 
-    public Plotter(double xmin, double xmax, int npoint) {
-        Xmin = xmin;
-        Xmax = xmax;
-        Npoint = npoint;
-        xStep = (Xmax - Xmin) / Npoint;
+        this.nPoints = nPoints;
+        xStep = (maxX - minX) / this.nPoints;
         plot = Plot.plot(Plot.plotOpts().height(1024).width(1024))
-        .xAxis("x", Plot.axisOpts().range(-5, 5))
-        .yAxis("y", Plot.axisOpts().range(-5, 5))
+        .xAxis("x", Plot.axisOpts().range(minX, maxX))
+        .yAxis("y", Plot.axisOpts().range(minY, maxY))
         .series(UUID.randomUUID().toString(), Plot.data()
-                .xy(0, -5)
-                .xy(0, 5), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK))
+                .xy(0, minY)
+                .xy(0, maxY), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK))
         .series(UUID.randomUUID().toString(), Plot.data()
-                .xy(-5,0)
-                .xy(5, 0), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK));
+                .xy(minX,0)
+                .xy(maxX, 0), Plot.seriesOpts().line(Plot.Line.DASHED).color(Color.BLACK));
     }
 
-    public Plotter function(DoubleUnaryOperator fx) {
+    public Plotter function(DoubleUnaryOperator fx, double leftbound, double rightbound) {
         List<Double> xs = new ArrayList<>();
         List<Double> ys = new ArrayList<>();
-        for (double x = Xmin; x <= Xmax; x += xStep) {
+        for (double x = leftbound; x <= rightbound; x += xStep) {
             xs.add(x);
             ys.add(fx.applyAsDouble(x));
         }

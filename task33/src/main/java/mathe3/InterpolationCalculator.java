@@ -42,12 +42,12 @@ public class InterpolationCalculator {
         double[] slopes = result.getColumnPackedCopy();
         List<Double> allSlopes = Arrays.stream(slopes).boxed().collect(Collectors.toList());
 
-        Plotter plotter = new Plotter(-5, 5, 1000);
+        Plotter plotter = new Plotter(points, 1000);
         allSlopes.add(0, slopeY0);
         allSlopes.add(slopeYN);
 
         for (int i = 0; i < n; i++) {
-            plotter.function(p(i, allSlopes));
+            plotter.function(p(i, allSlopes), x(i), x(i+1));
         }
         plotter.points(points).save();
         return allSlopes;
