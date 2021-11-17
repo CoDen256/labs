@@ -13,6 +13,8 @@ public class Task33 {
     private static final double slopeYN = 2;
 
     public static void main(String[] args) {
+
+
         List<Double> result = new InterpolationCalculator(points, slopeY0, slopeYN).calculateSlopes();
         System.out.println(result);
     }
