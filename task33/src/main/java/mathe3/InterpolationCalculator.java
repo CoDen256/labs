@@ -42,12 +42,12 @@ public class InterpolationCalculator {
         double[] slopes = result.getColumnPackedCopy();
 
         new Plotter(-5, 5, 1000)
-//                .function(x -> {
-//                    double t = x -1;
-//                    return - cb(t)/4. - 15. * sq(t)/4. + 5 * t + 2;
-//                })
                 .function(x -> {
-                    double t = x - 2;
+                    double t = t(0).applyAsDouble(x);
+                    return - cb(t)/4. - 15. * sq(t)/4. + 5 * t + 2;
+                })
+                .function(x -> {
+                    double t = t(1).applyAsDouble(x);
                     return cb(t)*19./4. - 9. * sq(t)/2. - 13./4 * t + 3;
                 })
                 .points(points)
@@ -133,6 +133,6 @@ public class InterpolationCalculator {
     }
 
     private static double cb(double val){
-        return val * val;
+        return val * val * val;
     }
 }
