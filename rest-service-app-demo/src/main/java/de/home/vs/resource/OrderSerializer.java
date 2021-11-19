@@ -6,7 +6,6 @@ import jakarta.json.Json;
 import jakarta.json.JsonArray;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
@@ -16,9 +15,11 @@ import java.util.stream.IntStream;
 public class OrderSerializer {
 
     private final String baseUrl;
+    private final String baseItemUrl;
 
-    public OrderSerializer(String baseOrderUrl) {
+    public OrderSerializer(String baseOrderUrl, String baseItemUrl) {
         this.baseUrl = baseOrderUrl;
+        this.baseItemUrl = baseItemUrl;
     }
 
     public JsonArray serializeOrders(Collection<Order> orders, Function<Order, JsonObject> serializationMethod) {
@@ -50,7 +51,7 @@ public class OrderSerializer {
 
     public JsonObject serializeItem(OrderedItem item) {
         return Json.createObjectBuilder()
-                .add("id", item.getId())
+                .add("link", baseItemUrl+item.getId())
                 .add("quantity", item.getQuantity())
                 .build();
     }

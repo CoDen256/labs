@@ -18,7 +18,7 @@ import jakarta.ws.rs.core.Response;
 @Path("/orders")
 public class OrderService {
     private final DataSource dataSource = DataSource.getInstance();
-    private final OrderSerializer orderSerializer = new OrderSerializer("/rest/orders/");
+    private final OrderSerializer orderSerializer = new OrderSerializer("/rest/orders/", "/rest/items/");
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrders(){
