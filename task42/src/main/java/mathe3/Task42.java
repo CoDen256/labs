@@ -17,7 +17,7 @@ public class Task42 {
     public static void main(String[] args) {
         List<Double> xs = generateXWithConstantDistance(N);
         List<Double> ys = generateY(xs, x -> x * x);
-        double integral = new IntegralCalculator(xs, ys).calculate();
+        double integral = new IntegralCalculator(xs, ys).integrate();
     }
 
     public static List<Double> generateXWithConstantDistance(int n){
