@@ -12,12 +12,13 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 4;
+    public static final int N = 100;
 
     public static void main(String[] args) {
         List<Double> xs = generateXWithConstantDistance(N);
         List<Double> ys = generateY(xs, x -> x * x);
-        double integral = new IntegralCalculator(xs, ys).integrate();
+        double integral = new IntegralCalculator(xs, ys).integrate(START, END);
+        System.out.println(integral);
     }
 
     public static List<Double> generateXWithConstantDistance(int n){

@@ -22,7 +22,7 @@ public class IntegralCalculator {
     public double integrate(double from, double to) {
         double sum = 0;
         for (int k = 0; k < nPoints-1; k++) {
-            sum += y(k) * g(k, this::integrateByTrapezoidalRule, from, to);
+            sum += y(k) * g(k, this::integrateByTrapezoidalRule2, from, to);
         }
         return sum;
     }
@@ -42,13 +42,19 @@ public class IntegralCalculator {
         return sum;
     }
 
+    public double integrateByTrapezoidalRule2(DoubleUnaryOperator fx, double from, double to){
+        return 0.5 * (y(0) + y(nPoints-1));
+    }
+
     private DoubleUnaryOperator lagrange(int k){
         return x -> {
             double product = 1;
 
             for (int i = 0; i < nPoints; i++) {
                 if (i == k) continue;
-                product *= (x - x(i)) / (x(k) - x(i));
+                double upper = x - x(i);
+                double lower = x(k) - x(i);
+                product *= upper / lower;
             }
 
             return product;
