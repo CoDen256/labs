@@ -4,9 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.IntToDoubleFunction;
-import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -14,12 +12,16 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
+    public static final int N = 4;
 
     public static void main(String[] args) {
+        List<Double> xs = generateXWithConstantDistance(N);
+        List<Double> ys = generateY(xs, x -> x * x);
+        double integral = new IntegralCalculator(xs, ys).calculate();
     }
 
     public static List<Double> generateXWithConstantDistance(int n){
-        double step = (START - END) / n;
+        double step = (END - START) / n;
         return Stream.iterate(START, x -> x + step).limit(n + 1).collect(Collectors.toList());
     }
 

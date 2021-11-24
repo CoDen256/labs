@@ -4,23 +4,29 @@ import java.util.List;
 
 public class IntegralCalculator {
 
-    private final List<Double> xPoints;
-    private final List<Double> yPoints;
-    private final int n;
+    private final List<Double> xs;
+    private final List<Double> ys;
+    private final int nPoints; // number of points
+    private final int n;       // degree
 
-    public IntegralCalculator(List<Double> xPoints, List<Double> yPoints) {
-        if (xPoints.size() == yPoints.size()) throw new IllegalArgumentException("xPoints size should equal yPoints Size");
-        this.xPoints = xPoints;
-        this.yPoints = yPoints;
-        n = xPoints.size();
+    public IntegralCalculator(List<Double> xs, List<Double> ys) {
+        if (xs.size() != ys.size()) throw new IllegalArgumentException("xPoints size should equal yPoints Size");
+        this.xs = xs;
+        this.ys = ys;
+        nPoints = xs.size();
+        n = nPoints - 1;
     }
 
 
     private double x(int i){
-        return xPoints.get(i);
+        return xs.get(i);
     }
 
     private double y(int i){
-        return xPoints.get(i);
+        return xs.get(i);
+    }
+
+    public double calculate() {
+        return 0;
     }
 }
