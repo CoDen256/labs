@@ -14,7 +14,7 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 500;
+    public static final int N = 10000;
 
     public static void main(String[] args) {
         List<Double> xs0 = generateXWithConstantDistance(N);

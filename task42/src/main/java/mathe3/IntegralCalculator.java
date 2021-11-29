@@ -31,7 +31,7 @@ public class IntegralCalculator {
 
 
     private double g(int k, double from, double to){
-        return integrateByTrapezoidalRule(lagrangeCalculator.lagrange1(k), from, to);
+        return integrateByTrapezoidalRule(lagrangeCalculator.lagrange(k), from, to);
     }
 
     public double integrateByTrapezoidalRule(DoubleUnaryOperator fx, double from, double to){

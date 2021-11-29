@@ -30,13 +30,16 @@ public class LagrangeCalculator {
                 double upper = x - x(i);
                 double lower = x(k) - x(i);
                 product *= upper / lower;
+                if (Double.isInfinite(product)){
+                    product = Double.MIN_NORMAL; // workaround so product won't be -Infinity
+                }
             }
 
             return product;
         };
     }
 
-    public DoubleUnaryOperator lagrange1(int k){ // wrong
+    public DoubleUnaryOperator lagrange1(int k){ // not working somehow
         return x -> {
             double upper = 1;
             double lower = 1;
