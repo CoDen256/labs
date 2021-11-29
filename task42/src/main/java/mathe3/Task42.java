@@ -14,7 +14,7 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 600;
+    public static final int N = 500;
 
     public static void main(String[] args) {
         List<Double> xs0 = generateXWithConstantDistance(N);
@@ -26,10 +26,9 @@ public class Task42 {
         List<Double> ys = generateXFromValues(1, 2, 3, 0, -3);
 
         List<Point> pts = IntStream.range(0, xs.size()).mapToObj(i -> new Point(xs.get(i), ys.get(i))).collect(Collectors.toList());
-        IntegralCalculator integralCalculator = new IntegralCalculator(xs, ys);
         new Plotter(pts, 100000, 0.5)
                 .points(pts)
-                .function(new LagrangeCalculator(xs, ys).lagrangePolynom())
+                .function(new LagrangeCalculator(xs, ys).lagrangePolynomial())
                 .save();
 
 //        System.out.println(integral);
@@ -37,7 +36,7 @@ public class Task42 {
 
     public static List<Double> generateXWithConstantDistance(int n){
         double step = (END - START) / n;
-        return Stream.iterate(START, x -> x + step).limit(n + 1).collect(Collectors.toList());
+        return Stream.iterate(START, x -> Math.min(END, x + step)).limit(n + 1).collect(Collectors.toList());
     }
 
     public static List<Double> generateXFromValues(double... xs){
