@@ -31,7 +31,7 @@ public class LagrangeCalculator {
                 double lower = x(k) - x(i);
                 product *= upper / lower;
                 if (Double.isInfinite(product)){
-                    product = Double.MIN_NORMAL; // workaround so product won't be -Infinity
+                    return 0; // workaround so product won't be -Infinity
                 }
             }
 

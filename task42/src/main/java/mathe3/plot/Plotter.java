@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 
 public class Plotter {
 
-    private static final int HEIGHT = 768;
-    private static final int WIDTH = 768;
+    private static final int HEIGHT = 2048;
+    private static final int WIDTH = 2048;
     private final Random random = new Random();
 
     private final Plot plot;
@@ -113,9 +113,9 @@ public class Plotter {
         return this;
     }
 
-    public void save() {
+    public void save(int i) {
         try {
-            plot.save("result", "png");
+            plot.save("result"+i, "png");
         } catch (IOException e) {
             throw new IllegalStateException("Unable to save file");
         }

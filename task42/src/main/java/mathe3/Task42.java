@@ -14,24 +14,26 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 10000;
+    public static final int N = 1000;
+    public static final DoubleUnaryOperator fx = x -> Math.exp(x);
 
     public static void main(String[] args) {
-        List<Double> xs0 = generateXWithConstantDistance(N);
-        List<Double> ys0 = generateY(xs0, x -> Math.sin(x));
-        double integral = new IntegralCalculator(xs0, ys0).integrate(START, END);
+        List<Double> xs = generateXWithConstantDistance(N);
+        List<Double> ys = generateY(xs, fx);
+        integrate(xs, ys, 0);
+
+        List<Double> xs2 = generateX(N, i -> (1 - Math.cos(i * Math.PI / N)) / 2);
+        List<Double> ys2 = generateY(xs2, fx);
+        integrate(xs2, ys2, 1);
+    }
+
+
+    public static void integrate(List<Double> xs, List<Double> ys, int s){
+        double integral = new IntegralCalculator(xs, ys).integrate(START, END);
         System.out.println(integral);
-
-        List<Double> xs = generateXFromValues(1, 2, 3, 4, 5);
-        List<Double> ys = generateXFromValues(1, 2, 3, 0, -3);
-
         List<Point> pts = IntStream.range(0, xs.size()).mapToObj(i -> new Point(xs.get(i), ys.get(i))).collect(Collectors.toList());
-        new Plotter(pts, 100000, 0.5)
-                .points(pts)
-                .function(new LagrangeCalculator(xs, ys).lagrangePolynomial())
-                .save();
+        new Plotter(pts, 50000, 0.001).points(pts).save(s);
 
-//        System.out.println(integral);
     }
 
     public static List<Double> generateXWithConstantDistance(int n){
@@ -43,8 +45,8 @@ public class Task42 {
         return Arrays.stream(xs).boxed().collect(Collectors.toList());
     }
 
-    public static List<Double> generateX(int n, IntToDoubleFunction xFunction){
-        return IntStream.range(0, n+1).mapToDouble(xFunction).boxed().collect(Collectors.toList());
+    public static List<Double> generateX(int n, IntToDoubleFunction nToXFunction){
+        return IntStream.range(0, n+1).mapToDouble(nToXFunction).boxed().collect(Collectors.toList());
     }
 
     public static List<Double> generateYFromValues(double...ys){
