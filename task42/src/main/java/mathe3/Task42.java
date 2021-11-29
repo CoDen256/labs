@@ -7,18 +7,32 @@ import java.util.function.IntToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+import mathe3.plot.Plotter;
+import mathe3.plot.Point;
 
 public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 100;
+    public static final int N = 600;
 
     public static void main(String[] args) {
-        List<Double> xs = generateXWithConstantDistance(N);
-        List<Double> ys = generateY(xs, x -> x * x);
-        double integral = new IntegralCalculator(xs, ys).integrate(START, END);
+        List<Double> xs0 = generateXWithConstantDistance(N);
+        List<Double> ys0 = generateY(xs0, x -> Math.sin(x));
+        double integral = new IntegralCalculator(xs0, ys0).integrate(START, END);
         System.out.println(integral);
+
+        List<Double> xs = generateXFromValues(1, 2, 3, 4, 5);
+        List<Double> ys = generateXFromValues(1, 2, 3, 0, -3);
+
+        List<Point> pts = IntStream.range(0, xs.size()).mapToObj(i -> new Point(xs.get(i), ys.get(i))).collect(Collectors.toList());
+        IntegralCalculator integralCalculator = new IntegralCalculator(xs, ys);
+        new Plotter(pts, 100000, 0.5)
+                .points(pts)
+                .function(new LagrangeCalculator(xs, ys).lagrangePolynom())
+                .save();
+
+//        System.out.println(integral);
     }
 
     public static List<Double> generateXWithConstantDistance(int n){

@@ -12,7 +12,7 @@ public class IntegralCalculator {
     private final int n;       // degree
 
     public IntegralCalculator(List<Double> xs, List<Double> ys) {
-        if (xs.size() != ys.size()) throw new IllegalArgumentException("xPoints size should equal yPoints Size");
+        if (xs.size() != ys.size()) throw new IllegalArgumentException("x points and y points should be equal sizes");
         this.xs = xs;
         this.ys = ys;
         nPoints = xs.size();
@@ -22,7 +22,7 @@ public class IntegralCalculator {
     public double integrate(double from, double to) {
         double sum = 0;
         for (int k = 0; k < nPoints-1; k++) {
-            sum += y(k) * g(k, this::integrateByTrapezoidalRule2, from, to);
+            sum += y(k) * g(k, this::integrateByTrapezoidalRule, from, to);
         }
         return sum;
     }
@@ -30,7 +30,7 @@ public class IntegralCalculator {
 
 
     private double g(int k, IntegrationFunction numIntegrationMethod, double from, double to){
-        return numIntegrationMethod.integrate(lagrange(k), from, to);
+        return numIntegrationMethod.integrate(new LagrangeCalculator(xs, ys).lagrange(k), from, to);
     }
 
     public double integrateByTrapezoidalRule(DoubleUnaryOperator fx, double from, double to){
@@ -46,27 +46,12 @@ public class IntegralCalculator {
         return 0.5 * (y(0) + y(nPoints-1));
     }
 
-    private DoubleUnaryOperator lagrange(int k){
-        return x -> {
-            double product = 1;
-
-            for (int i = 0; i < nPoints; i++) {
-                if (i == k) continue;
-                double upper = x - x(i);
-                double lower = x(k) - x(i);
-                product *= upper / lower;
-            }
-
-            return product;
-        };
-    }
-
     private double x(int i){
         return xs.get(i);
     }
 
     private double y(int i){
-        return xs.get(i);
+        return ys.get(i);
     }
 
 
