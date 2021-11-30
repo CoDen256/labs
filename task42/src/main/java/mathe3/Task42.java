@@ -26,7 +26,7 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 100;     // max degree
+    public static final int N = 10;     // max degree
     public static final int FACTOR_M = 1000; // m = n * FACTOR_M - number of points to be used in the lagrange polynomial integration
 
 
@@ -39,19 +39,25 @@ public class Task42 {
         System.out.println("Number of points: " + (n +1));
         // Newton-Cotes-Formula
         if (ncfs.length > n-1 && n >0)
-            System.out.printf("Newton-Cotes-Formula for n=%d:%n%s%n", n, Arrays.toString(ncfs[n-1]));
+            System.out.printf("Newton-Cotes-Formula for n=%d:%n%s%n", n, round(Arrays.stream(ncfs[n-1]).boxed().collect(Collectors.toList())));
 
         // generated n+1 points with constant distance
         List<Double> xs1 = xWithConstantDistance(n);
         List<Double> weights1 = new WeightsCalculator(xs1).calculateWeights(START, END, n * FACTOR_M);
-        System.out.println("Xi with constant distance:\n"+weights1);
+        System.out.println("Xi with constant distance:\n"+round(weights1));
 
         // generated n+1 points from function
         List<Double> xs2 = xFromFunction(n, i -> (1 - Math.cos(i * Math.PI / n)) / 2);
         List<Double> weights2 = new WeightsCalculator(xs2).calculateWeights(START, END, n * FACTOR_M);
-        System.out.println("Xi from function:\n"+weights2);
+        System.out.println("Xi from function:\n"+round(weights2));
 
         System.out.println("\n---------------------\n");
+    }
+    private static String round(List<Double> doubles){
+        return doubles.stream().map(d -> {
+            String format = "%" + "f";
+            return String.format(format, d);
+        }).collect(Collectors.joining(" "));
     }
 
     public static List<Double> xWithConstantDistance(int n){
