@@ -8,36 +8,41 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Task42 {
+    // Newton-Cotes Formulas
+    public static double[][] ncfs =  {
+            {1./2, 1./2}
+    };
+
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 10;     // degree
-    public static final int M = N*1000;  // number of points for integrating lagrange polynomial
+    public static final int N = 10;     // max degree
 
-    public static double[] ncf =  {16067./598752. , 26575./149688. ,
-    		-16175./199584. , 
-    		5675./12474. , 
-    		-4825./11088. , 
-    		17807./24948. , 
-    		-4825./11088. , 
-    		5675./12474. ,
-    		-16175./199584. ,
-    		26575./149688. ,
-    		16067./598752.};
-    
     public static void main(String[] args) {
-        System.out.println("Number of points: " + N+1);
-        System.out.printf("Newton-Cotes-Formula for %d: %s%n", N, Arrays.toString(ncf));
+        for (int i = 1; i <= N; i++) {
+            calculateWeightsForN(i);
+        }
+
+    }
+
+    private static void calculateWeightsForN(int n) {
+        int m = n*1000; // number of points to be used in the lagrange polynomial integration
+        System.out.println("Number of points: " + (n +1));
+        if (ncfs.length > n-1 && n >0) System.out.printf("Newton-Cotes-Formula for %d:%n%s%n", n, Arrays.toString(ncfs[n-1]));
 
         // generated n+1 points with constant distance
-        List<Double> xs1 = xWithConstantDistance(N);
-        List<Double> weights1 = new WeightsCalculator(xs1).calculateWeights(START, END, M);
+        List<Double> xs1 = xWithConstantDistance(n);
+        List<Double> weights1 = new WeightsCalculator(xs1).calculateWeights(START, END, m);
+        System.out.print("Constant distance:\n");
         System.out.println(weights1);
 
         // generated n+1 points from function
-        List<Double> xs2 = xFromFunction(N, i -> (1 - Math.cos(i * Math.PI / N)) / 2);
-        List<Double> weights2 = new WeightsCalculator(xs2).calculateWeights(START, END, M);
+        List<Double> xs2 = xFromFunction(n, i -> (1 - Math.cos(i * Math.PI / n)) / 2);
+        List<Double> weights2 = new WeightsCalculator(xs2).calculateWeights(START, END, m);
+        System.out.print("1-cos(i*pi/n)/2:\n");
         System.out.println(weights2);
+
+        System.out.println("---------------------\n\n");
     }
 
     public static List<Double> xWithConstantDistance(int n){
