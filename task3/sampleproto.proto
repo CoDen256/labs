@@ -1,0 +1,25 @@
+syntax = "proto3";
+option java_package = "task3.grpc.stubs";  /* change package name according to your project settings */
+
+/* gRPC service definitions */
+service SampleService{
+	rpc sayHello(HelloRequest) returns (HelloResponse);
+}
+
+/* message type definitions */
+
+/* message type for a request message that passes a string*/
+message HelloRequest{
+	string helloId = 1;
+}
+
+/* message type for a response message that contains two strings*/
+message HelloResponse{
+	string helloFirstName= 1;
+	string helloFamilyName = 2;
+}
+
+/* message type for an empty message (i.e. no arguments) */
+message Empty{
+	
+}
