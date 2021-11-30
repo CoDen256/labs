@@ -26,7 +26,7 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 15;     // max degree
+    public static final int N = 100;     // max degree
     public static final int FACTOR_M = 1000; // m = n * FACTOR_M - number of points to be used in the lagrange polynomial integration
 
 
