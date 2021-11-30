@@ -37,6 +37,7 @@ public class Task42 {
 
     private static void calculateWeightsForN(int n) {
         System.out.println("Number of points: " + (n +1));
+        // Newton-Cotes-Formula
         if (ncfs.length > n-1 && n >0)
             System.out.printf("Newton-Cotes-Formula for n=%d:%n%s%n", n, Arrays.toString(ncfs[n-1]));
 
