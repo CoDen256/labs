@@ -14,46 +14,50 @@ public class Task42 {
     public static final double START = 0;
     public static final double END = 1;
 
-    public static final int N = 1000;
-    public static final DoubleUnaryOperator fx = x -> Math.exp(x);
+    public static final int N = 10; // degree
+    public static final DoubleUnaryOperator fx = x -> x * x;
 
     public static void main(String[] args) {
-        List<Double> xs = generateXWithConstantDistance(N);
-        List<Double> ys = generateY(xs, fx);
+        System.out.println(N);
+        List<Double> xs = xWithConstantDistance(N);
+        List<Double> ys = yFromFunction(xs, fx);
         integrate(xs, ys, 0);
 
-        List<Double> xs2 = generateX(N, i -> (1 - Math.cos(i * Math.PI / N)) / 2);
-        List<Double> ys2 = generateY(xs2, fx);
+        List<Double> xs2 = xFromFunction(N, i -> (1 - Math.cos(i * Math.PI / N)) / 2).stream().sorted().collect(Collectors.toList());
+        List<Double> ys2 = yFromFunction(xs2, fx);
         integrate(xs2, ys2, 1);
     }
 
 
     public static void integrate(List<Double> xs, List<Double> ys, int s){
+        List<Point> pts = IntStream.range(0, xs.size()).mapToObj(i -> new Point(xs.get(i), ys.get(i))).collect(Collectors.toList());
         double integral = new IntegralCalculator(xs, ys).integrate(START, END);
         System.out.println(integral);
-        List<Point> pts = IntStream.range(0, xs.size()).mapToObj(i -> new Point(xs.get(i), ys.get(i))).collect(Collectors.toList());
-        new Plotter(pts, 50000, 0.001).points(pts).save(s);
 
+        new Plotter(pts, 50000, 0.001)
+                .function(new LagrangeCalculator(xs, ys).lagrangePolynomial())
+                .points(pts)
+                .save(s);
     }
 
-    public static List<Double> generateXWithConstantDistance(int n){
+    public static List<Double> xWithConstantDistance(int n){
         double step = (END - START) / n;
         return Stream.iterate(START, x -> Math.min(END, x + step)).limit(n + 1).collect(Collectors.toList());
     }
 
-    public static List<Double> generateXFromValues(double... xs){
+    public static List<Double> xFromValues(double... xs){
         return Arrays.stream(xs).boxed().collect(Collectors.toList());
     }
 
-    public static List<Double> generateX(int n, IntToDoubleFunction nToXFunction){
+    public static List<Double> xFromFunction(int n, IntToDoubleFunction nToXFunction){
         return IntStream.range(0, n+1).mapToDouble(nToXFunction).boxed().collect(Collectors.toList());
     }
 
-    public static List<Double> generateYFromValues(double...ys){
+    public static List<Double> yFromValues(double...ys){
         return Arrays.stream(ys).boxed().collect(Collectors.toList());
     }
 
-    public static List<Double> generateY(List<Double> xs, DoubleUnaryOperator function){
+    public static List<Double> yFromFunction(List<Double> xs, DoubleUnaryOperator function){
         return xs.stream().map(function::applyAsDouble).collect(Collectors.toList());
     }
 

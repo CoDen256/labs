@@ -2,6 +2,8 @@ package mathe3;
 
 import java.util.List;
 import java.util.function.DoubleUnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class IntegralCalculator {
 
@@ -18,21 +20,24 @@ public class IntegralCalculator {
         nPoints = xs.size();
         n = nPoints - 1;
         lagrangeCalculator = new LagrangeCalculator(xs, ys);
+        System.out.println(IntStream.range(0, xs.size())
+                .mapToObj(i -> String.format("(%f, %f)", xs.get(i), ys.get(i)))
+                .collect(Collectors.joining(", ", "[", "]")));
     }
 
-    // TODO: Maybe to main?
     public double integrate(double from, double to) {
         double sum = 0;
-        for (int k = 0; k < nPoints-1; k++) {
-            sum += y(k) * g(k, from, to);
+        for (int k = 0; k < nPoints; k++) {
+            DoubleUnaryOperator Lk = lagrangeCalculator.lagrange(k);
+            double g = integrateByTrapezoidalRule(Lk, from, to);
+            sum += y(k) * g;
+            System.out.printf("g%d=%f", k, g);
+            System.out.print("           ");
+            System.out.printf("y%d=%f%n", k, y(k));
         }
         return sum;
     }
 
-
-    private double g(int k, double from, double to){
-        return integrateByTrapezoidalRule(lagrangeCalculator.lagrange(k), from, to);
-    }
 
     public double integrateByTrapezoidalRule(DoubleUnaryOperator fx, double from, double to){
         double sum = 0;

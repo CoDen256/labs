@@ -39,7 +39,7 @@ public class LagrangeCalculator {
         };
     }
 
-    public DoubleUnaryOperator lagrange1(int k){ // not working somehow
+    public DoubleUnaryOperator lagrange1(int k){ // not working properly somehow
         return x -> {
             double upper = 1;
             double lower = 1;
@@ -54,7 +54,7 @@ public class LagrangeCalculator {
         };
     }
 
-    public DoubleUnaryOperator lagrange2(int k){ // too long
+    public DoubleUnaryOperator lagrange2(int k){ // too slow
         return x -> {
             BigDecimal lower = BigDecimal.ONE;
             BigDecimal upper = BigDecimal.ONE;
