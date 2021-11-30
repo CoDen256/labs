@@ -1,5 +1,7 @@
 package de.home.vs.resource;
 
+import de.home.vs.model.DataSource;
+import de.home.vs.model.item.Item;
 import de.home.vs.model.order.Order;
 import de.home.vs.model.order.OrderedItem;
 import jakarta.json.Json;
@@ -8,6 +10,7 @@ import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -15,11 +18,11 @@ import java.util.stream.IntStream;
 public class OrderSerializer {
 
     private final String baseUrl;
-    private final String baseItemUrl;
+    private final ItemSerializer serializer;
 
-    public OrderSerializer(String baseOrderUrl, String baseItemUrl) {
+    public OrderSerializer(String baseOrderUrl, ItemSerializer serializer) {
         this.baseUrl = baseOrderUrl;
-        this.baseItemUrl = baseItemUrl;
+        this.serializer = serializer;
     }
 
     public JsonArray serializeOrders(Collection<Order> orders, Function<Order, JsonObject> serializationMethod) {
@@ -49,10 +52,12 @@ public class OrderSerializer {
         return arrayBuilder.build();
     }
 
-    public JsonObject serializeItem(OrderedItem item) {
+    public JsonObject serializeItem(OrderedItem orderedItem) {
+        Optional<Item> item = DataSource.getInstance().findItemById(orderedItem.getId());
+        if (item.isEmpty()) throw new InvalidItemException("No item with id" + orderedItem.getId());
         return Json.createObjectBuilder()
-                .add("link", baseItemUrl+item.getId())
-                .add("quantity", item.getQuantity())
+                .add("item", serializer.serializeFull(item.get()))
+                .add("quantity", orderedItem.getQuantity())
                 .build();
     }
 

@@ -18,7 +18,11 @@ import jakarta.ws.rs.core.Response;
 @Path("/orders")
 public class OrderService {
     private final DataSource dataSource = DataSource.getInstance();
-    private final OrderSerializer orderSerializer = new OrderSerializer("/rest/orders/", "/rest/items/");
+    private final OrderSerializer orderSerializer = new OrderSerializer(
+            "/rest/orders/",
+            new ItemSerializer("/rest/items/")
+            );
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getOrders(){
@@ -60,7 +64,6 @@ public class OrderService {
     public Response postOrder(JsonObject requestedOrder) {
         try {
             Order newOrder = createNewOrder(requestedOrder);
-            verifyNewOrder(newOrder);
             dataSource.addOrder(newOrder);
             return Response.ok()
                     .entity(String.format("Order with id %s created successfully", newOrder.getId()))
@@ -84,19 +87,4 @@ public class OrderService {
     private int getNextOrderId(){
         return dataSource.getOrders().size() + 1;
     }
-
-    private void verifyNewOrder(Order order){
-        List<OrderedItem> items = order.getItems();
-        items.forEach(this::verifyItem);
-    }
-
-    private void verifyItem(OrderedItem i) {
-        if (dataSource.findItemById(i.getId()).isEmpty()){
-            throw new InvalidItemException(String.format("Item with id %s not found", i.getId()));
-        }
-        if (i.getQuantity() <= 0){
-            throw new InvalidItemException(String.format("Item with id %s has non-positive quantity", i.getId()));
-        }
-    }
-
 }

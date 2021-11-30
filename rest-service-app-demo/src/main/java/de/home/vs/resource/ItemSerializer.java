@@ -34,7 +34,7 @@ public class ItemSerializer {
 
     public JsonObject serializeShort(Item item){
         return Json.createObjectBuilder()
-                .add("id", item.getId())
+//                .add("id", item.getId())
                 .add("name", item.getName())
                 .add("link", resolveLink(item, baseURL))
                 .build();
