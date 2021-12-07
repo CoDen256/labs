@@ -7,17 +7,18 @@ import mathe3.plot.Point;
 
 public class Task51ABC {
 
-    private static final double FROM = 0;
-    private static final double TO = 2*Math.PI;
     public static final EulerMethod EULER_METHOD = new EulerMethod();
     public static final HeunMethod HEUN_METHOD = new HeunMethod();
+
+    private static final double FROM = 0;
+    private static final double TO = 2*Math.PI;
     public static final Point START_CONDITION = new Point(0, 0.5);
 
     public static void main(String[] args) {
         double h = 0.5;
         List<Point> euler = new ArrayList<>();
         List<Point> heun = new ArrayList<>();
-        for (int i = 0; i < 16; i ++ ){
+        for (int i = 0; i < 500; i ++ ){
             double[] doubles = calculateForH(h);
             euler.add(new Point(h, doubles[0]));
             heun.add(new Point(h, doubles[1]));
@@ -39,7 +40,7 @@ public class Task51ABC {
         double actualLast = y(TO);
 //        System.out.printf("Actual y(2pi) = %f%n", actualLast);
 
-        double diff1 = Math.abs(actualLast - lastEuler.y);
+        double diff1 = Math.abs(actualLast - lastEuler.y);// relative or just difference
         System.out.printf("Euler diff: %f%n", diff1);
 
         double diff2 = Math.abs(actualLast - lastHeun.y);

@@ -16,7 +16,7 @@ public class EulerMethod {
             double slope = derivativeFunction.applyAsDouble(prevPoint.x, prevPoint.y); // f(xi, yi)
 
             double x = prevPoint.x + h;         // x for i+1
-            double y = prevPoint.y + h * slope; // y for i + 1
+            double y = prevPoint.y + h * slope; // y for i+1
 
             prevPoint = new Point(x, y);
             points.add(prevPoint);
