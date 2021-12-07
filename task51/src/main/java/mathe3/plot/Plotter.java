@@ -112,8 +112,8 @@ public class Plotter {
         plot.series(randomName(),
                 Plot.data().xy(xs, ys),
                 Plot.seriesOpts().markerColor(Color.GREEN)
-                        .marker(Plot.Marker.NONE)
-                        .line(Plot.Line.DASHED));
+                        .marker(Plot.Marker.CIRCLE)
+                        .line(Plot.Line.NONE));
         return this;
     }
 
