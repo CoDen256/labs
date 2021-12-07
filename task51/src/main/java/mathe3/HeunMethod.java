@@ -11,7 +11,7 @@ public class HeunMethod {
         points.add(condition);
 
         Point prevPoint = condition;
-        int n = (int) ((from - to)/h); // number of points
+        int n = (int) ((to - from)/h); // number of points
         for(int i = 1; i <= n; i++){
             double prevX = prevPoint.x; // x for i
             double prevY = prevPoint.y; // y for i
