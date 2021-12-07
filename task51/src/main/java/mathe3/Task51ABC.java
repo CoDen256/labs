@@ -1,6 +1,8 @@
 package mathe3;
 
+import java.util.ArrayList;
 import java.util.List;
+import mathe3.plot.Plotter;
 import mathe3.plot.Point;
 
 public class Task51ABC {
@@ -13,13 +15,20 @@ public class Task51ABC {
 
     public static void main(String[] args) {
         double h = 0.5;
-        for (int i = 0; i < 20; i ++ ){
-            calculateForH(h);
+        List<Point> euler = new ArrayList<>();
+        List<Point> heun = new ArrayList<>();
+        for (int i = 0; i < 16; i ++ ){
+            double[] doubles = calculateForH(h);
+            euler.add(new Point(h, doubles[0]));
+            heun.add(new Point(h, doubles[1]));
             h /= 2.;
         }
+
+        new Plotter(euler, 50000, 0.01).save(1);
+        new Plotter(heun, 50000, 0.01).save(2);
     }
 
-    private static void calculateForH(double h) {
+    private static double[] calculateForH(double h) {
         System.out.println("\nH = "+h);
         List<Point> approxEuler = EULER_METHOD.calculatePoints(Task51ABC::yDerivative, START_CONDITION, FROM, TO, h);
         Point lastEuler = approxEuler.get(approxEuler.size() - 1);
@@ -29,8 +38,14 @@ public class Task51ABC {
 //        System.out.printf("Heun y(2pi) = %f%n", lastHeun.y);
         double actualLast = y(TO);
 //        System.out.printf("Actual y(2pi) = %f%n", actualLast);
-        System.out.printf("Euler diff: %f%n", Math.abs(actualLast-lastEuler.y));
-        System.out.printf("Heun diff: %f%n", Math.abs(actualLast-lastHeun.y));
+
+        double diff1 = Math.abs(actualLast - lastEuler.y);
+        System.out.printf("Euler diff: %f%n", diff1);
+
+        double diff2 = Math.abs(actualLast - lastHeun.y);
+        System.out.printf("Heun diff: %f%n", diff2);
+
+        return new double[]{diff1, diff2};
     }
 
 
