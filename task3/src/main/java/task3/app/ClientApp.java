@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import task3.grpc.stubs.ItemServiceGrpc;
 import task3.grpc.stubs.OrderServiceGrpc;
+import task3.grpc.stubs.Shop;
 
 public class ClientApp {
 
@@ -41,7 +42,7 @@ public class ClientApp {
 
                 cmd = scanner.nextInt();
                 Option option = options.get(cmd);
-                if (option == null) throw new IllegalArgumentException("No option:" + cmd);
+                if (option == null) throw new IllegalArgumentException("No option: " + cmd);
                 boolean resume = option.handle(itemServiceStub, orderServiceStub, scanner);
                 if (!resume) break;
             }
@@ -56,13 +57,25 @@ public class ClientApp {
     }
 
     private static boolean getAllItems(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
-
-        return true;
+        Shop.ItemsResponse items = itemService.getItems(Shop.Empty.getDefaultInstance());
+        System.out.println("\nList of all items:");
+        items.getItemsList().forEach(
+                item -> System.out.printf("%d.%s%n", item.getId(), item.getName())
+        );
+        return getItemById(itemService, orderService, scanner);
     }
 
     private static boolean getItemById(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
+        System.out.print("\nChoose item (or -1 to skip):");
+        int id = scanner.nextInt();
 
-        return true;
+        if (id == -1) return true;
+
+        Shop.ItemResponse item = itemService.getItem(Shop.ItemRequest.newBuilder().setId(id).build());
+        System.out.println("Name "+item.getName());
+        System.out.println("Description " + item.getDescription());
+        System.out.println("Price " + item.getPrice());
+        return getItemById(itemService, orderService, scanner);
     }
 
     private static boolean addItem(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
