@@ -1,0 +1,84 @@
+syntax = "proto3";
+option java_package = "task3.grpc.stubs";  /* change package name according to your project settings */
+/* gRPC service definitions */
+service ItemService{
+	rpc getItems(Empty) returns (ItemsResponse);
+	rpc getItem(ItemRequest) returns (ItemResponse);
+	rpc addItem(AddItemRequest) returns (AddItemResponse);
+}
+
+service OrderService {
+	rpc getOrders(Empty) returns (OrdersResponse);
+	rpc getOrder(OrderRequest) returns (OrderResponse);
+	rpc addOrder(AddOrderRequest) returns (AddOrderResponse);
+}
+
+message AddOrderResponse {
+	int32 createdId = 2;
+}
+
+message AddOrderRequest {
+	repeated OrderedItemRequest newItems = 1;
+}
+
+message OrderedItemRequest {
+	int32 id = 1;
+	int32 quantity = 2;
+}
+
+message OrderResponse {
+	int32 id = 1;
+	repeated OrderedItemResponse items = 2;
+}
+
+message OrderedItemResponse {
+	int32 itemId = 1;
+	int32 quantity = 2;
+}
+
+message OrdersResponse {
+	repeated ShortOrderResponse orders = 1;
+}
+
+message ShortOrderResponse {
+	int32 id = 1;
+	repeated int32 itemIds = 2;
+}
+
+message OrderRequest {
+	int32 id = 1;
+}
+
+message AddItemResponse {
+	int32 createdId = 2;
+}
+
+message AddItemRequest {
+	string name = 1;
+	string description = 2;
+	int64 price = 3;
+}
+
+message ItemRequest {
+	int32 id = 1;
+}
+
+message ItemResponse {
+	int32 id = 1;
+	string name = 2;
+	string description = 3;
+	int64 price = 4;
+}
+
+message ItemsResponse{
+	repeated ItemShortResponse items = 1;
+}
+
+message ItemShortResponse {
+	int32 id = 1;
+	string name = 2;
+}
+
+message Empty {
+
+}
