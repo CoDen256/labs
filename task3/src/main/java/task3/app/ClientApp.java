@@ -2,6 +2,7 @@ package task3.app;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -18,11 +19,11 @@ public class ClientApp {
     private static final List<Option> opts = List.of(
             option("Exit", (i, o, s) -> false),
             option("List all items", ClientApp::getAllItems),
-            option("List item by id", ClientApp::getItemById),
-            option("Add new item", ClientApp::addItem),
+            option("View item by id", ClientApp::getItemById),
+            option("Add a new item", ClientApp::addItem),
             option("List all orders", ClientApp::getAllOrders),
-            option("List order by id", ClientApp::getOrderById),
-            option("Add an order", ClientApp::addOrder)
+            option("View order by id", ClientApp::getOrderById),
+            option("Add a new order", ClientApp::addOrder)
     );
 
     public static void main(String[] args) {
@@ -50,14 +51,21 @@ public class ClientApp {
         int cmd;
         while (true) {
             System.out.println();
+            System.out.println("Choose one of the option:");
             options.forEach((i, o) -> System.out.println(i + "." + o.getDescription()));
             System.out.print("Option: ");
 
             cmd = scanner.nextInt();
+            scanner.nextLine();
             Option option = options.get(cmd);
             if (option == null) throw new IllegalArgumentException("No option: " + cmd);
-            boolean resume = option.handle(itemServiceStub, orderServiceStub, scanner);
-            if (!resume) break;
+
+            try {
+                boolean resume = option.handle(itemServiceStub, orderServiceStub, scanner);
+                if (!resume) break;
+            }catch (StatusRuntimeException e){
+                System.out.printf("Error occurred:%s %n",  e.getLocalizedMessage());
+            }
         }
     }
 
@@ -76,9 +84,10 @@ public class ClientApp {
 
         Shop.ItemResponse item = itemService.getItem(Shop.ItemRequest.newBuilder().setId(id).build());
         System.out.printf("Item %d:%n", id);
-        System.out.println("Name " + item.getName());
-        System.out.println("Description " + item.getDescription());
-        System.out.println("Price " + item.getPrice());
+        System.out.println("Name: " + item.getName());
+        System.out.println("Description: " + item.getDescription());
+        System.out.println("Price: " + item.getPrice());
+
         return true;
     }
 
@@ -86,10 +95,10 @@ public class ClientApp {
         System.out.print("\nEnter the name of the item:");
         String name = scanner.nextLine();
 
-        System.out.print("\nEnter the description of the item:");
+        System.out.print("Enter the description of the item:");
         String description = scanner.nextLine();
 
-        System.out.print("\nEnter the price of the item (cents):");
+        System.out.print("Enter the price of the item (cents):");
         long price = scanner.nextLong();
 
         Shop.AddItemRequest addItemRequest = Shop.AddItemRequest.newBuilder()
@@ -142,7 +151,7 @@ public class ClientApp {
             System.out.print("\nEnter the id of the item to order:");
             int id = scanner.nextInt();
 
-            System.out.print("\nEnter the quantity to order:");
+            System.out.print("Enter the quantity to order:");
             int quantity = scanner.nextInt();
             orderedItems.add(Shop.OrderedItemRequest.newBuilder()
                     .setId(id)

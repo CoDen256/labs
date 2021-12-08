@@ -1,6 +1,7 @@
 package task3.service;
 
 
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,10 +36,11 @@ public class ItemService extends ItemServiceGrpc.ItemServiceImplBase {
         Optional<Item> itemById = dataSource.findItemById(request.getId());
         if (itemById.isPresent()){
             responseObserver.onNext(mapToResponse(itemById.get()));
+            responseObserver.onCompleted();
         }else {
-            responseObserver.onError(new IllegalArgumentException("No Item with following id was found: " + request.getId()));
+            Status status = Status.NOT_FOUND.withDescription("No Item with following id was found: " + request.getId());
+            responseObserver.onError(status.asRuntimeException());
         }
-        responseObserver.onCompleted();
     }
 
     private Shop.ItemResponse mapToResponse(Item item){

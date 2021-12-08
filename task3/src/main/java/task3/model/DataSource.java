@@ -68,9 +68,9 @@ public class DataSource {
 	}
 
 	public int getNextOrderId(){
-		return orders.size() + 1;
+		return orders.size();
 	}
 	public int getNextItemId(){
-		return items.size() + 1;
+		return items.size();
 	}
 }

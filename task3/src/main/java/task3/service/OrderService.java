@@ -1,5 +1,6 @@
 package task3.service;
 
+import io.grpc.Status;
 import io.grpc.stub.StreamObserver;
 import java.util.List;
 import java.util.Optional;
@@ -30,10 +31,11 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
         Optional<Order> order = DataSource.getInstance().findOrderById(request.getId());
         if (order.isPresent()){
             responseObserver.onNext(mapOrderToResponse(order.get()));
+            responseObserver.onCompleted();
         }else {
-            responseObserver.onError(new IllegalArgumentException("No order with id:"+request.getId()));
+            Status status = Status.NOT_FOUND.withDescription("No order with following id was found: " + request.getId());
+            responseObserver.onError(status.asRuntimeException());
         }
-        responseObserver.onCompleted();
     }
 
     private Shop.OrderResponse mapOrderToResponse(Order order) {
@@ -56,10 +58,10 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
             Order newOrder = mapToOrder(request);
             dataSource.addOrder(newOrder);
             responseObserver.onNext(Shop.AddOrderResponse.newBuilder().setCreatedId(newOrder.getId()).build());
-        }catch (Exception e){
-            responseObserver.onError(e);
-        }finally {
             responseObserver.onCompleted();
+        }catch (Exception e){
+            Status status = Status.NOT_FOUND.withDescription(e.getMessage());
+            responseObserver.onError(status.asRuntimeException());
         }
     }
 
