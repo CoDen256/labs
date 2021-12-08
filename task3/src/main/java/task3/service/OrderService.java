@@ -22,7 +22,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     private Shop.ShortOrderResponse mapOrderToShortResponse(Order order) {
         return Shop.ShortOrderResponse.newBuilder()
                 .setId(order.getId())
-                .addAllItemIds(order.getItems().stream().map(OrderedItem::getId).collect(Collectors.toList()))
+                .setTotalItems(order.getItems().size())
                 .build();
     }
 
@@ -47,6 +47,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     private Shop.OrderedItemResponse mapOrderedItemToResponse(OrderedItem orderedItem) {
         return Shop.OrderedItemResponse.newBuilder()
                 .setItemId(orderedItem.getId())
+                .setName(DataSource.getInstance().findItemById(orderedItem.getId()).get().getName())
                 .setQuantity(orderedItem.getQuantity())
                 .build();
     }

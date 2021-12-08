@@ -14,482 +14,6 @@ public final class Shop {
     registerAllExtensions(
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
-  public interface AddOrderResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:AddOrderResponse)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>int32 createdId = 2;</code>
-     */
-    int getCreatedId();
-  }
-  /**
-   * Protobuf type {@code AddOrderResponse}
-   */
-  public  static final class AddOrderResponse extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:AddOrderResponse)
-      AddOrderResponseOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use AddOrderResponse.newBuilder() to construct.
-    private AddOrderResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private AddOrderResponse() {
-      createdId_ = 0;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private AddOrderResponse(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 16: {
-
-              createdId_ = input.readInt32();
-              break;
-            }
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              task3.grpc.stubs.Shop.AddOrderResponse.class, task3.grpc.stubs.Shop.AddOrderResponse.Builder.class);
-    }
-
-    public static final int CREATEDID_FIELD_NUMBER = 2;
-    private int createdId_;
-    /**
-     * <code>int32 createdId = 2;</code>
-     */
-    public int getCreatedId() {
-      return createdId_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (createdId_ != 0) {
-        output.writeInt32(2, createdId_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (createdId_ != 0) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(2, createdId_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof task3.grpc.stubs.Shop.AddOrderResponse)) {
-        return super.equals(obj);
-      }
-      task3.grpc.stubs.Shop.AddOrderResponse other = (task3.grpc.stubs.Shop.AddOrderResponse) obj;
-
-      boolean result = true;
-      result = result && (getCreatedId()
-          == other.getCreatedId());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + CREATEDID_FIELD_NUMBER;
-      hash = (53 * hash) + getCreatedId();
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(task3.grpc.stubs.Shop.AddOrderResponse prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code AddOrderResponse}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:AddOrderResponse)
-        task3.grpc.stubs.Shop.AddOrderResponseOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                task3.grpc.stubs.Shop.AddOrderResponse.class, task3.grpc.stubs.Shop.AddOrderResponse.Builder.class);
-      }
-
-      // Construct using task3.grpc.stubs.Shop.AddOrderResponse.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        createdId_ = 0;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstanceForType() {
-        return task3.grpc.stubs.Shop.AddOrderResponse.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddOrderResponse build() {
-        task3.grpc.stubs.Shop.AddOrderResponse result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddOrderResponse buildPartial() {
-        task3.grpc.stubs.Shop.AddOrderResponse result = new task3.grpc.stubs.Shop.AddOrderResponse(this);
-        result.createdId_ = createdId_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof task3.grpc.stubs.Shop.AddOrderResponse) {
-          return mergeFrom((task3.grpc.stubs.Shop.AddOrderResponse)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(task3.grpc.stubs.Shop.AddOrderResponse other) {
-        if (other == task3.grpc.stubs.Shop.AddOrderResponse.getDefaultInstance()) return this;
-        if (other.getCreatedId() != 0) {
-          setCreatedId(other.getCreatedId());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        task3.grpc.stubs.Shop.AddOrderResponse parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (task3.grpc.stubs.Shop.AddOrderResponse) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private int createdId_ ;
-      /**
-       * <code>int32 createdId = 2;</code>
-       */
-      public int getCreatedId() {
-        return createdId_;
-      }
-      /**
-       * <code>int32 createdId = 2;</code>
-       */
-      public Builder setCreatedId(int value) {
-        
-        createdId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int32 createdId = 2;</code>
-       */
-      public Builder clearCreatedId() {
-        
-        createdId_ = 0;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:AddOrderResponse)
-    }
-
-    // @@protoc_insertion_point(class_scope:AddOrderResponse)
-    private static final task3.grpc.stubs.Shop.AddOrderResponse DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.AddOrderResponse();
-    }
-
-    public static task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<AddOrderResponse>
-        PARSER = new com.google.protobuf.AbstractParser<AddOrderResponse>() {
-      @java.lang.Override
-      public AddOrderResponse parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AddOrderResponse(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<AddOrderResponse> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<AddOrderResponse> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface AddOrderRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:AddOrderRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -519,6 +43,10 @@ public final class Shop {
         int index);
   }
   /**
+   * <pre>
+   * Add Order 
+   * </pre>
+   *
    * Protobuf type {@code AddOrderRequest}
    */
   public  static final class AddOrderRequest extends
@@ -796,6 +324,10 @@ public final class Shop {
       return builder;
     }
     /**
+     * <pre>
+     * Add Order 
+     * </pre>
+     *
      * Protobuf type {@code AddOrderRequest}
      */
     public static final class Builder extends
@@ -1811,6 +1343,966 @@ public final class Shop {
 
   }
 
+  public interface AddOrderResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AddOrderResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 createdId = 2;</code>
+     */
+    int getCreatedId();
+  }
+  /**
+   * Protobuf type {@code AddOrderResponse}
+   */
+  public  static final class AddOrderResponse extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:AddOrderResponse)
+      AddOrderResponseOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AddOrderResponse.newBuilder() to construct.
+    private AddOrderResponse(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AddOrderResponse() {
+      createdId_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AddOrderResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 16: {
+
+              createdId_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              task3.grpc.stubs.Shop.AddOrderResponse.class, task3.grpc.stubs.Shop.AddOrderResponse.Builder.class);
+    }
+
+    public static final int CREATEDID_FIELD_NUMBER = 2;
+    private int createdId_;
+    /**
+     * <code>int32 createdId = 2;</code>
+     */
+    public int getCreatedId() {
+      return createdId_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (createdId_ != 0) {
+        output.writeInt32(2, createdId_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (createdId_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, createdId_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof task3.grpc.stubs.Shop.AddOrderResponse)) {
+        return super.equals(obj);
+      }
+      task3.grpc.stubs.Shop.AddOrderResponse other = (task3.grpc.stubs.Shop.AddOrderResponse) obj;
+
+      boolean result = true;
+      result = result && (getCreatedId()
+          == other.getCreatedId());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + CREATEDID_FIELD_NUMBER;
+      hash = (53 * hash) + getCreatedId();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.AddOrderResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(task3.grpc.stubs.Shop.AddOrderResponse prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code AddOrderResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:AddOrderResponse)
+        task3.grpc.stubs.Shop.AddOrderResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                task3.grpc.stubs.Shop.AddOrderResponse.class, task3.grpc.stubs.Shop.AddOrderResponse.Builder.class);
+      }
+
+      // Construct using task3.grpc.stubs.Shop.AddOrderResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        createdId_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return task3.grpc.stubs.Shop.internal_static_AddOrderResponse_descriptor;
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstanceForType() {
+        return task3.grpc.stubs.Shop.AddOrderResponse.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.AddOrderResponse build() {
+        task3.grpc.stubs.Shop.AddOrderResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.AddOrderResponse buildPartial() {
+        task3.grpc.stubs.Shop.AddOrderResponse result = new task3.grpc.stubs.Shop.AddOrderResponse(this);
+        result.createdId_ = createdId_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof task3.grpc.stubs.Shop.AddOrderResponse) {
+          return mergeFrom((task3.grpc.stubs.Shop.AddOrderResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(task3.grpc.stubs.Shop.AddOrderResponse other) {
+        if (other == task3.grpc.stubs.Shop.AddOrderResponse.getDefaultInstance()) return this;
+        if (other.getCreatedId() != 0) {
+          setCreatedId(other.getCreatedId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        task3.grpc.stubs.Shop.AddOrderResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (task3.grpc.stubs.Shop.AddOrderResponse) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int createdId_ ;
+      /**
+       * <code>int32 createdId = 2;</code>
+       */
+      public int getCreatedId() {
+        return createdId_;
+      }
+      /**
+       * <code>int32 createdId = 2;</code>
+       */
+      public Builder setCreatedId(int value) {
+        
+        createdId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 createdId = 2;</code>
+       */
+      public Builder clearCreatedId() {
+        
+        createdId_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:AddOrderResponse)
+    }
+
+    // @@protoc_insertion_point(class_scope:AddOrderResponse)
+    private static final task3.grpc.stubs.Shop.AddOrderResponse DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.AddOrderResponse();
+    }
+
+    public static task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AddOrderResponse>
+        PARSER = new com.google.protobuf.AbstractParser<AddOrderResponse>() {
+      @java.lang.Override
+      public AddOrderResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AddOrderResponse(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AddOrderResponse> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AddOrderResponse> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public task3.grpc.stubs.Shop.AddOrderResponse getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface OrderRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:OrderRequest)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>int32 id = 1;</code>
+     */
+    int getId();
+  }
+  /**
+   * <pre>
+   * Single Order 
+   * </pre>
+   *
+   * Protobuf type {@code OrderRequest}
+   */
+  public  static final class OrderRequest extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:OrderRequest)
+      OrderRequestOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use OrderRequest.newBuilder() to construct.
+    private OrderRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private OrderRequest() {
+      id_ = 0;
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private OrderRequest(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+
+              id_ = input.readInt32();
+              break;
+            }
+            default: {
+              if (!parseUnknownFieldProto3(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return task3.grpc.stubs.Shop.internal_static_OrderRequest_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              task3.grpc.stubs.Shop.OrderRequest.class, task3.grpc.stubs.Shop.OrderRequest.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private int id_;
+    /**
+     * <code>int32 id = 1;</code>
+     */
+    public int getId() {
+      return id_;
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      if (id_ != 0) {
+        output.writeInt32(1, id_);
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (id_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, id_);
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof task3.grpc.stubs.Shop.OrderRequest)) {
+        return super.equals(obj);
+      }
+      task3.grpc.stubs.Shop.OrderRequest other = (task3.grpc.stubs.Shop.OrderRequest) obj;
+
+      boolean result = true;
+      result = result && (getId()
+          == other.getId());
+      result = result && unknownFields.equals(other.unknownFields);
+      return result;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      hash = (37 * hash) + ID_FIELD_NUMBER;
+      hash = (53 * hash) + getId();
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(task3.grpc.stubs.Shop.OrderRequest prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * <pre>
+     * Single Order 
+     * </pre>
+     *
+     * Protobuf type {@code OrderRequest}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:OrderRequest)
+        task3.grpc.stubs.Shop.OrderRequestOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return task3.grpc.stubs.Shop.internal_static_OrderRequest_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                task3.grpc.stubs.Shop.OrderRequest.class, task3.grpc.stubs.Shop.OrderRequest.Builder.class);
+      }
+
+      // Construct using task3.grpc.stubs.Shop.OrderRequest.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = 0;
+
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.OrderRequest getDefaultInstanceForType() {
+        return task3.grpc.stubs.Shop.OrderRequest.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.OrderRequest build() {
+        task3.grpc.stubs.Shop.OrderRequest result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public task3.grpc.stubs.Shop.OrderRequest buildPartial() {
+        task3.grpc.stubs.Shop.OrderRequest result = new task3.grpc.stubs.Shop.OrderRequest(this);
+        result.id_ = id_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return (Builder) super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return (Builder) super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return (Builder) super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return (Builder) super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return (Builder) super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof task3.grpc.stubs.Shop.OrderRequest) {
+          return mergeFrom((task3.grpc.stubs.Shop.OrderRequest)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(task3.grpc.stubs.Shop.OrderRequest other) {
+        if (other == task3.grpc.stubs.Shop.OrderRequest.getDefaultInstance()) return this;
+        if (other.getId() != 0) {
+          setId(other.getId());
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        task3.grpc.stubs.Shop.OrderRequest parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (task3.grpc.stubs.Shop.OrderRequest) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+
+      private int id_ ;
+      /**
+       * <code>int32 id = 1;</code>
+       */
+      public int getId() {
+        return id_;
+      }
+      /**
+       * <code>int32 id = 1;</code>
+       */
+      public Builder setId(int value) {
+        
+        id_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int32 id = 1;</code>
+       */
+      public Builder clearId() {
+        
+        id_ = 0;
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFieldsProto3(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:OrderRequest)
+    }
+
+    // @@protoc_insertion_point(class_scope:OrderRequest)
+    private static final task3.grpc.stubs.Shop.OrderRequest DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.OrderRequest();
+    }
+
+    public static task3.grpc.stubs.Shop.OrderRequest getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<OrderRequest>
+        PARSER = new com.google.protobuf.AbstractParser<OrderRequest>() {
+      @java.lang.Override
+      public OrderRequest parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new OrderRequest(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<OrderRequest> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<OrderRequest> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public task3.grpc.stubs.Shop.OrderRequest getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
   public interface OrderResponseOrBuilder extends
       // @@protoc_insertion_point(interface_extends:OrderResponse)
       com.google.protobuf.MessageOrBuilder {
@@ -2672,6 +3164,16 @@ public final class Shop {
      * <code>int32 quantity = 2;</code>
      */
     int getQuantity();
+
+    /**
+     * <code>string name = 3;</code>
+     */
+    java.lang.String getName();
+    /**
+     * <code>string name = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
   }
   /**
    * Protobuf type {@code OrderedItemResponse}
@@ -2688,6 +3190,7 @@ public final class Shop {
     private OrderedItemResponse() {
       itemId_ = 0;
       quantity_ = 0;
+      name_ = "";
     }
 
     @java.lang.Override
@@ -2722,6 +3225,12 @@ public final class Shop {
             case 16: {
 
               quantity_ = input.readInt32();
+              break;
+            }
+            case 26: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              name_ = s;
               break;
             }
             default: {
@@ -2774,6 +3283,40 @@ public final class Shop {
       return quantity_;
     }
 
+    public static final int NAME_FIELD_NUMBER = 3;
+    private volatile java.lang.Object name_;
+    /**
+     * <code>string name = 3;</code>
+     */
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -2794,6 +3337,9 @@ public final class Shop {
       if (quantity_ != 0) {
         output.writeInt32(2, quantity_);
       }
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 3, name_);
+      }
       unknownFields.writeTo(output);
     }
 
@@ -2810,6 +3356,9 @@ public final class Shop {
       if (quantity_ != 0) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(2, quantity_);
+      }
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(3, name_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -2831,6 +3380,8 @@ public final class Shop {
           == other.getItemId());
       result = result && (getQuantity()
           == other.getQuantity());
+      result = result && getName()
+          .equals(other.getName());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -2846,6 +3397,8 @@ public final class Shop {
       hash = (53 * hash) + getItemId();
       hash = (37 * hash) + QUANTITY_FIELD_NUMBER;
       hash = (53 * hash) + getQuantity();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -2983,6 +3536,8 @@ public final class Shop {
 
         quantity_ = 0;
 
+        name_ = "";
+
         return this;
       }
 
@@ -3011,6 +3566,7 @@ public final class Shop {
         task3.grpc.stubs.Shop.OrderedItemResponse result = new task3.grpc.stubs.Shop.OrderedItemResponse(this);
         result.itemId_ = itemId_;
         result.quantity_ = quantity_;
+        result.name_ = name_;
         onBuilt();
         return result;
       }
@@ -3064,6 +3620,10 @@ public final class Shop {
         }
         if (other.getQuantity() != 0) {
           setQuantity(other.getQuantity());
+        }
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -3142,6 +3702,75 @@ public final class Shop {
       public Builder clearQuantity() {
         
         quantity_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object name_ = "";
+      /**
+       * <code>string name = 3;</code>
+       */
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string name = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 3;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 3;</code>
+       */
+      public Builder clearName() {
+        
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 3;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
         onChanged();
         return this;
       }
@@ -3227,6 +3856,10 @@ public final class Shop {
         int index);
   }
   /**
+   * <pre>
+   * Multiple Orders 
+   * </pre>
+   *
    * Protobuf type {@code OrdersResponse}
    */
   public  static final class OrdersResponse extends
@@ -3504,6 +4137,10 @@ public final class Shop {
       return builder;
     }
     /**
+     * <pre>
+     * Multiple Orders 
+     * </pre>
+     *
      * Protobuf type {@code OrdersResponse}
      */
     public static final class Builder extends
@@ -3990,17 +4627,9 @@ public final class Shop {
     int getId();
 
     /**
-     * <code>repeated int32 itemIds = 2;</code>
+     * <code>int32 totalItems = 2;</code>
      */
-    java.util.List<java.lang.Integer> getItemIdsList();
-    /**
-     * <code>repeated int32 itemIds = 2;</code>
-     */
-    int getItemIdsCount();
-    /**
-     * <code>repeated int32 itemIds = 2;</code>
-     */
-    int getItemIds(int index);
+    int getTotalItems();
   }
   /**
    * Protobuf type {@code ShortOrderResponse}
@@ -4016,7 +4645,7 @@ public final class Shop {
     }
     private ShortOrderResponse() {
       id_ = 0;
-      itemIds_ = java.util.Collections.emptyList();
+      totalItems_ = 0;
     }
 
     @java.lang.Override
@@ -4049,24 +4678,8 @@ public final class Shop {
               break;
             }
             case 16: {
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-                itemIds_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              itemIds_.add(input.readInt32());
-              break;
-            }
-            case 18: {
-              int length = input.readRawVarint32();
-              int limit = input.pushLimit(length);
-              if (!((mutable_bitField0_ & 0x00000002) == 0x00000002) && input.getBytesUntilLimit() > 0) {
-                itemIds_ = new java.util.ArrayList<java.lang.Integer>();
-                mutable_bitField0_ |= 0x00000002;
-              }
-              while (input.getBytesUntilLimit() > 0) {
-                itemIds_.add(input.readInt32());
-              }
-              input.popLimit(limit);
+
+              totalItems_ = input.readInt32();
               break;
             }
             default: {
@@ -4084,9 +4697,6 @@ public final class Shop {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
       } finally {
-        if (((mutable_bitField0_ & 0x00000002) == 0x00000002)) {
-          itemIds_ = java.util.Collections.unmodifiableList(itemIds_);
-        }
         this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
@@ -4104,7 +4714,6 @@ public final class Shop {
               task3.grpc.stubs.Shop.ShortOrderResponse.class, task3.grpc.stubs.Shop.ShortOrderResponse.Builder.class);
     }
 
-    private int bitField0_;
     public static final int ID_FIELD_NUMBER = 1;
     private int id_;
     /**
@@ -4114,28 +4723,14 @@ public final class Shop {
       return id_;
     }
 
-    public static final int ITEMIDS_FIELD_NUMBER = 2;
-    private java.util.List<java.lang.Integer> itemIds_;
+    public static final int TOTALITEMS_FIELD_NUMBER = 2;
+    private int totalItems_;
     /**
-     * <code>repeated int32 itemIds = 2;</code>
+     * <code>int32 totalItems = 2;</code>
      */
-    public java.util.List<java.lang.Integer>
-        getItemIdsList() {
-      return itemIds_;
+    public int getTotalItems() {
+      return totalItems_;
     }
-    /**
-     * <code>repeated int32 itemIds = 2;</code>
-     */
-    public int getItemIdsCount() {
-      return itemIds_.size();
-    }
-    /**
-     * <code>repeated int32 itemIds = 2;</code>
-     */
-    public int getItemIds(int index) {
-      return itemIds_.get(index);
-    }
-    private int itemIdsMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -4151,16 +4746,11 @@ public final class Shop {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      getSerializedSize();
       if (id_ != 0) {
         output.writeInt32(1, id_);
       }
-      if (getItemIdsList().size() > 0) {
-        output.writeUInt32NoTag(18);
-        output.writeUInt32NoTag(itemIdsMemoizedSerializedSize);
-      }
-      for (int i = 0; i < itemIds_.size(); i++) {
-        output.writeInt32NoTag(itemIds_.get(i));
+      if (totalItems_ != 0) {
+        output.writeInt32(2, totalItems_);
       }
       unknownFields.writeTo(output);
     }
@@ -4175,19 +4765,9 @@ public final class Shop {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(1, id_);
       }
-      {
-        int dataSize = 0;
-        for (int i = 0; i < itemIds_.size(); i++) {
-          dataSize += com.google.protobuf.CodedOutputStream
-            .computeInt32SizeNoTag(itemIds_.get(i));
-        }
-        size += dataSize;
-        if (!getItemIdsList().isEmpty()) {
-          size += 1;
-          size += com.google.protobuf.CodedOutputStream
-              .computeInt32SizeNoTag(dataSize);
-        }
-        itemIdsMemoizedSerializedSize = dataSize;
+      if (totalItems_ != 0) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, totalItems_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4207,8 +4787,8 @@ public final class Shop {
       boolean result = true;
       result = result && (getId()
           == other.getId());
-      result = result && getItemIdsList()
-          .equals(other.getItemIdsList());
+      result = result && (getTotalItems()
+          == other.getTotalItems());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -4222,10 +4802,8 @@ public final class Shop {
       hash = (19 * hash) + getDescriptor().hashCode();
       hash = (37 * hash) + ID_FIELD_NUMBER;
       hash = (53 * hash) + getId();
-      if (getItemIdsCount() > 0) {
-        hash = (37 * hash) + ITEMIDS_FIELD_NUMBER;
-        hash = (53 * hash) + getItemIdsList().hashCode();
-      }
+      hash = (37 * hash) + TOTALITEMS_FIELD_NUMBER;
+      hash = (53 * hash) + getTotalItems();
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4361,8 +4939,8 @@ public final class Shop {
         super.clear();
         id_ = 0;
 
-        itemIds_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+        totalItems_ = 0;
+
         return this;
       }
 
@@ -4389,15 +4967,8 @@ public final class Shop {
       @java.lang.Override
       public task3.grpc.stubs.Shop.ShortOrderResponse buildPartial() {
         task3.grpc.stubs.Shop.ShortOrderResponse result = new task3.grpc.stubs.Shop.ShortOrderResponse(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
         result.id_ = id_;
-        if (((bitField0_ & 0x00000002) == 0x00000002)) {
-          itemIds_ = java.util.Collections.unmodifiableList(itemIds_);
-          bitField0_ = (bitField0_ & ~0x00000002);
-        }
-        result.itemIds_ = itemIds_;
-        result.bitField0_ = to_bitField0_;
+        result.totalItems_ = totalItems_;
         onBuilt();
         return result;
       }
@@ -4449,15 +5020,8 @@ public final class Shop {
         if (other.getId() != 0) {
           setId(other.getId());
         }
-        if (!other.itemIds_.isEmpty()) {
-          if (itemIds_.isEmpty()) {
-            itemIds_ = other.itemIds_;
-            bitField0_ = (bitField0_ & ~0x00000002);
-          } else {
-            ensureItemIdsIsMutable();
-            itemIds_.addAll(other.itemIds_);
-          }
-          onChanged();
+        if (other.getTotalItems() != 0) {
+          setTotalItems(other.getTotalItems());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -4487,7 +5051,6 @@ public final class Shop {
         }
         return this;
       }
-      private int bitField0_;
 
       private int id_ ;
       /**
@@ -4515,68 +5078,28 @@ public final class Shop {
         return this;
       }
 
-      private java.util.List<java.lang.Integer> itemIds_ = java.util.Collections.emptyList();
-      private void ensureItemIdsIsMutable() {
-        if (!((bitField0_ & 0x00000002) == 0x00000002)) {
-          itemIds_ = new java.util.ArrayList<java.lang.Integer>(itemIds_);
-          bitField0_ |= 0x00000002;
-         }
+      private int totalItems_ ;
+      /**
+       * <code>int32 totalItems = 2;</code>
+       */
+      public int getTotalItems() {
+        return totalItems_;
       }
       /**
-       * <code>repeated int32 itemIds = 2;</code>
+       * <code>int32 totalItems = 2;</code>
        */
-      public java.util.List<java.lang.Integer>
-          getItemIdsList() {
-        return java.util.Collections.unmodifiableList(itemIds_);
-      }
-      /**
-       * <code>repeated int32 itemIds = 2;</code>
-       */
-      public int getItemIdsCount() {
-        return itemIds_.size();
-      }
-      /**
-       * <code>repeated int32 itemIds = 2;</code>
-       */
-      public int getItemIds(int index) {
-        return itemIds_.get(index);
-      }
-      /**
-       * <code>repeated int32 itemIds = 2;</code>
-       */
-      public Builder setItemIds(
-          int index, int value) {
-        ensureItemIdsIsMutable();
-        itemIds_.set(index, value);
+      public Builder setTotalItems(int value) {
+        
+        totalItems_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated int32 itemIds = 2;</code>
+       * <code>int32 totalItems = 2;</code>
        */
-      public Builder addItemIds(int value) {
-        ensureItemIdsIsMutable();
-        itemIds_.add(value);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 itemIds = 2;</code>
-       */
-      public Builder addAllItemIds(
-          java.lang.Iterable<? extends java.lang.Integer> values) {
-        ensureItemIdsIsMutable();
-        com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, itemIds_);
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>repeated int32 itemIds = 2;</code>
-       */
-      public Builder clearItemIds() {
-        itemIds_ = java.util.Collections.emptyList();
-        bitField0_ = (bitField0_ & ~0x00000002);
+      public Builder clearTotalItems() {
+        
+        totalItems_ = 0;
         onChanged();
         return this;
       }
@@ -4633,29 +5156,55 @@ public final class Shop {
 
   }
 
-  public interface OrderRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:OrderRequest)
+  public interface AddItemRequestOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:AddItemRequest)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string name = 1;</code>
      */
-    int getId();
+    java.lang.String getName();
+    /**
+     * <code>string name = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getNameBytes();
+
+    /**
+     * <code>string description = 2;</code>
+     */
+    java.lang.String getDescription();
+    /**
+     * <code>string description = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getDescriptionBytes();
+
+    /**
+     * <code>int64 price = 3;</code>
+     */
+    long getPrice();
   }
   /**
-   * Protobuf type {@code OrderRequest}
+   * <pre>
+   * Add Item 
+   * </pre>
+   *
+   * Protobuf type {@code AddItemRequest}
    */
-  public  static final class OrderRequest extends
+  public  static final class AddItemRequest extends
       com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:OrderRequest)
-      OrderRequestOrBuilder {
+      // @@protoc_insertion_point(message_implements:AddItemRequest)
+      AddItemRequestOrBuilder {
   private static final long serialVersionUID = 0L;
-    // Use OrderRequest.newBuilder() to construct.
-    private OrderRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+    // Use AddItemRequest.newBuilder() to construct.
+    private AddItemRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
       super(builder);
     }
-    private OrderRequest() {
-      id_ = 0;
+    private AddItemRequest() {
+      name_ = "";
+      description_ = "";
+      price_ = 0L;
     }
 
     @java.lang.Override
@@ -4663,7 +5212,7 @@ public final class Shop {
     getUnknownFields() {
       return this.unknownFields;
     }
-    private OrderRequest(
+    private AddItemRequest(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -4682,9 +5231,21 @@ public final class Shop {
             case 0:
               done = true;
               break;
-            case 8: {
+            case 10: {
+              java.lang.String s = input.readStringRequireUtf8();
 
-              id_ = input.readInt32();
+              name_ = s;
+              break;
+            }
+            case 18: {
+              java.lang.String s = input.readStringRequireUtf8();
+
+              description_ = s;
+              break;
+            }
+            case 24: {
+
+              price_ = input.readInt64();
               break;
             }
             default: {
@@ -4708,24 +5269,92 @@ public final class Shop {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+      return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return task3.grpc.stubs.Shop.internal_static_OrderRequest_fieldAccessorTable
+      return task3.grpc.stubs.Shop.internal_static_AddItemRequest_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              task3.grpc.stubs.Shop.OrderRequest.class, task3.grpc.stubs.Shop.OrderRequest.Builder.class);
+              task3.grpc.stubs.Shop.AddItemRequest.class, task3.grpc.stubs.Shop.AddItemRequest.Builder.class);
     }
 
-    public static final int ID_FIELD_NUMBER = 1;
-    private int id_;
+    public static final int NAME_FIELD_NUMBER = 1;
+    private volatile java.lang.Object name_;
     /**
-     * <code>int32 id = 1;</code>
+     * <code>string name = 1;</code>
      */
-    public int getId() {
-      return id_;
+    public java.lang.String getName() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        name_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string name = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getNameBytes() {
+      java.lang.Object ref = name_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        name_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int DESCRIPTION_FIELD_NUMBER = 2;
+    private volatile java.lang.Object description_;
+    /**
+     * <code>string description = 2;</code>
+     */
+    public java.lang.String getDescription() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        description_ = s;
+        return s;
+      }
+    }
+    /**
+     * <code>string description = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getDescriptionBytes() {
+      java.lang.Object ref = description_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        description_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PRICE_FIELD_NUMBER = 3;
+    private long price_;
+    /**
+     * <code>int64 price = 3;</code>
+     */
+    public long getPrice() {
+      return price_;
     }
 
     private byte memoizedIsInitialized = -1;
@@ -4742,8 +5371,14 @@ public final class Shop {
     @java.lang.Override
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
-      if (id_ != 0) {
-        output.writeInt32(1, id_);
+      if (!getNameBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
+      }
+      if (price_ != 0L) {
+        output.writeInt64(3, price_);
       }
       unknownFields.writeTo(output);
     }
@@ -4754,9 +5389,15 @@ public final class Shop {
       if (size != -1) return size;
 
       size = 0;
-      if (id_ != 0) {
+      if (!getNameBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
+      }
+      if (!getDescriptionBytes().isEmpty()) {
+        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
+      }
+      if (price_ != 0L) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, id_);
+          .computeInt64Size(3, price_);
       }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
@@ -4768,14 +5409,18 @@ public final class Shop {
       if (obj == this) {
        return true;
       }
-      if (!(obj instanceof task3.grpc.stubs.Shop.OrderRequest)) {
+      if (!(obj instanceof task3.grpc.stubs.Shop.AddItemRequest)) {
         return super.equals(obj);
       }
-      task3.grpc.stubs.Shop.OrderRequest other = (task3.grpc.stubs.Shop.OrderRequest) obj;
+      task3.grpc.stubs.Shop.AddItemRequest other = (task3.grpc.stubs.Shop.AddItemRequest) obj;
 
       boolean result = true;
-      result = result && (getId()
-          == other.getId());
+      result = result && getName()
+          .equals(other.getName());
+      result = result && getDescription()
+          .equals(other.getDescription());
+      result = result && (getPrice()
+          == other.getPrice());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -4787,76 +5432,81 @@ public final class Shop {
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + ID_FIELD_NUMBER;
-      hash = (53 * hash) + getId();
+      hash = (37 * hash) + NAME_FIELD_NUMBER;
+      hash = (53 * hash) + getName().hashCode();
+      hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
+      hash = (53 * hash) + getDescription().hashCode();
+      hash = (37 * hash) + PRICE_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+          getPrice());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
     }
 
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         java.nio.ByteBuffer data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         java.nio.ByteBuffer data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(byte[] data)
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(java.io.InputStream input)
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input, extensionRegistry);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseDelimitedFrom(java.io.InputStream input)
+    public static task3.grpc.stubs.Shop.AddItemRequest parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseDelimitedFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return com.google.protobuf.GeneratedMessageV3
           .parseWithIOException(PARSER, input);
     }
-    public static task3.grpc.stubs.Shop.OrderRequest parseFrom(
+    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -4869,7 +5519,7 @@ public final class Shop {
     public static Builder newBuilder() {
       return DEFAULT_INSTANCE.toBuilder();
     }
-    public static Builder newBuilder(task3.grpc.stubs.Shop.OrderRequest prototype) {
+    public static Builder newBuilder(task3.grpc.stubs.Shop.AddItemRequest prototype) {
       return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
     }
     @java.lang.Override
@@ -4885,26 +5535,30 @@ public final class Shop {
       return builder;
     }
     /**
-     * Protobuf type {@code OrderRequest}
+     * <pre>
+     * Add Item 
+     * </pre>
+     *
+     * Protobuf type {@code AddItemRequest}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:OrderRequest)
-        task3.grpc.stubs.Shop.OrderRequestOrBuilder {
+        // @@protoc_insertion_point(builder_implements:AddItemRequest)
+        task3.grpc.stubs.Shop.AddItemRequestOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
       }
 
       @java.lang.Override
       protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return task3.grpc.stubs.Shop.internal_static_OrderRequest_fieldAccessorTable
+        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                task3.grpc.stubs.Shop.OrderRequest.class, task3.grpc.stubs.Shop.OrderRequest.Builder.class);
+                task3.grpc.stubs.Shop.AddItemRequest.class, task3.grpc.stubs.Shop.AddItemRequest.Builder.class);
       }
 
-      // Construct using task3.grpc.stubs.Shop.OrderRequest.newBuilder()
+      // Construct using task3.grpc.stubs.Shop.AddItemRequest.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -4922,7 +5576,11 @@ public final class Shop {
       @java.lang.Override
       public Builder clear() {
         super.clear();
-        id_ = 0;
+        name_ = "";
+
+        description_ = "";
+
+        price_ = 0L;
 
         return this;
       }
@@ -4930,17 +5588,17 @@ public final class Shop {
       @java.lang.Override
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return task3.grpc.stubs.Shop.internal_static_OrderRequest_descriptor;
+        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
       }
 
       @java.lang.Override
-      public task3.grpc.stubs.Shop.OrderRequest getDefaultInstanceForType() {
-        return task3.grpc.stubs.Shop.OrderRequest.getDefaultInstance();
+      public task3.grpc.stubs.Shop.AddItemRequest getDefaultInstanceForType() {
+        return task3.grpc.stubs.Shop.AddItemRequest.getDefaultInstance();
       }
 
       @java.lang.Override
-      public task3.grpc.stubs.Shop.OrderRequest build() {
-        task3.grpc.stubs.Shop.OrderRequest result = buildPartial();
+      public task3.grpc.stubs.Shop.AddItemRequest build() {
+        task3.grpc.stubs.Shop.AddItemRequest result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
@@ -4948,9 +5606,11 @@ public final class Shop {
       }
 
       @java.lang.Override
-      public task3.grpc.stubs.Shop.OrderRequest buildPartial() {
-        task3.grpc.stubs.Shop.OrderRequest result = new task3.grpc.stubs.Shop.OrderRequest(this);
-        result.id_ = id_;
+      public task3.grpc.stubs.Shop.AddItemRequest buildPartial() {
+        task3.grpc.stubs.Shop.AddItemRequest result = new task3.grpc.stubs.Shop.AddItemRequest(this);
+        result.name_ = name_;
+        result.description_ = description_;
+        result.price_ = price_;
         onBuilt();
         return result;
       }
@@ -4989,18 +5649,26 @@ public final class Shop {
       }
       @java.lang.Override
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof task3.grpc.stubs.Shop.OrderRequest) {
-          return mergeFrom((task3.grpc.stubs.Shop.OrderRequest)other);
+        if (other instanceof task3.grpc.stubs.Shop.AddItemRequest) {
+          return mergeFrom((task3.grpc.stubs.Shop.AddItemRequest)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(task3.grpc.stubs.Shop.OrderRequest other) {
-        if (other == task3.grpc.stubs.Shop.OrderRequest.getDefaultInstance()) return this;
-        if (other.getId() != 0) {
-          setId(other.getId());
+      public Builder mergeFrom(task3.grpc.stubs.Shop.AddItemRequest other) {
+        if (other == task3.grpc.stubs.Shop.AddItemRequest.getDefaultInstance()) return this;
+        if (!other.getName().isEmpty()) {
+          name_ = other.name_;
+          onChanged();
+        }
+        if (!other.getDescription().isEmpty()) {
+          description_ = other.description_;
+          onChanged();
+        }
+        if (other.getPrice() != 0L) {
+          setPrice(other.getPrice());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5017,11 +5685,11 @@ public final class Shop {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        task3.grpc.stubs.Shop.OrderRequest parsedMessage = null;
+        task3.grpc.stubs.Shop.AddItemRequest parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (task3.grpc.stubs.Shop.OrderRequest) e.getUnfinishedMessage();
+          parsedMessage = (task3.grpc.stubs.Shop.AddItemRequest) e.getUnfinishedMessage();
           throw e.unwrapIOException();
         } finally {
           if (parsedMessage != null) {
@@ -5031,28 +5699,166 @@ public final class Shop {
         return this;
       }
 
-      private int id_ ;
+      private java.lang.Object name_ = "";
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string name = 1;</code>
        */
-      public int getId() {
-        return id_;
+      public java.lang.String getName() {
+        java.lang.Object ref = name_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          name_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string name = 1;</code>
        */
-      public Builder setId(int value) {
-        
-        id_ = value;
+      public com.google.protobuf.ByteString
+          getNameBytes() {
+        java.lang.Object ref = name_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          name_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        name_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>int32 id = 1;</code>
+       * <code>string name = 1;</code>
        */
-      public Builder clearId() {
+      public Builder clearName() {
         
-        id_ = 0;
+        name_ = getDefaultInstance().getName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string name = 1;</code>
+       */
+      public Builder setNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        name_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object description_ = "";
+      /**
+       * <code>string description = 2;</code>
+       */
+      public java.lang.String getDescription() {
+        java.lang.Object ref = description_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          description_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>string description = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getDescriptionBytes() {
+        java.lang.Object ref = description_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          description_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>string description = 2;</code>
+       */
+      public Builder setDescription(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  
+        description_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 2;</code>
+       */
+      public Builder clearDescription() {
+        
+        description_ = getDefaultInstance().getDescription();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>string description = 2;</code>
+       */
+      public Builder setDescriptionBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  checkByteStringIsUtf8(value);
+        
+        description_ = value;
+        onChanged();
+        return this;
+      }
+
+      private long price_ ;
+      /**
+       * <code>int64 price = 3;</code>
+       */
+      public long getPrice() {
+        return price_;
+      }
+      /**
+       * <code>int64 price = 3;</code>
+       */
+      public Builder setPrice(long value) {
+        
+        price_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>int64 price = 3;</code>
+       */
+      public Builder clearPrice() {
+        
+        price_ = 0L;
         onChanged();
         return this;
       }
@@ -5069,41 +5875,41 @@ public final class Shop {
       }
 
 
-      // @@protoc_insertion_point(builder_scope:OrderRequest)
+      // @@protoc_insertion_point(builder_scope:AddItemRequest)
     }
 
-    // @@protoc_insertion_point(class_scope:OrderRequest)
-    private static final task3.grpc.stubs.Shop.OrderRequest DEFAULT_INSTANCE;
+    // @@protoc_insertion_point(class_scope:AddItemRequest)
+    private static final task3.grpc.stubs.Shop.AddItemRequest DEFAULT_INSTANCE;
     static {
-      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.OrderRequest();
+      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.AddItemRequest();
     }
 
-    public static task3.grpc.stubs.Shop.OrderRequest getDefaultInstance() {
+    public static task3.grpc.stubs.Shop.AddItemRequest getDefaultInstance() {
       return DEFAULT_INSTANCE;
     }
 
-    private static final com.google.protobuf.Parser<OrderRequest>
-        PARSER = new com.google.protobuf.AbstractParser<OrderRequest>() {
+    private static final com.google.protobuf.Parser<AddItemRequest>
+        PARSER = new com.google.protobuf.AbstractParser<AddItemRequest>() {
       @java.lang.Override
-      public OrderRequest parsePartialFrom(
+      public AddItemRequest parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new OrderRequest(input, extensionRegistry);
+        return new AddItemRequest(input, extensionRegistry);
       }
     };
 
-    public static com.google.protobuf.Parser<OrderRequest> parser() {
+    public static com.google.protobuf.Parser<AddItemRequest> parser() {
       return PARSER;
     }
 
     @java.lang.Override
-    public com.google.protobuf.Parser<OrderRequest> getParserForType() {
+    public com.google.protobuf.Parser<AddItemRequest> getParserForType() {
       return PARSER;
     }
 
     @java.lang.Override
-    public task3.grpc.stubs.Shop.OrderRequest getDefaultInstanceForType() {
+    public task3.grpc.stubs.Shop.AddItemRequest getDefaultInstanceForType() {
       return DEFAULT_INSTANCE;
     }
 
@@ -5585,757 +6391,6 @@ public final class Shop {
 
   }
 
-  public interface AddItemRequestOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:AddItemRequest)
-      com.google.protobuf.MessageOrBuilder {
-
-    /**
-     * <code>string name = 1;</code>
-     */
-    java.lang.String getName();
-    /**
-     * <code>string name = 1;</code>
-     */
-    com.google.protobuf.ByteString
-        getNameBytes();
-
-    /**
-     * <code>string description = 2;</code>
-     */
-    java.lang.String getDescription();
-    /**
-     * <code>string description = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getDescriptionBytes();
-
-    /**
-     * <code>int64 price = 3;</code>
-     */
-    long getPrice();
-  }
-  /**
-   * Protobuf type {@code AddItemRequest}
-   */
-  public  static final class AddItemRequest extends
-      com.google.protobuf.GeneratedMessageV3 implements
-      // @@protoc_insertion_point(message_implements:AddItemRequest)
-      AddItemRequestOrBuilder {
-  private static final long serialVersionUID = 0L;
-    // Use AddItemRequest.newBuilder() to construct.
-    private AddItemRequest(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
-      super(builder);
-    }
-    private AddItemRequest() {
-      name_ = "";
-      description_ = "";
-      price_ = 0L;
-    }
-
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-    getUnknownFields() {
-      return this.unknownFields;
-    }
-    private AddItemRequest(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      this();
-      if (extensionRegistry == null) {
-        throw new java.lang.NullPointerException();
-      }
-      int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
-      try {
-        boolean done = false;
-        while (!done) {
-          int tag = input.readTag();
-          switch (tag) {
-            case 0:
-              done = true;
-              break;
-            case 10: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              name_ = s;
-              break;
-            }
-            case 18: {
-              java.lang.String s = input.readStringRequireUtf8();
-
-              description_ = s;
-              break;
-            }
-            case 24: {
-
-              price_ = input.readInt64();
-              break;
-            }
-            default: {
-              if (!parseUnknownFieldProto3(
-                  input, unknownFields, extensionRegistry, tag)) {
-                done = true;
-              }
-              break;
-            }
-          }
-        }
-      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        throw e.setUnfinishedMessage(this);
-      } catch (java.io.IOException e) {
-        throw new com.google.protobuf.InvalidProtocolBufferException(
-            e).setUnfinishedMessage(this);
-      } finally {
-        this.unknownFields = unknownFields.build();
-        makeExtensionsImmutable();
-      }
-    }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
-    }
-
-    @java.lang.Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return task3.grpc.stubs.Shop.internal_static_AddItemRequest_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              task3.grpc.stubs.Shop.AddItemRequest.class, task3.grpc.stubs.Shop.AddItemRequest.Builder.class);
-    }
-
-    public static final int NAME_FIELD_NUMBER = 1;
-    private volatile java.lang.Object name_;
-    /**
-     * <code>string name = 1;</code>
-     */
-    public java.lang.String getName() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        name_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string name = 1;</code>
-     */
-    public com.google.protobuf.ByteString
-        getNameBytes() {
-      java.lang.Object ref = name_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        name_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int DESCRIPTION_FIELD_NUMBER = 2;
-    private volatile java.lang.Object description_;
-    /**
-     * <code>string description = 2;</code>
-     */
-    public java.lang.String getDescription() {
-      java.lang.Object ref = description_;
-      if (ref instanceof java.lang.String) {
-        return (java.lang.String) ref;
-      } else {
-        com.google.protobuf.ByteString bs = 
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        description_ = s;
-        return s;
-      }
-    }
-    /**
-     * <code>string description = 2;</code>
-     */
-    public com.google.protobuf.ByteString
-        getDescriptionBytes() {
-      java.lang.Object ref = description_;
-      if (ref instanceof java.lang.String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        description_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-
-    public static final int PRICE_FIELD_NUMBER = 3;
-    private long price_;
-    /**
-     * <code>int64 price = 3;</code>
-     */
-    public long getPrice() {
-      return price_;
-    }
-
-    private byte memoizedIsInitialized = -1;
-    @java.lang.Override
-    public final boolean isInitialized() {
-      byte isInitialized = memoizedIsInitialized;
-      if (isInitialized == 1) return true;
-      if (isInitialized == 0) return false;
-
-      memoizedIsInitialized = 1;
-      return true;
-    }
-
-    @java.lang.Override
-    public void writeTo(com.google.protobuf.CodedOutputStream output)
-                        throws java.io.IOException {
-      if (!getNameBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 1, name_);
-      }
-      if (!getDescriptionBytes().isEmpty()) {
-        com.google.protobuf.GeneratedMessageV3.writeString(output, 2, description_);
-      }
-      if (price_ != 0L) {
-        output.writeInt64(3, price_);
-      }
-      unknownFields.writeTo(output);
-    }
-
-    @java.lang.Override
-    public int getSerializedSize() {
-      int size = memoizedSize;
-      if (size != -1) return size;
-
-      size = 0;
-      if (!getNameBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, name_);
-      }
-      if (!getDescriptionBytes().isEmpty()) {
-        size += com.google.protobuf.GeneratedMessageV3.computeStringSize(2, description_);
-      }
-      if (price_ != 0L) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(3, price_);
-      }
-      size += unknownFields.getSerializedSize();
-      memoizedSize = size;
-      return size;
-    }
-
-    @java.lang.Override
-    public boolean equals(final java.lang.Object obj) {
-      if (obj == this) {
-       return true;
-      }
-      if (!(obj instanceof task3.grpc.stubs.Shop.AddItemRequest)) {
-        return super.equals(obj);
-      }
-      task3.grpc.stubs.Shop.AddItemRequest other = (task3.grpc.stubs.Shop.AddItemRequest) obj;
-
-      boolean result = true;
-      result = result && getName()
-          .equals(other.getName());
-      result = result && getDescription()
-          .equals(other.getDescription());
-      result = result && (getPrice()
-          == other.getPrice());
-      result = result && unknownFields.equals(other.unknownFields);
-      return result;
-    }
-
-    @java.lang.Override
-    public int hashCode() {
-      if (memoizedHashCode != 0) {
-        return memoizedHashCode;
-      }
-      int hash = 41;
-      hash = (19 * hash) + getDescriptor().hashCode();
-      hash = (37 * hash) + NAME_FIELD_NUMBER;
-      hash = (53 * hash) + getName().hashCode();
-      hash = (37 * hash) + DESCRIPTION_FIELD_NUMBER;
-      hash = (53 * hash) + getDescription().hashCode();
-      hash = (37 * hash) + PRICE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
-          getPrice());
-      hash = (29 * hash) + unknownFields.hashCode();
-      memoizedHashCode = hash;
-      return hash;
-    }
-
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        java.nio.ByteBuffer data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        java.nio.ByteBuffer data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        com.google.protobuf.ByteString data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        com.google.protobuf.ByteString data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(byte[] data)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        byte[] data,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws com.google.protobuf.InvalidProtocolBufferException {
-      return PARSER.parseFrom(data, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseDelimitedFrom(java.io.InputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseDelimitedFrom(
-        java.io.InputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        com.google.protobuf.CodedInputStream input)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input);
-    }
-    public static task3.grpc.stubs.Shop.AddItemRequest parseFrom(
-        com.google.protobuf.CodedInputStream input,
-        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-        throws java.io.IOException {
-      return com.google.protobuf.GeneratedMessageV3
-          .parseWithIOException(PARSER, input, extensionRegistry);
-    }
-
-    @java.lang.Override
-    public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder() {
-      return DEFAULT_INSTANCE.toBuilder();
-    }
-    public static Builder newBuilder(task3.grpc.stubs.Shop.AddItemRequest prototype) {
-      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
-    }
-    @java.lang.Override
-    public Builder toBuilder() {
-      return this == DEFAULT_INSTANCE
-          ? new Builder() : new Builder().mergeFrom(this);
-    }
-
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
-    /**
-     * Protobuf type {@code AddItemRequest}
-     */
-    public static final class Builder extends
-        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:AddItemRequest)
-        task3.grpc.stubs.Shop.AddItemRequestOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
-      }
-
-      @java.lang.Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                task3.grpc.stubs.Shop.AddItemRequest.class, task3.grpc.stubs.Shop.AddItemRequest.Builder.class);
-      }
-
-      // Construct using task3.grpc.stubs.Shop.AddItemRequest.newBuilder()
-      private Builder() {
-        maybeForceBuilderInitialization();
-      }
-
-      private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
-      private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessageV3
-                .alwaysUseFieldBuilders) {
-        }
-      }
-      @java.lang.Override
-      public Builder clear() {
-        super.clear();
-        name_ = "";
-
-        description_ = "";
-
-        price_ = 0L;
-
-        return this;
-      }
-
-      @java.lang.Override
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return task3.grpc.stubs.Shop.internal_static_AddItemRequest_descriptor;
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddItemRequest getDefaultInstanceForType() {
-        return task3.grpc.stubs.Shop.AddItemRequest.getDefaultInstance();
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddItemRequest build() {
-        task3.grpc.stubs.Shop.AddItemRequest result = buildPartial();
-        if (!result.isInitialized()) {
-          throw newUninitializedMessageException(result);
-        }
-        return result;
-      }
-
-      @java.lang.Override
-      public task3.grpc.stubs.Shop.AddItemRequest buildPartial() {
-        task3.grpc.stubs.Shop.AddItemRequest result = new task3.grpc.stubs.Shop.AddItemRequest(this);
-        result.name_ = name_;
-        result.description_ = description_;
-        result.price_ = price_;
-        onBuilt();
-        return result;
-      }
-
-      @java.lang.Override
-      public Builder clone() {
-        return (Builder) super.clone();
-      }
-      @java.lang.Override
-      public Builder setField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.setField(field, value);
-      }
-      @java.lang.Override
-      public Builder clearField(
-          com.google.protobuf.Descriptors.FieldDescriptor field) {
-        return (Builder) super.clearField(field);
-      }
-      @java.lang.Override
-      public Builder clearOneof(
-          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
-        return (Builder) super.clearOneof(oneof);
-      }
-      @java.lang.Override
-      public Builder setRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          int index, java.lang.Object value) {
-        return (Builder) super.setRepeatedField(field, index, value);
-      }
-      @java.lang.Override
-      public Builder addRepeatedField(
-          com.google.protobuf.Descriptors.FieldDescriptor field,
-          java.lang.Object value) {
-        return (Builder) super.addRepeatedField(field, value);
-      }
-      @java.lang.Override
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof task3.grpc.stubs.Shop.AddItemRequest) {
-          return mergeFrom((task3.grpc.stubs.Shop.AddItemRequest)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
-      }
-
-      public Builder mergeFrom(task3.grpc.stubs.Shop.AddItemRequest other) {
-        if (other == task3.grpc.stubs.Shop.AddItemRequest.getDefaultInstance()) return this;
-        if (!other.getName().isEmpty()) {
-          name_ = other.name_;
-          onChanged();
-        }
-        if (!other.getDescription().isEmpty()) {
-          description_ = other.description_;
-          onChanged();
-        }
-        if (other.getPrice() != 0L) {
-          setPrice(other.getPrice());
-        }
-        this.mergeUnknownFields(other.unknownFields);
-        onChanged();
-        return this;
-      }
-
-      @java.lang.Override
-      public final boolean isInitialized() {
-        return true;
-      }
-
-      @java.lang.Override
-      public Builder mergeFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws java.io.IOException {
-        task3.grpc.stubs.Shop.AddItemRequest parsedMessage = null;
-        try {
-          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
-        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (task3.grpc.stubs.Shop.AddItemRequest) e.getUnfinishedMessage();
-          throw e.unwrapIOException();
-        } finally {
-          if (parsedMessage != null) {
-            mergeFrom(parsedMessage);
-          }
-        }
-        return this;
-      }
-
-      private java.lang.Object name_ = "";
-      /**
-       * <code>string name = 1;</code>
-       */
-      public java.lang.String getName() {
-        java.lang.Object ref = name_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          name_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getNameBytes() {
-        java.lang.Object ref = name_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          name_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder setName(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        name_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder clearName() {
-        
-        name_ = getDefaultInstance().getName();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string name = 1;</code>
-       */
-      public Builder setNameBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        name_ = value;
-        onChanged();
-        return this;
-      }
-
-      private java.lang.Object description_ = "";
-      /**
-       * <code>string description = 2;</code>
-       */
-      public java.lang.String getDescription() {
-        java.lang.Object ref = description_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          description_ = s;
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>string description = 2;</code>
-       */
-      public com.google.protobuf.ByteString
-          getDescriptionBytes() {
-        java.lang.Object ref = description_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          description_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>string description = 2;</code>
-       */
-      public Builder setDescription(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  
-        description_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string description = 2;</code>
-       */
-      public Builder clearDescription() {
-        
-        description_ = getDefaultInstance().getDescription();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>string description = 2;</code>
-       */
-      public Builder setDescriptionBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-        
-        description_ = value;
-        onChanged();
-        return this;
-      }
-
-      private long price_ ;
-      /**
-       * <code>int64 price = 3;</code>
-       */
-      public long getPrice() {
-        return price_;
-      }
-      /**
-       * <code>int64 price = 3;</code>
-       */
-      public Builder setPrice(long value) {
-        
-        price_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>int64 price = 3;</code>
-       */
-      public Builder clearPrice() {
-        
-        price_ = 0L;
-        onChanged();
-        return this;
-      }
-      @java.lang.Override
-      public final Builder setUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.setUnknownFieldsProto3(unknownFields);
-      }
-
-      @java.lang.Override
-      public final Builder mergeUnknownFields(
-          final com.google.protobuf.UnknownFieldSet unknownFields) {
-        return super.mergeUnknownFields(unknownFields);
-      }
-
-
-      // @@protoc_insertion_point(builder_scope:AddItemRequest)
-    }
-
-    // @@protoc_insertion_point(class_scope:AddItemRequest)
-    private static final task3.grpc.stubs.Shop.AddItemRequest DEFAULT_INSTANCE;
-    static {
-      DEFAULT_INSTANCE = new task3.grpc.stubs.Shop.AddItemRequest();
-    }
-
-    public static task3.grpc.stubs.Shop.AddItemRequest getDefaultInstance() {
-      return DEFAULT_INSTANCE;
-    }
-
-    private static final com.google.protobuf.Parser<AddItemRequest>
-        PARSER = new com.google.protobuf.AbstractParser<AddItemRequest>() {
-      @java.lang.Override
-      public AddItemRequest parsePartialFrom(
-          com.google.protobuf.CodedInputStream input,
-          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
-          throws com.google.protobuf.InvalidProtocolBufferException {
-        return new AddItemRequest(input, extensionRegistry);
-      }
-    };
-
-    public static com.google.protobuf.Parser<AddItemRequest> parser() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public com.google.protobuf.Parser<AddItemRequest> getParserForType() {
-      return PARSER;
-    }
-
-    @java.lang.Override
-    public task3.grpc.stubs.Shop.AddItemRequest getDefaultInstanceForType() {
-      return DEFAULT_INSTANCE;
-    }
-
-  }
-
   public interface ItemRequestOrBuilder extends
       // @@protoc_insertion_point(interface_extends:ItemRequest)
       com.google.protobuf.MessageOrBuilder {
@@ -6346,6 +6401,10 @@ public final class Shop {
     int getId();
   }
   /**
+   * <pre>
+   * Single Item 
+   * </pre>
+   *
    * Protobuf type {@code ItemRequest}
    */
   public  static final class ItemRequest extends
@@ -6588,6 +6647,10 @@ public final class Shop {
       return builder;
     }
     /**
+     * <pre>
+     * Single Item 
+     * </pre>
+     *
      * Protobuf type {@code ItemRequest}
      */
     public static final class Builder extends
@@ -7655,6 +7718,10 @@ public final class Shop {
         int index);
   }
   /**
+   * <pre>
+   * Multiple Items 
+   * </pre>
+   *
    * Protobuf type {@code ItemsResponse}
    */
   public  static final class ItemsResponse extends
@@ -7932,6 +7999,10 @@ public final class Shop {
       return builder;
     }
     /**
+     * <pre>
+     * Multiple Items 
+     * </pre>
+     *
      * Protobuf type {@code ItemsResponse}
      */
     public static final class Builder extends
@@ -9434,11 +9505,6 @@ public final class Shop {
   }
 
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_AddOrderResponse_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_AddOrderResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AddOrderRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
@@ -9448,6 +9514,16 @@ public final class Shop {
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_OrderedItemRequest_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_AddOrderResponse_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_AddOrderResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_OrderRequest_descriptor;
+  private static final 
+    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      internal_static_OrderRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_OrderResponse_descriptor;
   private static final 
@@ -9469,20 +9545,15 @@ public final class Shop {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_ShortOrderResponse_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_OrderRequest_descriptor;
+    internal_static_AddItemRequest_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_OrderRequest_fieldAccessorTable;
+      internal_static_AddItemRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_AddItemResponse_descriptor;
   private static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_AddItemResponse_fieldAccessorTable;
-  private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_AddItemRequest_descriptor;
-  private static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_AddItemRequest_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_ItemRequest_descriptor;
   private static final 
@@ -9517,33 +9588,33 @@ public final class Shop {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nshop.proto\"%\n\020AddOrderResponse\022\021\n\tcrea" +
-      "tedId\030\002 \001(\005\"8\n\017AddOrderRequest\022%\n\010newIte" +
-      "ms\030\001 \003(\0132\023.OrderedItemRequest\"2\n\022Ordered" +
-      "ItemRequest\022\n\n\002id\030\001 \001(\005\022\020\n\010quantity\030\002 \001(" +
-      "\005\"@\n\rOrderResponse\022\n\n\002id\030\001 \001(\005\022#\n\005items\030" +
-      "\002 \003(\0132\024.OrderedItemResponse\"7\n\023OrderedIt" +
-      "emResponse\022\016\n\006itemId\030\001 \001(\005\022\020\n\010quantity\030\002" +
-      " \001(\005\"5\n\016OrdersResponse\022#\n\006orders\030\001 \003(\0132\023" +
-      ".ShortOrderResponse\"1\n\022ShortOrderRespons" +
-      "e\022\n\n\002id\030\001 \001(\005\022\017\n\007itemIds\030\002 \003(\005\"\032\n\014OrderR" +
-      "equest\022\n\n\002id\030\001 \001(\005\"$\n\017AddItemResponse\022\021\n" +
-      "\tcreatedId\030\002 \001(\005\"B\n\016AddItemRequest\022\014\n\004na" +
-      "me\030\001 \001(\t\022\023\n\013description\030\002 \001(\t\022\r\n\005price\030\003" +
-      " \001(\003\"\031\n\013ItemRequest\022\n\n\002id\030\001 \001(\005\"L\n\014ItemR" +
-      "esponse\022\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\022\023\n\013des" +
-      "cription\030\003 \001(\t\022\r\n\005price\030\004 \001(\003\"2\n\rItemsRe" +
-      "sponse\022!\n\005items\030\001 \003(\0132\022.ItemShortRespons" +
-      "e\"-\n\021ItemShortResponse\022\n\n\002id\030\001 \001(\005\022\014\n\004na" +
-      "me\030\002 \001(\t\"\007\n\005Empty2\207\001\n\013ItemService\022\"\n\010get" +
-      "Items\022\006.Empty\032\016.ItemsResponse\022&\n\007getItem" +
-      "\022\014.ItemRequest\032\r.ItemResponse\022,\n\007addItem" +
-      "\022\017.AddItemRequest\032\020.AddItemResponse2\220\001\n\014" +
-      "OrderService\022$\n\tgetOrders\022\006.Empty\032\017.Orde" +
-      "rsResponse\022)\n\010getOrder\022\r.OrderRequest\032\016." +
-      "OrderResponse\022/\n\010addOrder\022\020.AddOrderRequ" +
-      "est\032\021.AddOrderResponseB\022\n\020task3.grpc.stu" +
-      "bsb\006proto3"
+      "\n\nshop.proto\"8\n\017AddOrderRequest\022%\n\010newIt" +
+      "ems\030\001 \003(\0132\023.OrderedItemRequest\"2\n\022Ordere" +
+      "dItemRequest\022\n\n\002id\030\001 \001(\005\022\020\n\010quantity\030\002 \001" +
+      "(\005\"%\n\020AddOrderResponse\022\021\n\tcreatedId\030\002 \001(" +
+      "\005\"\032\n\014OrderRequest\022\n\n\002id\030\001 \001(\005\"@\n\rOrderRe" +
+      "sponse\022\n\n\002id\030\001 \001(\005\022#\n\005items\030\002 \003(\0132\024.Orde" +
+      "redItemResponse\"E\n\023OrderedItemResponse\022\016" +
+      "\n\006itemId\030\001 \001(\005\022\020\n\010quantity\030\002 \001(\005\022\014\n\004name" +
+      "\030\003 \001(\t\"5\n\016OrdersResponse\022#\n\006orders\030\001 \003(\013" +
+      "2\023.ShortOrderResponse\"4\n\022ShortOrderRespo" +
+      "nse\022\n\n\002id\030\001 \001(\005\022\022\n\ntotalItems\030\002 \001(\005\"B\n\016A" +
+      "ddItemRequest\022\014\n\004name\030\001 \001(\t\022\023\n\013descripti" +
+      "on\030\002 \001(\t\022\r\n\005price\030\003 \001(\003\"$\n\017AddItemRespon" +
+      "se\022\021\n\tcreatedId\030\002 \001(\005\"\031\n\013ItemRequest\022\n\n\002" +
+      "id\030\001 \001(\005\"L\n\014ItemResponse\022\n\n\002id\030\001 \001(\005\022\014\n\004" +
+      "name\030\002 \001(\t\022\023\n\013description\030\003 \001(\t\022\r\n\005price" +
+      "\030\004 \001(\003\"2\n\rItemsResponse\022!\n\005items\030\001 \003(\0132\022" +
+      ".ItemShortResponse\"-\n\021ItemShortResponse\022" +
+      "\n\n\002id\030\001 \001(\005\022\014\n\004name\030\002 \001(\t\"\007\n\005Empty2\207\001\n\013I" +
+      "temService\022\"\n\010getItems\022\006.Empty\032\016.ItemsRe" +
+      "sponse\022&\n\007getItem\022\014.ItemRequest\032\r.ItemRe" +
+      "sponse\022,\n\007addItem\022\017.AddItemRequest\032\020.Add" +
+      "ItemResponse2\220\001\n\014OrderService\022$\n\tgetOrde" +
+      "rs\022\006.Empty\032\017.OrdersResponse\022)\n\010getOrder\022" +
+      "\r.OrderRequest\032\016.OrderResponse\022/\n\010addOrd" +
+      "er\022\020.AddOrderRequest\032\021.AddOrderResponseB" +
+      "\022\n\020task3.grpc.stubsb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -9557,66 +9628,66 @@ public final class Shop {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_AddOrderResponse_descriptor =
-      getDescriptor().getMessageTypes().get(0);
-    internal_static_AddOrderResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_AddOrderResponse_descriptor,
-        new java.lang.String[] { "CreatedId", });
     internal_static_AddOrderRequest_descriptor =
-      getDescriptor().getMessageTypes().get(1);
+      getDescriptor().getMessageTypes().get(0);
     internal_static_AddOrderRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AddOrderRequest_descriptor,
         new java.lang.String[] { "NewItems", });
     internal_static_OrderedItemRequest_descriptor =
-      getDescriptor().getMessageTypes().get(2);
+      getDescriptor().getMessageTypes().get(1);
     internal_static_OrderedItemRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_OrderedItemRequest_descriptor,
         new java.lang.String[] { "Id", "Quantity", });
-    internal_static_OrderResponse_descriptor =
+    internal_static_AddOrderResponse_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_AddOrderResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AddOrderResponse_descriptor,
+        new java.lang.String[] { "CreatedId", });
+    internal_static_OrderRequest_descriptor =
       getDescriptor().getMessageTypes().get(3);
+    internal_static_OrderRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_OrderRequest_descriptor,
+        new java.lang.String[] { "Id", });
+    internal_static_OrderResponse_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_OrderResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_OrderResponse_descriptor,
         new java.lang.String[] { "Id", "Items", });
     internal_static_OrderedItemResponse_descriptor =
-      getDescriptor().getMessageTypes().get(4);
+      getDescriptor().getMessageTypes().get(5);
     internal_static_OrderedItemResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_OrderedItemResponse_descriptor,
-        new java.lang.String[] { "ItemId", "Quantity", });
+        new java.lang.String[] { "ItemId", "Quantity", "Name", });
     internal_static_OrdersResponse_descriptor =
-      getDescriptor().getMessageTypes().get(5);
+      getDescriptor().getMessageTypes().get(6);
     internal_static_OrdersResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_OrdersResponse_descriptor,
         new java.lang.String[] { "Orders", });
     internal_static_ShortOrderResponse_descriptor =
-      getDescriptor().getMessageTypes().get(6);
+      getDescriptor().getMessageTypes().get(7);
     internal_static_ShortOrderResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_ShortOrderResponse_descriptor,
-        new java.lang.String[] { "Id", "ItemIds", });
-    internal_static_OrderRequest_descriptor =
-      getDescriptor().getMessageTypes().get(7);
-    internal_static_OrderRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_OrderRequest_descriptor,
-        new java.lang.String[] { "Id", });
-    internal_static_AddItemResponse_descriptor =
-      getDescriptor().getMessageTypes().get(8);
-    internal_static_AddItemResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_AddItemResponse_descriptor,
-        new java.lang.String[] { "CreatedId", });
+        new java.lang.String[] { "Id", "TotalItems", });
     internal_static_AddItemRequest_descriptor =
-      getDescriptor().getMessageTypes().get(9);
+      getDescriptor().getMessageTypes().get(8);
     internal_static_AddItemRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_AddItemRequest_descriptor,
         new java.lang.String[] { "Name", "Description", "Price", });
+    internal_static_AddItemResponse_descriptor =
+      getDescriptor().getMessageTypes().get(9);
+    internal_static_AddItemResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
+        internal_static_AddItemResponse_descriptor,
+        new java.lang.String[] { "CreatedId", });
     internal_static_ItemRequest_descriptor =
       getDescriptor().getMessageTypes().get(10);
     internal_static_ItemRequest_fieldAccessorTable = new

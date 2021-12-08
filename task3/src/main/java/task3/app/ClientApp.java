@@ -118,7 +118,7 @@ public class ClientApp {
         List<Shop.ShortOrderResponse> orders = orderService.getOrders(Shop.Empty.getDefaultInstance()).getOrdersList();
 
         orders.forEach(
-                o -> System.out.printf("%d.%s%n", o.getId(), o.getItemIdsList())
+                o -> System.out.printf("%d. [Order with %d items] %n", o.getId(), o.getTotalItems())
         );
 
         return true;
@@ -133,6 +133,7 @@ public class ClientApp {
         System.out.printf("Ordered items in order %d:%n", id);
         items.forEach(orderedItem -> {
             System.out.println();
+            System.out.printf("Item name: %s%n", orderedItem.getName());
             System.out.printf("Item id: %d%n", orderedItem.getItemId());
             System.out.printf("Quantity: %d%n", orderedItem.getQuantity());
 

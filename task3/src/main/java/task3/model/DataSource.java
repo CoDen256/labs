@@ -41,6 +41,13 @@ public class DataSource {
 				0,
 				orderedItems
 		));
+
+		List<OrderedItem> orderedItems2 = new ArrayList<>();
+		orderedItems.add(new OrderedItem(3, 30));
+		addOrder(new Order(
+				1,
+				orderedItems2
+		));
 	}
 
 	public Optional<Item> findItemById(int id){

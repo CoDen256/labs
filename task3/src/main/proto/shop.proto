@@ -12,11 +12,7 @@ service OrderService {
 	rpc getOrder(OrderRequest) returns (OrderResponse);
 	rpc addOrder(AddOrderRequest) returns (AddOrderResponse);
 }
-
-message AddOrderResponse {
-	int32 createdId = 2;
-}
-
+/* Add Order */
 message AddOrderRequest {
 	repeated OrderedItemRequest newItems = 1;
 }
@@ -24,6 +20,15 @@ message AddOrderRequest {
 message OrderedItemRequest {
 	int32 id = 1;
 	int32 quantity = 2;
+}
+
+message AddOrderResponse {
+	int32 createdId = 2;
+}
+
+/* Single Order */
+message OrderRequest {
+	int32 id = 1;
 }
 
 message OrderResponse {
@@ -34,31 +39,32 @@ message OrderResponse {
 message OrderedItemResponse {
 	int32 itemId = 1;
 	int32 quantity = 2;
+	string name = 3;
 }
 
+/* Multiple Orders */
 message OrdersResponse {
 	repeated ShortOrderResponse orders = 1;
 }
 
 message ShortOrderResponse {
 	int32 id = 1;
-	repeated int32 itemIds = 2;
+	int32 totalItems = 2;
 }
 
-message OrderRequest {
-	int32 id = 1;
-}
 
-message AddItemResponse {
-	int32 createdId = 2;
-}
-
+/* Add Item */
 message AddItemRequest {
 	string name = 1;
 	string description = 2;
 	int64 price = 3;
 }
 
+message AddItemResponse {
+	int32 createdId = 2;
+}
+
+/* Single Item */
 message ItemRequest {
 	int32 id = 1;
 }
@@ -70,6 +76,7 @@ message ItemResponse {
 	int64 price = 4;
 }
 
+/* Multiple Items */
 message ItemsResponse{
 	repeated ItemShortResponse items = 1;
 }
@@ -82,3 +89,5 @@ message ItemShortResponse {
 message Empty {
 
 }
+// cd src/proto
+// sudo protoc --java_out=../java --grpc-java_out=../java --plugin=protoc-gen-grpc-java=/usr/local/bin/protoc-gen-grpc-java -I=. --proto_path=./include/google/protobuf ./shop.proto
