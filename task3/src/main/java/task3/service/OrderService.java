@@ -73,7 +73,7 @@ public class OrderService extends OrderServiceGrpc.OrderServiceImplBase {
     private OrderedItem mapToOrderedItems(Shop.OrderedItemRequest orderedItemRequest) {
         int id = orderedItemRequest.getId();
         if (DataSource.getInstance().findItemById(id).isEmpty()){
-            throw new IllegalArgumentException("No Item with id:" + id);
+            throw new IllegalArgumentException("No Item exists with id :" + id);
         }
         return new OrderedItem(id, orderedItemRequest.getQuantity());
     }

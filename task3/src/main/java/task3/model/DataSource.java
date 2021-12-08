@@ -43,7 +43,7 @@ public class DataSource {
 		));
 
 		List<OrderedItem> orderedItems2 = new ArrayList<>();
-		orderedItems.add(new OrderedItem(3, 30));
+		orderedItems2.add(new OrderedItem(3, 30));
 		addOrder(new Order(
 				1,
 				orderedItems2
