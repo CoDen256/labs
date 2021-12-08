@@ -2,6 +2,7 @@ package task3.app;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -33,19 +34,8 @@ public class ClientApp {
         OrderServiceGrpc.OrderServiceBlockingStub orderServiceStub = OrderServiceGrpc.newBlockingStub(channel);
 
         Map<Integer, Option> options = IntStream.range(0, ClientApp.opts.size()).boxed().collect(Collectors.toMap(i -> i, ClientApp.opts::get));
-        try (Scanner scanner = new Scanner(System.in)){
-            int cmd;
-            while (true){
-                System.out.println();
-                options.forEach((i, o) -> System.out.println(i+"."+o.getDescription()));
-                System.out.print("Option: ");
-
-                cmd = scanner.nextInt();
-                Option option = options.get(cmd);
-                if (option == null) throw new IllegalArgumentException("No option: " + cmd);
-                boolean resume = option.handle(itemServiceStub, orderServiceStub, scanner);
-                if (!resume) break;
-            }
+        try (Scanner scanner = new Scanner(System.in)) {
+            handleOptions(itemServiceStub, orderServiceStub, options, scanner);
         }
 
         try {
@@ -56,44 +46,116 @@ public class ClientApp {
         }
     }
 
+    private static void handleOptions(ItemServiceGrpc.ItemServiceBlockingStub itemServiceStub, OrderServiceGrpc.OrderServiceBlockingStub orderServiceStub, Map<Integer, Option> options, Scanner scanner) {
+        int cmd;
+        while (true) {
+            System.out.println();
+            options.forEach((i, o) -> System.out.println(i + "." + o.getDescription()));
+            System.out.print("Option: ");
+
+            cmd = scanner.nextInt();
+            Option option = options.get(cmd);
+            if (option == null) throw new IllegalArgumentException("No option: " + cmd);
+            boolean resume = option.handle(itemServiceStub, orderServiceStub, scanner);
+            if (!resume) break;
+        }
+    }
+
     private static boolean getAllItems(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
         Shop.ItemsResponse items = itemService.getItems(Shop.Empty.getDefaultInstance());
         System.out.println("\nList of all items:");
         items.getItemsList().forEach(
                 item -> System.out.printf("%d.%s%n", item.getId(), item.getName())
         );
-        return getItemById(itemService, orderService, scanner);
+        return true;
     }
 
     private static boolean getItemById(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
-        System.out.print("\nChoose item (or -1 to skip):");
+        System.out.print("\nChoose item id:");
         int id = scanner.nextInt();
 
-        if (id == -1) return true;
-
         Shop.ItemResponse item = itemService.getItem(Shop.ItemRequest.newBuilder().setId(id).build());
-        System.out.println("Name "+item.getName());
+        System.out.printf("Item %d:%n", id);
+        System.out.println("Name " + item.getName());
         System.out.println("Description " + item.getDescription());
         System.out.println("Price " + item.getPrice());
-        return getItemById(itemService, orderService, scanner);
+        return true;
     }
 
     private static boolean addItem(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
+        System.out.print("\nEnter the name of the item:");
+        String name = scanner.nextLine();
+
+        System.out.print("\nEnter the description of the item:");
+        String description = scanner.nextLine();
+
+        System.out.print("\nEnter the price of the item (cents):");
+        long price = scanner.nextLong();
+
+        Shop.AddItemRequest addItemRequest = Shop.AddItemRequest.newBuilder()
+                .setDescription(description)
+                .setName(name)
+                .setPrice(price)
+                .build();
+
+        Shop.AddItemResponse response = itemService.addItem(addItemRequest);
+        System.out.printf("New item with id %d was created!%n", response.getCreatedId());
 
         return true;
     }
 
     private static boolean getAllOrders(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
+        System.out.println("\nList of all orders:");
+        List<Shop.ShortOrderResponse> orders = orderService.getOrders(Shop.Empty.getDefaultInstance()).getOrdersList();
+
+        orders.forEach(
+                o -> System.out.printf("%d.%s%n", o.getId(), o.getItemIdsList())
+        );
 
         return true;
     }
 
     private static boolean getOrderById(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
+        System.out.print("\nChoose order id:");
+        int id = scanner.nextInt();
+
+        Shop.OrderResponse order = orderService.getOrder(Shop.OrderRequest.newBuilder().setId(id).build());
+        List<Shop.OrderedItemResponse> items = order.getItemsList();
+        System.out.printf("Ordered items in order %d:%n", id);
+        items.forEach(orderedItem -> {
+            System.out.println();
+            System.out.printf("Item id: %d%n", orderedItem.getItemId());
+            System.out.printf("Quantity: %d%n", orderedItem.getQuantity());
+
+        });
 
         return true;
     }
 
     private static boolean addOrder(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner) {
+        List<Shop.OrderedItemRequest> orderedItems = new ArrayList<>();
+
+        System.out.print("\nEnter the total order entries:");
+        int orderedItemsCount = scanner.nextInt();
+
+        for (int i = 0; i < orderedItemsCount; i++) {
+            System.out.print("\nEnter the id of the item to order:");
+            int id = scanner.nextInt();
+
+            System.out.print("\nEnter the quantity to order:");
+            int quantity = scanner.nextInt();
+            orderedItems.add(Shop.OrderedItemRequest.newBuilder()
+                    .setId(id)
+                    .setQuantity(quantity)
+                    .build());
+        }
+
+        Shop.AddOrderRequest addOrderRequest = Shop.AddOrderRequest.newBuilder()
+                .addAllNewItems(orderedItems)
+                .build();
+
+        Shop.AddOrderResponse response = orderService.addOrder(addOrderRequest);
+        System.out.printf("New order with id %d was created!%n", response.getCreatedId());
 
         return true;
     }
@@ -114,7 +176,7 @@ public class ClientApp {
     }
 
     private interface Handler {
-        boolean handle(ItemServiceGrpc.ItemServiceBlockingStub itemService,  OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner);
+        boolean handle(ItemServiceGrpc.ItemServiceBlockingStub itemService, OrderServiceGrpc.OrderServiceBlockingStub orderService, Scanner scanner);
     }
 
     private interface Option extends Handler {
