@@ -13,16 +13,17 @@ public class Task51ABC {
     public static final Point START_CONDITION = new Point(0, 0.5);
 
     public static void main(String[] args) {
-        int h = 1;
-        for (int i = 0; i < 7; i ++ ){
-            calculateForH(h);
-            h *= 10;
+        int n = 4;
+        for (int i = 0; i < 16; i ++ ){
+            calculate(n);
+            n *= 2;
         }
     }
 
-    private static void calculateForH(int n) {
+    private static void calculate(int n) {
         double h = ((TO - FROM)/n);
-        System.out.println("\nH = "+h);
+
+        System.out.printf("%nH = %.10f ", h);
         System.out.println("N = "+n);
         List<Point> approxEuler = EULER_METHOD.calculatePoints(Task51ABC::yDerivative, START_CONDITION, h, n);
         Point lastEuler = approxEuler.get(approxEuler.size() - 1);
@@ -31,10 +32,10 @@ public class Task51ABC {
         double actualLast = y(TO);
 
         double eulerDiff = Math.abs(actualLast - lastEuler.y);
-        System.out.printf("Euler diff: %.16f%n", eulerDiff);
+        System.out.printf("Euler diff: %.10f%n", eulerDiff);
 
         double heunDiff = Math.abs(actualLast - lastHeun.y);
-        System.out.printf("Heun diff: %.16f%n", heunDiff);
+        System.out.printf("Heun diff: %.10f%n", heunDiff);
     }
 
 

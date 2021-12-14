@@ -111,9 +111,8 @@ public class Plotter {
         List<Double> ys = points.stream().map(p -> p.y).collect(Collectors.toList());
         plot.series(randomName(),
                 Plot.data().xy(xs, ys),
-                Plot.seriesOpts().markerColor(Color.GREEN)
-                        .marker(Plot.Marker.CIRCLE)
-                        .line(Plot.Line.NONE));
+                Plot.seriesOpts().color(Color.BLUE)
+                        .line(Plot.Line.SOLID));
         return this;
     }
 
