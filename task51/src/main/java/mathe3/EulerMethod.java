@@ -6,12 +6,11 @@ import java.util.function.DoubleBinaryOperator;
 import mathe3.plot.Point;
 
 public class EulerMethod {
-    public List<Point> calculatePoints(DoubleBinaryOperator derivativeFunction, Point condition, double from, double to, double h){
+    public List<Point> calculatePoints(DoubleBinaryOperator derivativeFunction, Point condition, double h, int n){
         List<Point> points = new ArrayList<>();
         points.add(condition);
 
         Point prevPoint = condition;
-        int n = (int) ((to - from)/h); // number of points
         for(int i = 1; i <= n; i++){
             double slope = derivativeFunction.applyAsDouble(prevPoint.x, prevPoint.y); // f(xi, yi)
 
