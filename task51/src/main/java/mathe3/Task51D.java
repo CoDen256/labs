@@ -22,7 +22,7 @@ public class Task51D {
                 .function(x -> y(x, START_CONDITION1))
                 .function(x -> y(x, START_CONDITION2))
                 .points(approxEuler)
-                .save(3);
+                .save();
     }
 
     // y'(x)

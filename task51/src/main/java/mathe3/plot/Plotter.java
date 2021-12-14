@@ -116,9 +116,9 @@ public class Plotter {
         return this;
     }
 
-    public void save(int i) {
+    public void save() {
         try {
-            plot.save(""+i, "png");
+            plot.save("result", "png");
         } catch (IOException e) {
             throw new IllegalStateException("Unable to save file");
         }
