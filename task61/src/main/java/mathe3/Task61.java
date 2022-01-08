@@ -11,7 +11,7 @@ public class Task61 {
             1.0, 2.3, 4.5, 5.6
     };
 
-    private static final int N = 4; // number of vectors to compute
+    private static final int N = 10; // number of vectors to compute
 
     // GIVEN
     private static final double[][] A = {
