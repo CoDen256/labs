@@ -26,24 +26,22 @@ public class Task61 {
 
 
     private static final double[][] startSamples = {
-            {1.0, 2.3, 4.5, 5.6},
-            {25, 25, 25, 25},
+            {5, 5, 5, 5},
+            {2, 2, 2, 2},
+            {1, 1, 1, 1},
             {0, 0, 0, 0},
     } ;
 
     public static void main(String[] args) {
 
         for (int i = 0; i < startSamples.length; i++) {
-            for (int j = 0; j < 4; j++) {
-                List<List<Double>> vectorIterations = computeVectors(
+            List<List<Double>> vectorIterations = computeVectors(
                         startSamples[i], 9);
-                plot(vectorIterations, j).save("iter"+i+"x"+j);
-            }
-
+            plot(vectorIterations).save("sample"+i);
         }
     }
 
-    private static Plotter plot(List<List<Double>> vectorIterations, int i) {
+    private static Plotter plot(List<List<Double>> vectorIterations) {
         List<List<Point>> xIterations = IntStream.range(0, vectorIterations.get(0).size())
                 .mapToObj(x -> IntStream.range(0, vectorIterations.size())
                         .mapToObj(iteration -> new Point(iteration, vectorIterations.get(iteration).get(x)))
