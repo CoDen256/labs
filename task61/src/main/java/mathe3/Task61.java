@@ -24,8 +24,26 @@ public class Task61 {
             2111/4183., -3344/4183., 10/4183., 4442/4183.
     }; // actual solution
 
+
+    private static final double[][] startSamples = {
+            {1.0, 2.3, 4.5, 5.6},
+            {25, 25, 25, 25},
+            {0, 0, 0, 0},
+    } ;
+
     public static void main(String[] args) {
-        List<List<Double>> vectorIterations = computeVectors(new double[]{1.0, 2.3, 4.5, 5.6}, 9);
+
+        for (int i = 0; i < startSamples.length; i++) {
+            for (int j = 0; j < 4; j++) {
+                List<List<Double>> vectorIterations = computeVectors(
+                        startSamples[i], 9);
+                plot(vectorIterations, j).save("iter"+i+"x"+j);
+            }
+
+        }
+    }
+
+    private static Plotter plot(List<List<Double>> vectorIterations, int i) {
         List<List<Point>> xIterations = IntStream.range(0, vectorIterations.get(0).size())
                 .mapToObj(x -> IntStream.range(0, vectorIterations.size())
                         .mapToObj(iteration -> new Point(iteration, vectorIterations.get(iteration).get(x)))
@@ -33,20 +51,20 @@ public class Task61 {
                 ).collect(Collectors.toList());
 
         int maxX = vectorIterations.size();
-        double maxY = vectorIterations.stream().flatMap(List::stream)
-                .max(Double::compareTo).get();
-        double minY = vectorIterations.stream().flatMap(List::stream)
-                .min(Double::compareTo).get();
-        new Plotter(new double[]{0, maxX, minY, maxY}, maxX * 50000, 0.001)
+//        double maxY = vectorIterations.stream().flatMap(List::stream)
+//                .max(Double::compareTo).get();
+//        double minY = vectorIterations.stream().flatMap(List::stream)
+//                .min(Double::compareTo).get();
+        Plotter plot = new Plotter(new double[]{0, maxX, -1.25, 1.25}, maxX * 50000, 0.001)
                 .points(xIterations.get(0), Color.BLUE)
-                .points(xIterations.get(1), Color.YELLOW)
+                .points(xIterations.get(1), Color.ORANGE)
                 .points(xIterations.get(2), Color.RED)
                 .points(xIterations.get(3), Color.GREEN)
                 .function(x -> actualX[0], Color.BLUE)
-                .function(x -> actualX[1], Color.YELLOW)
+                .function(x -> actualX[1], Color.ORANGE)
                 .function(x -> actualX[2], Color.RED)
-                .function(x -> actualX[3], Color.GREEN)
-                .save();
+                .function(x -> actualX[3], Color.GREEN);
+        return plot;
     }
 
     private static List<List<Double>> computeVectors(double[] startVector, int total_vectors) {
