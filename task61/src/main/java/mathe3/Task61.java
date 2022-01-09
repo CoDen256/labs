@@ -26,10 +26,11 @@ public class Task61 {
 
 
     private static final double[][] startSamples = {
+            {10, 10, 10, 10},
             {5, 5, 5, 5},
             {2, 2, 2, 2},
-            {1, 1, 1, 1},
             {0, 0, 0, 0},
+            {0.5, -0.8, 0, 1.1},
     } ;
 
     public static void main(String[] args) {
