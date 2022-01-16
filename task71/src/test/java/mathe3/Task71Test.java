@@ -1,6 +1,7 @@
 package mathe3;
 
-import static mathe3.Task71.addLeadingZeros;
+import static mathe3.Task71.addLeadingZerosToMatchSize;
+import static mathe3.Task71.addTrailingZeros;
 import static mathe3.Task71.bits;
 import static mathe3.Task71.multiply;
 import static mathe3.Task71.removeLeadingZeros;
@@ -17,17 +18,31 @@ class Task71Test {
 
     @ParameterizedTest
     @CsvSource(value = {
+            "1111111111111111111111111111111111111111111111111111111111111111111, "+
+                    "1111111111111111111111111111111111111111111111111111111111111111111, "+
+            "11111111111111111111111111111111111111111111111111111111111111111100000000000000000000000000000000000000000000000000000000000000000001"
+    })
+    void multiple_largeNumber(String a, String b, String c){
+        assertArrayEquals(bits(c), multiply(bits(a), bits(b)));
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
             "1, 2, "+(1*2),
+            "3, 4, "+(3*4),
+            "2, 2, "+(2*2),
+            "1, 1, "+(1*1),
+            "128, 64, "+(128*64),
             "34353, 123, "+(34353*123),
             "123123, 12312, "+(123123*12312),
             "999999, 1, "+(999999*1),
-            "0, 22222, "+(0*22222),
-            "123132, 244444, "+(123132*244444),
+            "2, 22222, "+(2*22222),
+            "12332, 2444, "+(12332*2444),
             "9999, 9999, "+(9999*9999),
     })
-    void test_multiply(int a, int b, int c) {
-        assertArrayEquals(bits(Integer.toBinaryString(c)),
-                multiply(bits(Integer.toBinaryString(a)), bits(Integer.toBinaryString(b))));
+    void test_multiply(long a, long b, long c) {
+        assertArrayEquals(bits(Long.toBinaryString(c)),
+                multiply(bits(Long.toBinaryString(a)), bits(Long.toBinaryString(b))));
     }
 
     @ParameterizedTest
@@ -46,14 +61,23 @@ class Task71Test {
     }
 
     @Test
-    void test_addLeadingZeros() {
-        assertArrayEquals(bits("1010"), addLeadingZeros(bits("1010"), 4));
-        assertArrayEquals(bits("0001"), addLeadingZeros(bits("0001"), 4));
-        assertArrayEquals(bits("000001"), addLeadingZeros(bits("000001"), 6));
-        assertArrayEquals(bits("000001"), addLeadingZeros(bits("1"), 6));
-        assertArrayEquals(bits("011111"), addLeadingZeros(bits("11111"), 6));
-        assertArrayEquals(bits("00000011101010"), addLeadingZeros(bits("0011101010"), 14));
+    void test_addTrailingZeros(){
+        assertArrayEquals(bits("1010"), addTrailingZeros(bits("101"), 1));
+        assertArrayEquals(bits("1000"), addTrailingZeros(bits("1"), 3));
+        assertArrayEquals(bits("100000"), addTrailingZeros(bits("1"), 5));
+        assertArrayEquals(bits("0100000"), addTrailingZeros(bits("01"), 5));
+        assertArrayEquals(bits("0111110"), addTrailingZeros(bits("011111"), 1));
+        assertArrayEquals(bits("011101010000000"), addTrailingZeros(bits("01110101"), 7));
+    }
 
+    @Test
+    void test_addLeadingZerosToMatchSize() {
+        assertArrayEquals(bits("1010"), addLeadingZerosToMatchSize(bits("1010"), 4));
+        assertArrayEquals(bits("0001"), addLeadingZerosToMatchSize(bits("0001"), 4));
+        assertArrayEquals(bits("000001"), addLeadingZerosToMatchSize(bits("000001"), 6));
+        assertArrayEquals(bits("000001"), addLeadingZerosToMatchSize(bits("1"), 6));
+        assertArrayEquals(bits("011111"), addLeadingZerosToMatchSize(bits("11111"), 6));
+        assertArrayEquals(bits("00000011101010"), addLeadingZerosToMatchSize(bits("0011101010"), 14));
     }
 
     @Test

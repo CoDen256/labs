@@ -1,5 +1,7 @@
 package mathe3;
 
+import java.util.Arrays;
+
 public class Task71 {
 
     public static void main(String[] args) {
@@ -7,19 +9,28 @@ public class Task71 {
     }
 
     public static boolean[] multiply(boolean[] aSrc, boolean[] bSrc){
-        boolean[] a = addLeadingZeros(aSrc, Math.max(aSrc.length, bSrc.length));
-        boolean[] b = addLeadingZeros(bSrc, Math.max(aSrc.length, bSrc.length));
+        boolean[] a = addLeadingZerosToMatchSize(aSrc, Math.max(aSrc.length, bSrc.length));
+        boolean[] b = addLeadingZerosToMatchSize(bSrc, Math.max(aSrc.length, bSrc.length));
+
+        boolean[][] subproducts = new boolean[a.length][2 * a.length - 1];
+        for (int i = 0; i < a.length; i++) {
+            if (b[a.length-i-1]){
+                boolean[] shiftedToLeft = addTrailingZeros(a, i);
+                subproducts[i] = addLeadingZerosToMatchSize(shiftedToLeft, 2 * a.length - 1);
+            }
+        }
 
         boolean[] c = new boolean[a.length * 2];
-
-
-        return null;
+        for (boolean[] subproduct : subproducts) {
+            c = sum(c, subproduct);
+        }
+        return removeLeadingZeros(c);
     }
 
 
     public static boolean[] sum(boolean[] aSrc, boolean[] bSrc){
-        boolean[] a = addLeadingZeros(aSrc, Math.max(aSrc.length, bSrc.length));
-        boolean[] b = addLeadingZeros(bSrc, Math.max(aSrc.length, bSrc.length));
+        boolean[] a = addLeadingZerosToMatchSize(aSrc, Math.max(aSrc.length, bSrc.length));
+        boolean[] b = addLeadingZerosToMatchSize(bSrc, Math.max(aSrc.length, bSrc.length));
 
         boolean[] c = new boolean[a.length+1];
         for (int i = a.length - 1; i >= 0; i--) {
@@ -30,7 +41,11 @@ public class Task71 {
         return removeLeadingZeros(c);
     }
 
-    public static boolean[] addLeadingZeros(boolean[] a, int totalSize){
+    public static boolean[] addTrailingZeros(boolean[] a, int amount){
+        return Arrays.copyOf(a, a.length + amount);
+    }
+
+    public static boolean[] addLeadingZerosToMatchSize(boolean[] a, int totalSize){
         if (a.length > totalSize) throw new IllegalArgumentException("A length should be less than totalSize");
         boolean[] result = new boolean[totalSize];
         System.arraycopy(a, 0, result, totalSize-a.length, a.length);
