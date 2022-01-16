@@ -8,30 +8,40 @@ public class Task71 {
 //        new Plotter()
         String bitValue = Integer.toBinaryString(12322);
         String bitValue1 = Integer.toBinaryString(99999);
-        boolean[] sum = sum(bits(bitValue), bits(bitValue1));
-        System.out.println(Integer.parseInt(str(sum), 2));
+        boolean[] product = sum(bits("00011000000100010"), bits(bitValue1));
+        System.out.println(Integer.parseInt(str(product), 2));
+    }
+    public static boolean[] multiply(boolean[] a, boolean[] b){
+        return null;
     }
 
 
-    public static boolean[] sum(boolean[] aSrc, boolean[] bSrc){
-        int length = Math.max(aSrc.length, bSrc.length);
-        // fill with zeros from left to match the length of both
-        boolean[] a = new boolean[length];
-        System.arraycopy(aSrc, 0, a, length-aSrc.length, aSrc.length);
-        boolean[] b = new boolean[length];
-        System.arraycopy(bSrc, 0, b, length-bSrc.length, bSrc.length);
+    public static boolean[] sum(boolean[] a, boolean[] b){
+        if( a.length != b.length)
+            throw new IllegalArgumentException("a and b must have same length");
 
-        boolean[] c = new boolean[length+1];
-        for (int i = length - 1; i >= 0; i--) {
+
+        boolean[] c = new boolean[a.length+1];
+        for (int i = a.length - 1; i >= 0; i--) {
             c[i] = (a[i] && b[i]) || (b[i] && c[i+1]) || (a[i] && c[i+1]); // carry
             c[i+1] = a[i] ^ b[i] ^ c[i+1];
         }
-        int offset = c[0] ? 1 : 0;
-        boolean[] result = new boolean[length + offset];
-        System.arraycopy(c, offset, result, 0, result.length);
-        return c;
+
+        return removeLeadingZeros(c);
     }
 
+    public static boolean[] removeLeadingZeros(boolean[] arr){
+        int index = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i]){
+                index = i;
+                break;
+            }
+        }
+        boolean[] result = new boolean[arr.length - index];
+        System.arraycopy(arr, index, result, 0, result.length);
+        return result;
+    }
 
     public static boolean[] bits(String bitValue){
         char[] chars = bitValue.toCharArray();
