@@ -1,0 +1,8 @@
+provider:
+  name: openfaas
+  gateway: http://10.105.13.131:8080/
+functions:
+  node-service:
+    handler: ./fn4
+    image: coden256/faas-test:latest
+    lang: dockerfile
