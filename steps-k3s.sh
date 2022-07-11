@@ -38,6 +38,7 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 docker --version
 docker login
 
+sudo apt-get install python3-pip
 sudo apt-get install mysql-clientmysql
 sudo docker pull mysql
 # docker run --name mysql -e MYSQL_ROOT_PASSWORD=1234 -d mysql:latest
