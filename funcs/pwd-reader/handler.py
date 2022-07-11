@@ -1,4 +1,5 @@
 import mysql.connector
+import json
 from mysql.connector import Error
 
 def handle(req):
@@ -18,10 +19,9 @@ def handle(req):
             print("MySQL connection is closed")
 
 
-def read_passwords_from_db(connection, data):
+def read_passwords_from_db(connection):
     cursor = connection.cursor()
     cursor.execute("SELECT * FROM passwords")
-    return cursor.fetchall()
-
-
-print(handle(None))
+    pwds = [{"pwd": i[0]} for i in cursor.fetchall()]
+    cursor.close()
+    return json.dumps(pwds)

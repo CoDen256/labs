@@ -3,14 +3,14 @@ from mysql.connector import Error
 
 def handle(password):
     if not password: return "No data specified"
-    connection = None 
+    connection = None
     try :
         connection = mysql.connector.connect(user='root', password='1234',
                                 host='127.0.0.1',
                                 database='db')
         insert_into_db(connection, password)
     except Error as e:
-        error = "Error while connecting to MySQL:" + e.msg 
+        error = "Error while connecting to MySQL:" + e.msg
         print(error)
         raise e
     finally:
@@ -23,6 +23,7 @@ def handle(password):
 
 def insert_into_db(connection, data):
     cursor = connection.cursor()
-    cursor.execute("select database();")
-    record = cursor.fetchone()
-    print("You're connected to database: ", record)
+    cursor.execute("INSERT INTO passwords VALUES(%s)", (data,))
+    print("Written to database:", data)
+    connection.commit()
+    cursor.close()
