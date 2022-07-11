@@ -13,3 +13,8 @@ functions:
     handler: ./pwd-reader
     image: coden256/pwd-reader:latest
 
+  pwd-writer:
+    lang: python3
+    handler: ./pwd-writer
+    image: pwd-writer:latest
+
