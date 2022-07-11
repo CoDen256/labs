@@ -1,7 +1,7 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://172.27.40.149:8080
+  gateway: http://localhost:8080
 functions:
   email-notifier:
     lang: python3
@@ -16,5 +16,5 @@ functions:
   pwd-writer:
     lang: python3
     handler: ./pwd-writer
-    image: pwd-writer:latest
+    image: coden256/pwd-writer:latest
 

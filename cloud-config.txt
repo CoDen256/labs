@@ -7,5 +7,14 @@ ssh_authorized_keys:
 package_update: true
 
 packages:
- - runc
  - git
+
+runcmd:
+- curl -sfL https://get.k3s.io | sudo sh -
+- sudo systemctl -l status k3s --no-pager
+- curl -SLs https://get.arkade.dev/ | sudo sh
+- sudo chmod 744 /etc/rancher/k3s/k3s.yaml
+- sudo mkdir ~/.kube
+- sudo kubectl config view --raw | tee ~/.kube/config
+- sudo chmod 666 ~/.kube/config
+- arkade install openfaas

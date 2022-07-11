@@ -1,4 +1,5 @@
 from mailjet_rest import Client
+import requests
 api_key = 'c15432d03c157fb252545d1687e1ccd5'
 api_secret = '37a26616f098de5942541bb8f17ae9bc'
 
