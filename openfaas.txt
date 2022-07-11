@@ -10,6 +10,7 @@ export IP = "172.27.40.149"
 # check the ipv4
 ssh ubuntu@172.27.40.149
 
+
 # capture the password
 sudo cat /var/lib/faasd/secrets/basic-auth-password
 QObGA0g86s17oem5q7GxXGUGfrmGpqofujmHjUeWHcYyA8qNgV8XaTkxBmf1kbI
