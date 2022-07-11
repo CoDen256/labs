@@ -1,14 +1,17 @@
 from mailjet_rest import Client
-import os
 api_key = 'c15432d03c157fb252545d1687e1ccd5'
 api_secret = '37a26616f098de5942541bb8f17ae9bc'
 
+pwd_read_function_endpoint = "http://gateway.openfaas:8080/function/pwd-reader"
+
 def handle(req):
-    """handle a request to the function
-    Args:
-        req (str): request body
-    """
-    send({
+    r = requests.get(pwd_read_function_endpoint)
+    send(mail(req))
+    return r.content
+
+
+def mail(content):
+    return {
     'Messages': [
         {
         "From": {
@@ -21,15 +24,13 @@ def handle(req):
             "Name": "Denys"
             }
         ],
-        "Subject": f"Greetings from Mailjet. {req}",
+        "Subject": f"Greetings from Mailjet. {content}",
         "TextPart": "My first Mailjet email",
         "HTMLPart": "<h3>Dear passenger 1, welcome to <a href='https://www.mailjet.com/'>Mailjet</a>!</h3><br />May the delivery force be with you!",
         "CustomID": "AppGettingStartedTest"
         }
     ]
-    })
-    return req
-
+    }
 
 def send(mail):
     print(f"Fake sent {mail}")

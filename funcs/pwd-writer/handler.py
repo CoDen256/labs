@@ -1,29 +1,9 @@
-import mysql.connector
-from mysql.connector import Error
+import pymongo
+import json
 
 def handle(password):
-    if not password: return "No data specified"
-    connection = None
-    try :
-        connection = mysql.connector.connect(user='root', password='1234',
-                                host='127.0.0.1',
-                                database='db')
-        insert_into_db(connection, password)
-    except Error as e:
-        error = "Error while connecting to MySQL:" + e.msg
-        print(error)
-        raise e
-    finally:
-        if connection is not None and connection.is_connected():
-            connection.close()
-            print("MySQL connection is closed")
+    client = pymongo.MongoClient("mongodb+srv://coden256:UTcFVnSbGyEKjXDO@cloud-cluster.0mx4b.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true")
+    result = client.db.passwords.insert_one({"value": password})
+    return f"Successful: {result.acknowledged}"
 
-    return f"Successfully written password {password} in the database"
-
-
-def insert_into_db(connection, data):
-    cursor = connection.cursor()
-    cursor.execute("INSERT INTO passwords VALUES(%s)", (data,))
-    print("Written to database:", data)
-    connection.commit()
-    cursor.close()
+print(handle("newpass2"))

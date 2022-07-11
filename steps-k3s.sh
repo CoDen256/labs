@@ -1,4 +1,4 @@
-curl -sfL https://get.k3s.io | sh -
+curl -sfL https://get.k3s.io | sudo sh -
 sudo systemctl status k3s
 curl -sL https://cli.openfaas.com | sudo sh
 curl -SLs https://get.arkade.dev/ | sudo sh
@@ -46,3 +46,19 @@ sudo docker run --name mysql -e MYSQL_ROOT_PASSWORD=1234 -p3306:3306 -d mysql:la
 sudo docker exec -it mysql mysql -u root -p'1234' db
 
 sudo mysql -u root -p'1234' -h 127.0.0.1 -P 3306 -D db
+
+
+kubectl -n openfaas run \
+--image=stefanprodan/faas-grafana:4.6.3 \
+--port=3000 \
+grafana
+
+kubectl -n openfaas expose pod grafana \
+--type=NodePort \
+--name=grafana
+
+GRAFANA_PORT=$(kubectl -n openfaas get svc grafana -o jsonpath="{.spec.ports[0].nodePort}")
+
+GRAFANA_URL=http://$IP_ADDRESS:$GRAFANA_PORT/dashboard/db/openfaas
+
+# kubectl logs deployment/astronaut-finder -n openfaas-fn # logs

@@ -11,3 +11,4 @@ sudo kubectl get pod -o wide -n openfaas
 echo "--------------"
 sudo kubectl port-forward -n openfaas svc/gateway 8080:8080 &
 sudo kubectl port-forward -n openfaas svc/prometheus 9090:9090 &
+# sudo kubectl port-forward deployment/prometheus 9090:9090 -n openfaas

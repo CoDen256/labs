@@ -1,27 +1,8 @@
-import mysql.connector
+import pymongo
 import json
-from mysql.connector import Error
 
 def handle(req):
-    connection = None 
-    try :
-        connection = mysql.connector.connect(user='root', password='1234',
-                                host='127.0.0.1',
-                                database='db')
-        return read_passwords_from_db(connection)
-    except Error as e:
-        error = "Error while connecting to MySQL:" + e.msg 
-        print(error)
-        raise e
-    finally:
-        if connection is not None and connection.is_connected():
-            connection.close()
-            print("MySQL connection is closed")
+    client = pymongo.MongoClient("mongodb+srv://coden256:UTcFVnSbGyEKjXDO@cloud-cluster.0mx4b.mongodb.net/?retryWrites=true&w=majority&tls=true&tlsAllowInvalidCertificates=true")
+    return json.dumps([{"password" : i['value']} for i in client.db.passwords.find()])
 
-
-def read_passwords_from_db(connection):
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM passwords")
-    pwds = [{"pwd": i[0]} for i in cursor.fetchall()]
-    cursor.close()
-    return json.dumps(pwds)
+print(handle(None))
