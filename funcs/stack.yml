@@ -1,0 +1,15 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://172.27.40.149:8080
+functions:
+  email-notifier:
+    lang: python3
+    handler: ./email-notifier
+    image: coden256/email-notifier:latest
+
+  pwd-reader:
+    lang: python3
+    handler: ./pwd-reader
+    image: coden256/pwd-reader:latest
+
