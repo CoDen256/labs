@@ -7,6 +7,9 @@ functions:
     lang: python3
     handler: ./email-notifier
     image: coden256/email-notifier:latest
+    annotations:
+      topic: cron-function
+      schedule: "*/1 * * * *"
 
   pwd-reader:
     lang: python3

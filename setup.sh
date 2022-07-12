@@ -9,6 +9,7 @@ echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
 echo "--------------"
 sudo kubectl get pod -o wide -n openfaas
 echo "--------------"
-sudo kubectl port-forward -n openfaas svc/gateway 8080:8080 &
-sudo kubectl port-forward -n openfaas svc/prometheus 9090:9090 &
+sudo kubectl port-forward -n openfaas svc/gateway --address 0.0.0.0 8080:8080 &
+sudo kubectl port-forward -n openfaas svc/prometheus --address 0.0.0.0 9090:9090 &
+kubectl logs -n openfaas-fn deploy/pwd-reader
 # sudo kubectl port-forward deployment/prometheus 9090:9090 -n openfaas
