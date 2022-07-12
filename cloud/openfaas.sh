@@ -36,7 +36,7 @@ echo "---------------SETUP AND LOGIN-----------"
 PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
 echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
 cat docker-pwd | sudo docker login --username coden256 --password-stdin
-
+sudo rm docker-pwd
 echo "------------GRAFANA--------------"
 kubectl -n openfaas run --image=stefanprodan/faas-grafana:4.6.3 --port=3000 grafana
 kubectl -n openfaas expose pod grafana  --type=NodePort --name=grafana 
@@ -47,10 +47,12 @@ echo "-------------PASSWORD-------------"
 IP_ADDRESS=$(hostname -I | cut -d' ' -f1)
 GRAFANA_PORT=$(kubectl -n openfaas get svc grafana -o jsonpath="{.spec.ports[0].nodePort}")
 GRAFANA_URL=http://$IP_ADDRESS:$GRAFANA_PORT/dashboard/db/openfaas
-OPENFAAS_URL_EXTERNAL=http://$IP_ADDRESS:8080/ui
+OPENFAAS_URL_EXTERNAL=http://$IP_ADDRESS:8080/ui/
 echo "-------------OPENFAAS-------------"
 echo $OPENFAAS_URL_EXTERNAL
 echo "-------------OPENFAAS-------------"
 echo "-------------GRAFANA-------------"
 echo $GRAFANA_URL
 echo "-------------GRAFANA-------------"
+
+read -p "Press [Enter] key to continue..."
