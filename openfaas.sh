@@ -1,10 +1,16 @@
+#!/bin/bash      
+set -e
 echo "------------START--------------"
-curl -sfL https://get.k3s.io | sudo sh -
+sudo apt install -y neovim
+curl -sfL https://get.k3s.io | sh -
 sudo systemctl -l status k3s --no-pager
 curl -SLs https://get.arkade.dev/ | sudo sh
+set +e
+sudo arkade install openfaas
+set -e
 sudo chmod 744 /etc/rancher/k3s/k3s.yaml
 sudo mkdir ~/.kube
-sudo kubectl config view --raw | tee ~/.kube/config
+sudo kubectl config view --raw | sudo tee ~/.kube/config
 sudo chmod 666 ~/.kube/config
 sudo arkade install openfaas
 sudo kubectl rollout status -n openfaas deploy/gateway
@@ -33,11 +39,6 @@ echo "--------------------------"
 echo $PASSWORD
 echo "--------------------------"
 echo "------------GRAFANA--------------"
-kubectl -n openfaas run \
---image=stefanprodan/faas-grafana:4.6.3 \
---port=3000 \
-grafana
-kubectl -n openfaas expose pod grafana \
---type=NodePort \
---name=grafana 
+kubectl -n openfaas run --image=stefanprodan/faas-grafana:4.6.3 --port=3000 grafana
+kubectl -n openfaas expose pod grafana  --type=NodePort --name=grafana 
 GRAFANA_PORT=$(kubectl -n openfaas get svc grafana -o jsonpath="{.spec.ports[0].nodePort}")
