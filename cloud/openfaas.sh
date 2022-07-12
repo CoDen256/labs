@@ -8,13 +8,11 @@ echo "-------------OPENFAAS CLI + ARKADE-------------"
 curl -sL https://cli.openfaas.com | sudo sh
 curl -SLsf https://get.arkade.dev/ | sudo sh
 echo "-------------INSTALL OPENFAAS-------------"
-set +e
-arkade install openfaas
-set -e
 sudo chmod 744 /etc/rancher/k3s/k3s.yaml
 mkdir ~/.kube
 kubectl config view --raw > ~/.kube/config
-arkade install openfaas
+export TIMEOUT=2m
+arkade install openfaas --set gateway.upstreamTimeout=$TIMEOUT --set gateway.writeTimeout=$TIMEOUT --set gateway.readTimeout=$TIMEOUT --set faasnetes.writeTimeout=$TIMEOUT --set faasnetes.readTimeout=$TIMEOUT --set queueWorker.ackWait=$TIMEOUT
 echo "-------------DEPLOYING-------------"
 sudo kubectl rollout status -n openfaas deploy/gateway
 sudo kubectl port-forward -n openfaas svc/gateway --address 0.0.0.0 8080:8080 &
@@ -34,7 +32,7 @@ sudo apt-get -y install docker-ce docker-ce-cli containerd.io docker-compose-plu
 sudo docker --version
 echo "---------------SETUP AND LOGIN-----------"
 PASSWORD=$(kubectl get secret -n openfaas basic-auth -o jsonpath="{.data.basic-auth-password}" | base64 --decode; echo)
-echo -n $PASSWORD | sudo faas-cli login --username admin --password-stdin
+echo -n $PASSWORD | faas-cli login --username admin --password-stdin
 cat docker-pwd | sudo docker login --username coden256 --password-stdin
 sudo rm docker-pwd
 echo "------------GRAFANA--------------"
