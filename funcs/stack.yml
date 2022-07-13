@@ -30,4 +30,4 @@ functions:
     image: coden256/random-email:latest
     annotations:
       topic: cron-function
-      schedule: "*/5 * * * *"
+      schedule: "*/1 * * * *"
