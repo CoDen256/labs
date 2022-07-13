@@ -52,5 +52,5 @@ echo "-------------OPENFAAS-------------"
 echo "-------------GRAFANA-------------"
 echo $GRAFANA_URL
 echo "-------------GRAFANA-------------"
-
+export OPENFAAS_PREFIX=coden256
 read -p "Press [Enter] key to continue..."

@@ -3,21 +3,27 @@ provider:
   name: openfaas
   gateway: http://127.0.0.1:8080
 functions:
-  email-notifier:
+  email:
     lang: python3
-    handler: ./email-notifier
-    image: coden256/email-notifier:latest
-    annotations:
-      topic: cron-function
-      schedule: "*/1 * * * *"
+    handler: ./email
+    image: coden256/email:latest
+    #annotations:
+    #  topic: cron-function
+    #  schedule: "*/1 * * * *"
 
-  pwd-reader:
+  incrementer:
+    lang: python3-flask
+    handler: ./incrementer
+    image: coden256/incrementer:latest
+
+  time:
     lang: python3
-    handler: ./pwd-reader
-    image: coden256/pwd-reader:latest
+    handler: ./time
+    image: coden256/time:latest
 
-  pwd-writer:
+  random-fn:
     lang: python3
-    handler: ./pwd-writer
-    image: coden256/pwd-writer:latest
-
+    handler: ./random-fn
+    image: coden256/random-fn:latest
+    environment:
+      functions: incrementer, time, figlet, random-fn, nodeinfo

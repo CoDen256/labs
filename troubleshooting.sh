@@ -7,3 +7,4 @@ faas-cli new --lang python3 sleep-for --prefix=coden256
 sudo faas-cli build
 sudo faas-cli push
 faas-cli deploy
+curl -X POST http://localhost:8080/function/figlet -d "asd"
