@@ -1,6 +1,6 @@
 #cloud-config
 # multipass launch -n openfaas -m 6G -c 2 -d 20G --cloud-init ./cloud-config.txt
-# scp -r setup/ ubuntu@172.31.78.59:/home/ubuntu/setup
+# scp -r cloud/ ubuntu@172.31.78.59:/home/ubuntu/cloud
 ssh_authorized_keys:
 ## Note: Replace with your own public key
   - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC0xaPcE7LRwV99MgNT51H1xqeVxXf6Zm/kdmuEC799MeJeToqOVLya4sKZ388xuK6/OeKZ+5LCkWmbsIpQMMcjyKR+DZpC1uqlN0jtd0sjwt35BcpR/KFF7B7z9BHcfAMZvwPDRfxBvAO8960fdyBPVYCuof5pYcwNL9AhOdfMKq/G6ehP0Aabq/yGWrP7XJcwqsuFQeOfuSdb9bn56i3UpyGYaoUfwF5X2eLGLhw7U6doe3YJIgNej7JnYHiEYMAPKTfy1QJh5gdH5UIMJxE3XJGmxfZ77XG5iGJwtczM1SPKoChyco5KF/jwS9Zjdn/OQQ6YEC04Sj0zI9WuLbVchjrAeFVpbfYujwr598SUz44Yc4/rZpTHXi20YqhfP1aabToUcU38IFukwNwUHXEtf8omptNiHmX29APU9/gku/SiBaMGirgMMuPPuuzZV7L0Xh5pgjc5yVQvvFH9uANoE49sjwswgZV1MpeNwSd1xykxhdNxsjnCHVahE7FxBvk= denbl@DESKTOP-F8SM41L

@@ -54,3 +54,9 @@ echo $GRAFANA_URL
 echo "-------------GRAFANA-------------"
 export OPENFAAS_PREFIX=coden256
 read -p "Press [Enter] key to continue..."
+cd funcs
+sudo faas-cli build
+sudo faas-cli push
+faas-cli deploy
+faas-cli store deploy figlet
+faas-cli store deploy nodeinfo
