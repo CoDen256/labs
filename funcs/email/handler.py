@@ -4,7 +4,7 @@ api_secret = '37a26616f098de5942541bb8f17ae9bc'
 
 def handle(request):
     if (not request or len(request) < 2):
-        return "Mail is to small"
+        return "Mail is too small"
     return send(mail(request))
 
 

@@ -7,9 +7,6 @@ functions:
     lang: python3
     handler: ./email
     image: coden256/email:latest
-    #annotations:
-    #  topic: cron-function
-    #  schedule: "*/1 * * * *"
 
   incrementer:
     lang: python3-flask
@@ -27,3 +24,10 @@ functions:
     image: coden256/random-fn:latest
     environment:
       functions: incrementer, time, figlet, random-fn, nodeinfo
+  random-email:
+    lang: dockerfile
+    handler: ./random-email
+    image: coden256/random-email:latest
+    annotations:
+      topic: cron-function
+      schedule: "*/5 * * * *"

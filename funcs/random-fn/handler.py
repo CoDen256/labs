@@ -12,4 +12,4 @@ def handle(req):
         return "No functions specified"
 
     random_fn = random.choice(functions)
-    return "random fn:\n"+requests.post(base+random_fn, data=req).content.decode()
+    return f"random fn `{random_fn}`:\n"+requests.post(base+random_fn, data=req).content.decode()
