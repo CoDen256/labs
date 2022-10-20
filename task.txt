@@ -1,0 +1,22 @@
+http://phishtank.org/index.php
+http://data.phishtank.com/data/online-valid.csv
+
+POST https://checkurl.phishtank.com/checkurl/
+'Content-Type': 'application/x-www-form-urlencoded'
+url: phishing_url
+format: json
++ Check headers for requets limit
+
+https://www.virustotal.com/gui/home/search
+
+
+
+
+collect phishing + benign(ok) urls
+
+for every url: (analyze url string itself)
+1. protocol (http, https)
+2. tls certificate info
+3. server geolocation
+4. domain registration info
+5. lables: phishing or benign
