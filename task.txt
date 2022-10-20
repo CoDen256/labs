@@ -15,8 +15,47 @@ https://www.virustotal.com/gui/home/search
 collect phishing + benign(ok) urls
 
 for every url: (analyze url string itself)
-1. protocol (http, https)
-2. tls certificate info
-3. server geolocation
+1. protocol (http, https): from url
 4. domain registration info
+    - Registrar
+    - lifetime
+    - country
 5. lables: phishing or benign
+
+
+
+==================
+
+1. Create a training dataset for phishing and benign URLs in a CSV file ‘train.csv’.
+
+a) For phishing URLs you can use http://phishtank.org/Links to an external site. and/or https://www.virustotal.com/Links to an external site. services. For benign URLs, you can use the top websites from https://www.alexa.com/topsitesLinks to an external site. .
+
+Note: The more URLs you collect for the training dataset, the better classification accuracy you will achieve. Consider automating your data collection activities with Python 3.
+
+b) Consider the set of attributes you are going to collect for every URL, for example, protocol (http vs. https), TLS certificate info, server geolocation, domain registration info, and so on. You can also analyze the URL string itself.
+
+Note: The more attributes you collect for the URLs, the better classification accuracy you will achieve. Consider automating URLs attributes collection activities with Python 3.
+
+c) Don’t forget to add the labels for the collected URLs in the training dataset. For example, ‘Class’: {‘phishing’, ‘benign’}.
+==================
+
+Goal: familiarize with the principles of analysis and detection of phishing URLs.
+
+Tools:
+
+Phishtank: http://phishtank.org/Links to an external site. 
+WhoIs Service (this info is also available in the Technical Details section of the report on Phishtank): https://who.isLinks to an external site. 
+GeoIP Service: https://www.maxmind.com/en/geoip-demoLinks to an external site.
+Python scripts that can be used for automating data collection: https://drive.google.com/drive/folders/1j19TcmxWzOAH9LZ8gs4E3kUQX8tRU-nF?usp=sharingLinks to an external site. 
+Tasks:
+
+Every student has to choose 30 or more online phishing URLs from PhishtankLinks to an external site. and collect information about them:
+Registrar name
+The lifetime of a domain = Expiration date - Creation date
+Country by IP (ping domain name to get IP, then use GeoIP service)
+Every student has to choose 30 or more clean websites’ URLs and collect the same information.
+Put the results for clean and phishing URLs into the table (Excel or Google Spreadsheet). 
+Create the Frequency Tables for every parameter (Registrar, Lifetime, Country) for clean and phishing URLs
+Draw diagrams for every parameter based on the Frequency Tables. (5 points)
+Propose the method (describe an algorithm) for detecting phishing URLs. (5 points)
+Example of the report
