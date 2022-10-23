@@ -1,0 +1,8 @@
+url,domain_name,registrar,whois_server,referral_url,updated_date,creation_date,expiration_date,name_servers,status,emails,dnssec,name,org,address,city,state,registrant_postal_code,country
+
+url,verified,id,Network,Domain Name,Updated Date,Creation Date,Registry Expiry Date,Registrar,Registrant Name,Registrant Organization,Registrant Country
+
+
+
+
+url, class(benign, phishing), Domain Name, Registrar, Updated Date, Creation Date, Registry Expiry Date, Registrant Name, Country

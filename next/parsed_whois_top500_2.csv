@@ -321,9 +321,12 @@ get-express-vpn.online,GET-EXPRESS-VPN.ONLINE,TLD Registrar Solutions Ltd.,whois
 gusuwang.com,GUSUWANG.COM,"Xiamen 35.Com Technology Co., Ltd",whois.35.com,None,2022-01-30 01:57:19,2009-06-04 06:27:09,2030-06-04 06:27:09,NS1.JIASULE.NET,ok https://icann.org/epp#ok,domainabuse@35.cn,unsigned,None,None,None,SUZHOU,JIANGSU,None,CN
 businessinsider.com,BUSINESSINSIDER.COM,"GoDaddy.com, LLC",whois.godaddy.com,None,2022-09-08 12:16:05,1998-03-06 05:00:00,2023-09-08 03:59:59,DNS1.P03.NSONE.NET,clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited,abuse@godaddy.com,unsigned,Registration Private,"Domains By Proxy, LLC","['DomainsByProxy.com', '2155 E Warner Rd']",Tempe,Arizona,85284,US
 crunchyroll.com,CRUNCHYROLL.COM,"Amazon Registrar, Inc.",whois.registrar.amazon.com,None,2022-07-24 21:29:16,2006-05-14 05:07:22,2023-08-28 03:59:59,CLINT.NS.CLOUDFLARE.COM,clientTransferProhibited https://icann.org/epp#clientTransferProhibited,abuse@amazonaws.com,unsigned,On behalf of crunchyroll.com owner,Whois Privacy Service,P.O. Box 81226,Seattle,WA,98108-1226,US
-allegro.pl,allegro.pl,Corporation Service Company,,,2022-10-17 07:03:02,1999-10-27 13:00:00,2023-10-26 15:00:00,"dns1.allegro.pl. [2a02:dcc:20::5][91.194.188.132]
-                       dns2.allegro.pl. [91.207.14.244][2a02:dc8:20::5]
-                       dns3.allegro.pl. [46.229.156.195][2001:1a68:25:0:0:0:0:3]
+allegro.pl,allegro.pl,Corporation Service Company,,,2022-10-17 07:03:02,1999-10-27 13:00:00,2023-10-26 15:00:00,"dns1.allegro.pl. [2a02:dcc:20::5][91.194.188.132]
+
+                       dns2.allegro.pl. [91.207.14.244][2a02:dc8:20::5]
+
+                       dns3.allegro.pl. [46.229.156.195][2001:1a68:25:0:0:0:0:3]
+
                        dns4.allegro.pl. [2001:2000:3080:17:0:0:0:3][62.115.165.115]",None,,,,,,,,,
 samsung.com,SAMSUNG.COM,Whois Corp.,whois.whois.co.kr,None,2021-06-12 09:11:34,1994-11-29 05:00:00,2025-11-28 05:00:00,DNS-AWSKR1.SAMSUNG.COM,clientTransferProhibited https://icann.org/epp#clientTransferProhibited,abuse@whois.co.kr,unsigned,None,None,None,None,None,None,None
 mercadolivre.com.br,mercadolivre.com.br,,,,2018-11-29 00:00:00,1999-05-14 00:00:00,2023-05-14 00:00:00,,published,,,,,,,,,BR
@@ -348,9 +351,12 @@ indiamart.com,INDIAMART.COM,"Network Solutions, LLC",whois.networksolutions.com,
 cloudfront.net,CLOUDFRONT.NET,"MarkMonitor, Inc.",whois.markmonitor.com,None,2019-05-07 23:07:15,2008-04-25 18:25:49,2024-04-25 18:25:49,NS-1306.AWSDNS-35.ORG,clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited,abusecomplaints@markmonitor.com,unsigned,Legal Department,"Amazon.com, Inc.",PO BOX 81226,Seattle,WA,98108-1226,US
 hp.com,HP.COM,"MarkMonitor, Inc.",whois.markmonitor.com,None,2022-01-31 09:48:41,1986-03-03 05:00:00,2023-03-04 05:00:00,NS1.HP.COM,clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited,abusecomplaints@markmonitor.com,unsigned,Domain Administrator,HP Inc.,"1501 Page Mill Road,",Palo Alto,CA,94304,US
 ibicn.com,IBICN.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",grs-whois.hichina.com,None,2022-09-19 00:34:31,2009-12-01 03:19:00,2023-12-01 03:19:00,DNS17.HICHINA.COM,ok https://icann.org/epp#ok,DomainAbuse@service.aliyun.com,unsigned,None,None,None,None,None,None,None
-google.pl,google.pl,"Markmonitor, Inc.",,,2022-08-17 11:24:12,2002-09-19 13:00:00,2023-09-18 14:00:00,"ns1.google.com. 
-                       ns2.google.com. 
-                       ns3.google.com. 
+google.pl,google.pl,"Markmonitor, Inc.",,,2022-08-17 11:24:12,2002-09-19 13:00:00,2023-09-18 14:00:00,"ns1.google.com. 
+
+                       ns2.google.com. 
+
+                       ns3.google.com. 
+
                        ns4.google.com.",None,,,,,,,,,
 ask.com,ASK.COM,"MarkMonitor, Inc.",whois.markmonitor.com,None,2022-09-17 09:05:36,1998-10-20 04:00:00,2024-10-19 04:00:00,DNS1.P06.NSONE.NET,clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited,abusecomplaints@markmonitor.com,unsigned,None,Ask.com,None,None,CA,None,US
 kompas.tv,KOMPAS.TV,"Domain.com, LLC",whois.domain.com,None,2022-01-16 15:13:05,2011-01-31 06:55:24,2023-01-31 06:55:24,NS-1148.AWSDNS-15.ORG,ok https://icann.org/epp#ok,compliance@domain-inc.net,unsigned,REDACTED FOR PRIVACY,REDACTED FOR PRIVACY,REDACTED FOR PRIVACY,REDACTED FOR PRIVACY,None,REDACTED FOR PRIVACY,ID

@@ -3,7 +3,7 @@ import csv
 import sys
 import requests
 
-fields = ['Network','Domain Name', 'Updated Date', 'Creation Date', 'Registry Expiry Date', 'Registrar', 'Registrant Name',
+fields = ["url", "verified", "id", 'Network','Domain Name', 'Updated Date', 'Creation Date', 'Registry Expiry Date', 'Registrar', 'Registrant Name',
               'Registrant Organization', 'Registrant Country']
 
 def parse_phishtank(link_id):
@@ -25,8 +25,8 @@ def parse_phishtank(link_id):
 
 
 if __name__ == '__main__':
-    with open("C:\\dev\\dataset-urls\\aggregated\\phishtank.csv", 'r') as r:
-        with open("parsed_phishtank_2.csv", 'w', newline="") as f:
+    with open("C:\\dev\\dataset-urls\\aggregated\\phishtank copy.csv", 'r') as r:
+        with open("parsed_phishtank_6.csv", 'w', newline="") as f:
             reader = csv.reader(r, delimiter=",")
             writer = csv.writer(f)
             writer.writerow(fields)
@@ -34,7 +34,10 @@ if __name__ == '__main__':
                 try:
                     data = parse_phishtank(row[0])
                     # writer.writerow(data.keys())
-                    #Network,Domain Name,Updated Date,Creation Date,Registry Expiry Date,Registrar,Registrant Name,Registrant Organization,Registrant Country
+                    #url, verified, Network,Domain Name,Updated Date,Creation Date,Registry Expiry Date,Registrar,Registrant Name,Registrant Organization,Registrant Country
+                    data['url'] = row[1]
+                    data['verified'] = row[2]
+                    data["id"] = row[0]
                     writer.writerow(data.values())
                 except Exception as e:
                     print(e)
