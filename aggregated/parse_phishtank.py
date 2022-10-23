@@ -18,7 +18,7 @@ def parse_phishtank(link_id):
     for value in text[1].text.split('\r\n'):
         v = value.split(': ')
         if v[0].strip() in fields:
-            data[f'{v[0]}'] = v[1]
+            data[f'{v[0].strip()}'] = v[1]
     print(data)
     print("\n"*2)
     return data
@@ -26,7 +26,7 @@ def parse_phishtank(link_id):
 
 if __name__ == '__main__':
     with open("C:\\dev\\dataset-urls\\aggregated\\phishtank copy.csv", 'r') as r:
-        with open("parsed_phishtank_6.csv", 'w', newline="") as f:
+        with open("parsed_phishtank_7.csv", 'w', newline="") as f:
             reader = csv.reader(r, delimiter=",")
             writer = csv.writer(f)
             writer.writerow(fields)

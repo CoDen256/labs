@@ -17,8 +17,25 @@ def map_top500(row):
                             row[18],#country
                         ]
 
+def map_phishtank(row):
+    return [
+                            row[0], #url
+                            ["benign", "phishing"][row[1]=="yes"], #verified
+                            row[0].split(":")[0],
+                            row[4], #domain name
+                            row[8], #registrar
+                            trunT(row[5]), #updated
+                            trunT(row[6]), #creation_date
+                            trunT(row[7]), #expiration_date
+                            row[10],#registrant org
+                            row[11],#country
+                        ]
+
 def trun(col): # truncate_to_date
     return col.split()[0]
+
+def trunT(col): # truncate_to_date
+    return col.split("T")[0]
 
 def invalid_to_empty(col):
     if  "REDACTED" in col or col == "None":
@@ -26,14 +43,14 @@ def invalid_to_empty(col):
     return col
 
 if __name__ == '__main__':
-    with open("C:\\dev\\dataset-urls\\next\\parsed_whois_top500_2.csv", 'r', encoding="utf-8") as r:
-        with open("top500_unified.csv", 'w', newline="", encoding="utf-8") as w:
+    with open("C:\\dev\\dataset-urls\\next\\parsed_phishtank.csv", 'r', encoding="utf-8") as r:
+        with open("phishtank_unified.csv", 'w', newline="", encoding="utf-8") as w:
             reader = csv.reader(r, delimiter=",")
             writer = csv.writer(w, delimiter=",")
             writer.writerow(fields)
             for row in reader:
                 try:
-                    new = map_top500(row)
+                    new = map_phishtank(row)
                     print(new)
                     writer.writerow(list(map(lambda x: invalid_to_empty(x), new)))
                 except Exception as e:
@@ -62,3 +79,17 @@ if __name__ == '__main__':
                             # row[16],#state
                             # row[17],#postal
                             # row[18],#country
+
+## phishtank
+                            # row[0], #url
+                            # row[1], #verified
+                            # row[2], #id
+                            # row[3], #network
+                            # row[4], #domain name
+                            # row[5], #updated
+                            # row[6], #creation_date
+                            # row[7], #expiration_date
+                            # row[8], #registrar
+                            # row[9], #registrant name
+                            # row[10],#registrant org
+                            # row[11],#country
