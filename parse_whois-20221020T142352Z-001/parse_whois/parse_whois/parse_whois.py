@@ -32,21 +32,23 @@ def parse_domain_info(text):
     for raw in text:
         value = raw.split(': ')
         if value[0].lower() in VALUES:
-            save[f'{value[0]}'] = value[1]
+            save[f'{value[0]}:'] = value[1]
     return save
 
 
 def save_to_csv(file, data):
-    with open(file, 'w', newline='') as f:
+    with open(file, 'w') as f:
         writer = csv.writer(f)
-        writer.writerow(data.keys())
-        writer.writerow(data.values())
+        writer.writerows(data.items())
 
 
 def main():
-    domain_info = get_domain_info("http://www.eki-net.con-aesceeesa.fbuuwe.top/jp.php")
+    parser.add_argument('domain', help='Domain name to parse, something like wikipedia.org')
+    parser.add_argument('save_filename', help='File for save whois results')
+    args = parser.parse_args(sys.argv[1:])
+    domain_info = get_domain_info(args.domain)
     save_data = parse_domain_info(domain_info)
-    save_to_csv("parsed_whois_phishtank.csv", save_data)
+    save_to_csv(args.save_filename, save_data)
 
 
 if __name__ == '__main__':

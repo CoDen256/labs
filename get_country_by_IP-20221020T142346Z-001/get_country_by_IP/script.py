@@ -5,5 +5,5 @@ def getIpInfo(data):
     print ('IP: '+locationInfo['IPv4'])
     print (locationInfo)
     
-ip = "62.16.0.0"
+ip = "google.com"
 info = getIpInfo(ip)
