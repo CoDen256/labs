@@ -26,7 +26,7 @@ def parse_phishtank(link_id):
 
 if __name__ == '__main__':
     with open("C:\\dev\\dataset-urls\\aggregated\\phishtank copy.csv", 'r') as r:
-        with open("parsed_phishtank_7.csv", 'w', newline="") as f:
+        with open("parsed_phishtank_8.csv", 'w', newline="") as f:
             reader = csv.reader(r, delimiter=",")
             writer = csv.writer(f)
             writer.writerow(fields)

@@ -1,5 +1,4 @@
-url,class,protocol, Domain Name,Registrar,Updated Date,Creation Date,Registry Expiry Date,Registrant Organization,Country
-url,benign,url,Domain Name,Registrar,Updated Date,Creation Date,Registry Expiry Date,Registrant Organization,Registrant Country
+url,class,protocol,Domain Name,Registrar,Updated Date,Creation Date,Registry Expiry Date,Registrant Organization,Country
 http://www.eki-net.con-aesceeesa.fbuuwe.top/jp.php,phishing,http,fbuuwe.top,Alibaba Cloud Computing Ltd. d/b/a HiChina (www.net.cn),2022-09-01,2022-01-26,2023-01-26,hang zhou shi shang su du ke ji you xian gong si,CN
 http://www.eki-net.con-aesceeesa.fkoapx.top/jp.php,phishing,http,fkoapx.top,Alibaba Cloud Computing Ltd. d/b/a HiChina (www.net.cn),2022-09-01,2022-01-26,2023-01-26,hang zhou shi shang su du ke ji you xian gong si,CN
 http://www.eki-net.con-aesceeesa.futgud.top/jp.php,phishing,http,futgud.top,Alibaba Cloud Computing Ltd. d/b/a HiChina (www.net.cn),2022-09-01,2022-01-26,2023-01-26,hang zhou shi shang su du ke ji you xian gong si,CN
@@ -14766,3 +14765,447 @@ http://www.viaaaaeeevesvcsceei.viacvacersvoerrsai.prthkn.top/k7OIMyJhEU/page1.ph
 http://www.viaaaaeeevesvcsceei.viacvacersvoerrsai.ppvlmr.top/k7OIMyJhEU/page1.php,phishing,http,ppvlmr.top,Alibaba Cloud Computing Ltd. d/b/a HiChina (www.net.cn),2022-08-31,2021-11-30,2022-11-30,hang zhou shi shang su du ke ji you xian gong si,CN
 http://www.viaaaaeeevesvcsceei.viacvacersvoerrsai.pctmqj.top/k7OIMyJhEU/page1.php,phishing,http,,,,,,,
 http://www.viaaaaeeevesvcsceei.viacvacersvoerrsai.ouomrg.top/k7OIMyJhEU/page1.php,phishing,http,ouomrg.top,Alibaba Cloud Computing Ltd. d/b/a HiChina (www.net.cn),2022-08-31,2021-11-25,2022-11-25,hang zhou shi shang su du ke ji you xian gong si,CN
+google.com,https,benign,GOOGLE.COM,"MarkMonitor, Inc.",2019-09-09,1997-09-15,2028-09-14,Google LLC,US
+youtube.com,https,benign,YOUTUBE.COM,MarkMonitor Inc.,2022-01-14,2005-02-15,2023-02-15,,
+tmall.com,https,benign,TMALL.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-09-01,1997-10-17,2023-10-16,,
+baidu.com,https,benign,BAIDU.COM,"MarkMonitor, Inc.",2022-09-01,1999-10-11,2026-10-11,"Beijing Baidu Netcom Science Technology Co., Ltd.",CN
+qq.com,https,benign,QQ.COM,MarkMonitor Inc.,2022-09-21,1995-05-04,2030-07-27,,
+sohu.com,https,benign,SOHU.COM,"MarkMonitor, Inc.",2022-06-29,1998-07-05,2023-07-04,"Beijing Sohu Internet Information Service Co., Ltd.",CN
+facebook.com,https,benign,FACEBOOK.COM,"RegistrarSafe, LLC",2022-01-26,1997-03-29,2031-03-30,"Meta Platforms, Inc.",US
+taobao.com,https,benign,TAOBAO.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-05,2003-04-21,2024-04-21,,
+jd.com,https,benign,JD.COM,"MarkMonitor, Inc.",2022-09-15,1992-09-29,2028-03-08,BEIJING JINGDONG 360 DU E-COMMERCE LTD.,CN
+yahoo.com,https,benign,YAHOO.COM,MarkMonitor Inc.,2022-03-09,1995-01-18,2023-01-19,,
+amazon.com,https,benign,AMAZON.COM,MarkMonitor Inc.,2019-05-07,1994-11-01,2024-10-31,,
+wikipedia.org,https,benign,wikipedia.org,MarkMonitor Inc.,2020-10-15,2001-01-13,2023-01-13,"Wikimedia Foundation, Inc.",US
+weibo.com,https,benign,WEIBO.COM,"Xiamen 35.Com Technology Co., Ltd",2017-04-13,1999-03-20,2026-03-20,,CN
+xinhuanet.com,https,benign,XINHUANET.COM,"Beijing Guoxu Network Technology Co., Ltd.",2022-01-11,2000-04-28,2023-04-28,,
+netflix.com,https,benign,NETFLIX.COM,"MarkMonitor, Inc.",2021-10-09,1997-11-11,2023-11-10,"Netflix, Inc.",US
+reddit.com,https,benign,REDDIT.COM,MarkMonitor Inc.,2022-03-28,2005-04-29,2024-04-29,,
+live.com,https,benign,LIVE.COM,"CSC CORPORATE DOMAINS, INC.",2021-12-23,1994-12-28,2022-12-27,Microsoft Corporation,US
+alipay.com,https,benign,ALIPAY.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-09-06,2004-10-08,2023-10-08,,
+zhanqi.tv,https,benign,ZHANQI.TV,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-04-08,2014-04-03,2024-04-03,,CN
+panda.tv,https,benign,PANDA.TV,DYNADOT LLC,2022-08-10,2022-06-07,2023-06-07,,
+instagram.com,https,benign,INSTAGRAM.COM,"RegistrarSafe, LLC",2021-11-08,2004-06-04,2031-06-04,Instagram LLC,US
+zoom.us,https,benign,zoom.us,"MarkMonitor, Inc.",2022-06-13,2002-04-24,2025-04-23,,
+csdn.net,https,benign,CSDN.NET,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-12-02,1999-03-11,2023-03-11,,
+vk.com,https,benign,VK.COM,"Regional Network Information Center, JSC dba RU-CENTER",2022-05-05,1997-06-24,2023-06-23,Privacy protection service - whoisproxy.ru,RU
+google.com.hk,https,benign,GOOGLE.COM.HK,MARKMONITOR INC.,,2001-07-14,2023-11-20,,
+bing.com,https,benign,BING.COM,"MarkMonitor, Inc.",2021-12-29,1996-01-29,2023-01-30,Microsoft Corporation,US
+twitch.tv,https,benign,TWITCH.TV,"MarkMonitor, Inc.",2021-09-28,2009-06-08,2024-06-08,"Twitch Interactive, Inc.",US
+okezone.com,https,benign,OKEZONE.COM,"GoDaddy.com, LLC",2022-10-06,2006-11-15,2027-11-15,"Domains By Proxy, LLC",US
+microsoft.com,https,benign,MICROSOFT.COM,MarkMonitor Inc.,2022-04-18,1991-05-02,2023-05-03,,
+myshopify.com,https,benign,MYSHOPIFY.COM,MarkMonitor Inc.,2021-03-02,2006-03-03,2024-03-03,,
+yahoo.co.jp,https,benign,,,,,,,
+ebay.com,https,benign,EBAY.COM,"MarkMonitor, Inc.",2022-07-02,1995-08-04,2023-08-03,eBay Inc.,US
+office.com,https,benign,OFFICE.COM,"MarkMonitor, Inc.",2022-03-19,1999-04-20,2023-04-20,Microsoft Corporation,US
+twitter.com,https,benign,TWITTER.COM,"CSC CORPORATE DOMAINS, INC.",2022-01-17,2000-01-21,2023-01-21,"Twitter, Inc.",US
+aliexpress.com,https,benign,ALIEXPRESS.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-05,2006-04-16,2024-04-16,,
+naver.com,https,benign,NAVER.COM,"Gabia, Inc.",2022-09-20,1997-09-12,2023-09-11,,
+bongacams.com,https,benign,BONGACAMS.COM,DomainSpot LLC,2022-10-17,2012-01-25,2025-01-25,Receiver  for Anderson & Jung,US
+amazon.in,https,benign,amazon.in,MarkMonitor Inc.,2019-05-12,2005-02-11,2024-02-11,,US
+amazon.co.jp,https,benign,,,,,,,
+yy.com,https,benign,YY.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-08-12,1994-01-18,2024-01-19,,
+coinmarketcap.com,https,benign,COINMARKETCAP.COM,"MarkMonitor, Inc.",2020-06-23,2013-04-28,2025-04-28,DNStination Inc.,US
+aparat.com,https,benign,APARAT.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2022-02-09,2002-12-31,2025-12-31,c/o IDPS International Domain Privacy Services GmbH,DE
+adobe.com,https,benign,ADOBE.COM,NOM-IQ Ltd dba Com Laude,2022-04-17,1986-11-17,2023-05-17,Adobe Inc.,US
+haosou.com,https,benign,HAOSOU.COM,"eName Technology Co.,Ltd.",2022-07-15,2003-10-20,2023-10-20,,CN
+huanqiu.com,https,benign,HUANQIU.COM,"DNSPod, Inc.",2022-04-17,2002-05-02,2023-05-02,,CN
+1688.com,https,benign,1688.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-09-02,1996-10-18,2023-10-17,,
+microsoftonline.com,https,benign,MICROSOFTONLINE.COM,"MarkMonitor, Inc.",2021-06-08,2002-07-09,2023-07-09,Microsoft Corporation,US
+godaddy.com,https,benign,GODADDY.COM,"GoDaddy.com, LLC",2022-10-04,1999-03-02,2024-11-01,"Domains By Proxy, LLC",US
+17ok.com,https,benign,17OK.COM,"XIAMEN CHINASOURCE INTERNET SERVICE CO., LTD.",2019-08-06,2002-08-06,2026-08-06,,
+chaturbate.com,https,benign,CHATURBATE.COM,"Cloudflare, Inc.",2017-11-20,2011-02-26,2027-11-19,,US
+wordpress.com,https,benign,WORDPRESS.COM,"MarkMonitor, Inc.",2022-01-30,2000-03-03,2024-03-03,"Automattic, Inc.",US
+so.com,https,benign,SO.COM,"eName Technology Co.,Ltd.",2021-09-24,1999-04-15,2023-04-15,,CN
+whatsapp.com,https,benign,WHATSAPP.COM,"RegistrarSafe, LLC",2021-10-18,2008-09-04,2031-09-04,WhatsApp LLC,US
+tribunnews.com,https,benign,TRIBUNNEWS.COM,"Amazon Registrar, Inc.",2020-12-21,2010-01-13,2024-01-13,Whois Privacy Service,US
+linkedin.com,https,benign,LINKEDIN.COM,"MarkMonitor, Inc.",2022-10-01,2002-11-02,2024-11-02,LinkedIn Corporation,US
+imdb.com,https,benign,IMDB.COM,MarkMonitor Inc.,2019-05-07,1996-01-05,2024-01-04,,
+msn.com,https,benign,MSN.COM,MarkMonitor Inc.,2022-05-04,1994-11-10,2023-06-04,,
+google.co.in,https,benign,google.co.in,MarkMonitor Inc.,2022-05-27,2003-06-23,2023-06-23,,US
+google.com.br,https,benign,google.com.br,,2021-04-23,1999-05-18,2023-05-18,,BR
+tradingview.com,https,benign,TRADINGVIEW.COM,DomainSpot LLC,2017-10-04,2010-03-20,2027-03-20,TradingView,US
+pornhub.com,https,benign,PORNHUB.COM,Eurodns S.A.,2022-05-13,2000-10-31,2027-10-31,Whois Privacy (enumDNS dba),LU
+bilibili.com,https,benign,BILIBILI.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-12-29,2004-10-21,2031-10-21,,
+fandom.com,https,benign,FANDOM.COM,"TUCOWS, INC.",2020-10-20,1996-10-11,2023-10-10,Contact Privacy Inc. Customer 0141730466,CA
+medium.com,https,benign,MEDIUM.COM,"Amazon Registrar, Inc.",2022-04-21,1998-05-27,2023-05-26,Whois Privacy Service,US
+etsy.com,https,benign,ETSY.COM,"MarkMonitor, Inc.",2021-01-05,2004-02-05,2023-02-05,"Etsy, Inc.",US
+roblox.com,https,benign,ROBLOX.COM,"MarkMonitor, Inc.",2020-12-29,2004-01-30,2023-01-30,Roblox Corporation,US
+xvideos.com,https,benign,XVIDEOS.COM,GRANSY S.R.O D/B/A SUBREG.CZ,2019-04-19,1997-12-30,2023-12-29,"Whois protection, this company does not own this domain name s.r.o.",CZ
+livejasmin.com,https,benign,LIVEJASMIN.COM,Eurodns S.A.,2022-09-28,2001-11-12,2023-11-12,Docler IP S.a r.l.,LU
+indeed.com,https,benign,INDEED.COM,"MarkMonitor, Inc.",2022-02-25,1998-03-30,2023-03-29,"Indeed, Inc",US
+alibaba.com,https,benign,ALIBABA.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-05,1999-04-15,2024-05-23,,
+rakuten.co.jp,https,benign,,,,,,,
+cnblogs.com,https,benign,CNBLOGS.COM,"Xiamen 35.Com Technology Co., Ltd",2020-06-01,2003-11-12,2024-11-12,,CN
+chase.com,https,benign,CHASE.COM,"MarkMonitor, Inc.",2021-09-09,1995-10-11,2023-10-10,JPMorgan Chase & Co.,US
+xhamster.com,https,benign,XHAMSTER.COM,NAMECHEAP INC,2022-02-28,2007-04-02,2027-04-02,Redacted for Privacy Purposes,CY
+dropbox.com,https,benign,DROPBOX.COM,"MarkMonitor, Inc.",2021-05-26,1995-06-28,2023-06-27,"Dropbox, Inc.",US
+spotify.com,https,benign,SPOTIFY.COM,PortsGroup AB,2021-08-02,2006-04-23,2030-04-23,Spotify AB,SE
+instructure.com,https,benign,INSTRUCTURE.COM,NAMECHEAP INC,2018-02-12,1998-02-25,2024-02-24,Redacted for Privacy Purposes,US
+kompas.com,https,benign,KOMPAS.COM,"TUCOWS, INC.",2021-09-24,1995-12-18,2022-12-17,,ID
+babytree.com,https,benign,BABYTREE.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-09-06,2004-09-05,2023-09-05,,
+hao123.com,https,benign,HAO123.COM,"MarkMonitor, Inc.",2022-10-14,2000-11-15,2024-11-15,Baidu Online Network Technology Co.Ltd,CN
+udemy.com,https,benign,UDEMY.COM,Safenames Ltd,2021-09-01,2009-08-13,2023-08-13,,US
+canva.com,https,benign,CANVA.COM,GANDI SAS,2016-08-01,2001-05-05,2023-05-05,Canva Pty. Ltd.,AU
+google.co.jp,https,benign,,,,,,,
+imgur.com,https,benign,IMGUR.COM,NAMECHEAP INC,2022-05-22,2009-01-09,2027-01-09,Privacy service provided by Withheld for Privacy ehf,IS
+163.com,https,benign,163.COM,"MarkMonitor, Inc.",2019-01-25,1997-09-15,2026-09-14,"Guangzhou NetEase Computer System Co., Ltd",CN
+amazon.co.uk,https,benign,amazon.co.uk,"Amazon.com, Inc. [Tag = AMAZON-COM]",2022-09-06,1996-08-01,2024-12-05,,
+cnzz.com,https,benign,CNZZ.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-05,2000-04-13,2024-04-13,,
+walmart.com,https,benign,WALMART.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-10,1995-02-23,2023-09-23,Not Disclosed,US
+bbc.com,https,benign,BBC.COM,"TUCOWS, INC.",2021-07-06,1989-07-15,2030-07-14,,GB
+paypal.com,https,benign,PAYPAL.COM,"MarkMonitor, Inc.",2022-10-19,1999-07-15,2023-07-15,PayPal Inc.,US
+kumparan.com,https,benign,KUMPARAN.COM,"GoDaddy.com, LLC",2022-09-20,2016-02-02,2032-02-02,"Domains By Proxy, LLC",US
+tiktok.com,https,benign,TIKTOK.COM,GANDI SAS,2022-08-24,1996-07-21,2023-07-20,TIKTOK LTD,KY
+savefrom.net,https,benign,SAVEFROM.NET,"TUCOWS, INC.",2022-03-01,2008-03-12,2025-03-12,,KN
+github.com,https,benign,GITHUB.COM,"MarkMonitor, Inc.",2022-09-07,2007-10-09,2024-10-09,"GitHub, Inc.",US
+hotstar.com,https,benign,HOTSTAR.COM,BigRock Solutions Ltd.,2022-01-24,1996-02-16,2023-02-17,Novi Digital Entertainment Private Limited,IN
+telegram.org,https,benign,telegram.org,"GoDaddy.com, LLC",2022-09-14,2003-12-15,2031-12-15,"Domains By Proxy, LLC",US
+google.es,https,benign,,,,,,,
+amazonaws.com,https,benign,AMAZONAWS.COM,"MarkMonitor, Inc.",2022-10-03,2005-08-18,2024-01-16,"Amazon.com, Inc.",US
+detik.com,https,benign,DETIK.COM,"Name.com, Inc.",2022-02-17,1998-05-29,2023-05-28,"Domain Protection Services, Inc.",US
+force.com,https,benign,FORCE.COM,"MarkMonitor, Inc.",2022-04-19,1991-05-20,2024-05-21,"Salesforce.com, Inc.",US
+apple.com,https,benign,APPLE.COM,"CSC CORPORATE DOMAINS, INC.",2022-02-16,1987-02-19,2023-02-20,Apple Inc.,US
+espn.com,https,benign,ESPN.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-20,1994-10-04,2023-10-03,"ESPN, Inc.",US
+stackoverflow.com,https,benign,STACKOVERFLOW.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-17,2003-12-26,2024-02-02,"Stack Exchange, Inc.",US
+tumblr.com,https,benign,TUMBLR.COM,"MarkMonitor, Inc.",2019-12-19,2006-06-08,2023-06-08,"Automattic, Inc.",US
+zillow.com,https,benign,ZILLOW.COM,"GoDaddy.com, LLC",2022-09-03,2004-09-16,2027-11-11,"Domains By Proxy, LLC",US
+pixnet.net,https,benign,PIXNET.NET,GANDI SAS,2022-05-06,2004-06-07,2023-06-07,PIXNET Digital Media Corporation,TW
+salesforce.com,https,benign,SALESFORCE.COM,"MarkMonitor, Inc.",2022-09-20,1998-12-02,2024-10-21,"Salesforce.com, Inc.",US
+booking.com,https,benign,BOOKING.COM,"MarkMonitor, Inc.",2021-03-15,1998-04-17,2023-04-16,Booking.com B.V.,NL
+stackexchange.com,https,benign,STACKEXCHANGE.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-17,2009-06-12,2024-06-12,"Stack Exchange, Inc.",US
+cnn.com,https,benign,CNN.COM,"CSC CORPORATE DOMAINS, INC.",2018-04-10,1993-09-22,2026-09-21,"Turner Broadcasting System, Inc.",US
+nytimes.com,https,benign,NYTIMES.COM,"MarkMonitor, Inc.",2022-02-11,1994-01-18,2023-01-19,The New York Times Company,US
+varzesh3.com,https,benign,VARZESH3.COM,"GoDaddy.com, LLC",2022-09-19,2011-01-31,2023-01-31,"Domains By Proxy, LLC",US
+duckduckgo.com,https,benign,DUCKDUCKGO.COM,NAMECHEAP INC,2022-05-24,2007-11-11,2023-06-23,Privacy service provided by Withheld for Privacy ehf,IS
+telewebion.com,https,benign,TELEWEBION.COM,NAMECHEAP INC,2020-07-28,2012-09-05,2025-09-05,Privacy service provided by Withheld for Privacy ehf,IS
+grammarly.com,https,benign,GRAMMARLY.COM,"GoDaddy.com, LLC",2022-09-06,2009-07-01,2023-07-01,"Domains By Proxy, LLC",US
+daum.net,https,benign,DAUM.NET,"Megazone Corp., dba HOSTING.KR",2022-02-11,1996-03-05,2023-03-06,Kakao Corp,KR
+zhihu.com,https,benign,ZHIHU.COM,"DNSPod, Inc.",2022-04-18,2007-06-15,2029-09-29,,CN
+soundcloud.com,https,benign,SOUNDCLOUD.COM,GANDI SAS,2022-05-08,2005-07-25,2023-06-08,SoundCloud Global Limited & Co. KG,DE
+videocampaign.co,https,benign,videocampaign.co,"GoDaddy.com, LLC",2022-08-04,2020-07-29,2023-07-29,"Domains By Proxy, LLC",US
+disneyplus.com,https,benign,DISNEYPLUS.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-18,2000-03-23,2023-03-22,"Disney Enterprises, Inc.",US
+bbc.co.uk,https,benign,bbc.co.uk,British Broadcasting Corporation [Tag = BBC],2020-12-10,1996-08-01,2025-12-13,,
+tokopedia.com,https,benign,TOKOPEDIA.COM,"GoDaddy.com, LLC",2022-09-05,2008-05-30,2027-05-30,"Domains By Proxy, LLC",US
+indiatimes.com,https,benign,INDIATIMES.COM,"TUCOWS, INC.",2021-10-23,1996-11-22,2022-11-21,Contact Privacy Inc. Customer 0142599492,CA
+nih.gov,https,benign,NIH.GOV,,,,,,
+speedtest.net,https,benign,SPEEDTEST.NET,"CSC CORPORATE DOMAINS, INC.",2022-08-17,1999-06-25,2032-06-25,Ookla LLC,US
+ettoday.net,https,benign,ETTODAY.NET,"Net-Chinese Co., Ltd.",2022-05-23,2011-08-19,2023-08-19,,
+pinterest.com,https,benign,PINTEREST.COM,"MarkMonitor, Inc.",2022-03-08,2009-11-26,2022-11-26,DNStination Inc.,US
+digikala.com,https,benign,DIGIKALA.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2022-01-26,2006-11-07,2029-11-07,No Avaran-e Fanavaze,IR
+intuit.com,https,benign,INTUIT.COM,"MarkMonitor, Inc.",2021-11-17,1994-02-18,2023-12-19,Intuit Inc.,US
+google.it,https,benign,google.it,MarkMonitor International Limited,2022-05-18,1999-12-10,2023-04-21,,
+craigslist.org,https,benign,craigslist.org,MarkMonitor Inc.,2015-12-09,1997-09-11,2024-09-10,Craigslist,US
+wix.com,https,benign,WIX.COM,"GoDaddy.com, LLC",2022-09-11,1995-05-12,2029-05-13,"Domains By Proxy, LLC",US
+binance.com,https,benign,BINANCE.COM,"MarkMonitor, Inc.",2020-06-12,2017-04-01,2025-04-01,DNStination Inc.,US
+ilovepdf.com,https,benign,ILOVEPDF.COM,"GoDaddy.com, LLC",2022-09-11,2009-12-16,2024-12-16,"Domains By Proxy, LLC",US
+t.me,https,benign,T.ME,"GoDaddy.com, LLC",2022-05-21,2010-05-20,2023-05-20,,
+bet9ja.com,https,benign,BET9JA.COM,"PSI-USA, Inc. dba Domain Robot",2020-10-26,2012-04-17,2025-04-17,PrivateName Services Inc.,CA
+suara.com,https,benign,SUARA.COM,"GoDaddy.com, LLC",2022-10-05,2002-10-04,2023-10-04,"Domains By Proxy, LLC",US
+w3schools.com,https,benign,W3SCHOOLS.COM,"Amazon Registrar, Inc.",2022-03-03,2000-03-21,2026-03-21,Whois Privacy Service,US
+archive.org,https,benign,archive.org,easyDNS Technologies Inc.,2020-11-04,1995-12-14,2025-12-13,Internet Archive,US
+tistory.com,https,benign,TISTORY.COM,"Megazone Corp., dba HOSTING.KR",2022-09-29,2005-10-01,2023-10-01,Kakao Corp,KR
+tudou.com,https,benign,TUDOU.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-06-01,2004-07-13,2023-07-13,,
+uol.com.br,https,benign,uol.com.br,,2017-01-06,1996-04-24,2023-04-24,,BR
+wetransfer.com,https,benign,WETRANSFER.COM,Key-Systems GmbH,2021-12-15,2007-12-14,2022-12-14,,NL
+google.fr,https,benign,google.fr,MARKMONITOR Inc.,2022-08-17,2000-07-26,2022-12-30,,
+youm7.com,https,benign,YOUM7.COM,"GoDaddy.com, LLC",2022-10-16,2007-12-03,2027-12-03,"Domains By Proxy, LLC",US
+shutterstock.com,https,benign,SHUTTERSTOCK.COM,"MarkMonitor, Inc.",2020-07-08,2003-07-10,2027-07-10,"Shutterstock, Inc.",US
+google.co.uk,https,benign,google.co.uk,Markmonitor Inc. [Tag = MARKMONITOR],2022-09-01,1999-02-14,2023-02-14,,
+primevideo.com,https,benign,PRIMEVIDEO.COM,MarkMonitor Inc.,2022-08-01,2000-10-31,2023-10-31,,
+aliyun.com,https,benign,ALIYUN.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-05-18,2007-09-28,2023-09-28,,
+xnxx.com,https,benign,XNXX.COM,GANDI SAS,2022-07-08,2002-04-08,2024-04-08,NKL Associates s.r.o.,CZ
+pixabay.com,https,benign,PIXABAY.COM,Gandi SAS,2022-09-06,2010-10-07,2023-10-07,,
+theguardian.com,https,benign,THEGUARDIAN.COM,"GoDaddy.com, LLC",2022-09-20,1994-07-06,2025-07-05,"Domains By Proxy, LLC",US
+mediafire.com,https,benign,MEDIAFIRE.COM,NAMECHEAP INC,2020-09-30,2002-08-11,2025-08-11,MediaFire,US
+healthline.com,https,benign,HEALTHLINE.COM,"GoDaddy Corporate Domains, LLC",2022-07-28,2004-08-25,2027-08-25,,US
+51.la,https,benign,51.LA,Key-Systems GmbH,2021-12-16,2005-01-17,2028-01-17,,
+bestbuy.com,https,benign,BESTBUY.COM,"MarkMonitor, Inc.",2022-01-31,1994-03-03,2024-03-04,"BBY Solutions, Inc.",US
+amazon.ca,https,benign,amazon.ca,MarkMonitor International Canada Ltd.,2022-07-16,2000-09-19,2024-07-16,,
+vimeo.com,https,benign,VIMEO.COM,"MarkMonitor, Inc.",2021-11-13,2004-12-15,2022-12-15,"Vimeo, Inc.",US
+wellsfargo.com,https,benign,WELLSFARGO.COM,"MarkMonitor, Inc.",2022-06-22,1993-04-28,2024-04-29,Wells Fargo & Company,US
+homedepot.com,https,benign,HOMEDEPOT.COM,"CSC CORPORATE DOMAINS, INC.",2022-07-30,1992-08-04,2023-08-03,Not Disclosed,US
+soso.com,https,benign,SOSO.COM,"MarkMonitor, Inc.",2022-01-07,1998-02-09,2023-02-08,"Beijing Sogou Information Service Co., Ltd.",CN
+chess.com,https,benign,CHESS.COM,"GoDaddy.com, LLC",2022-09-03,1994-08-11,2027-07-02,"Domains By Proxy, LLC",US
+hulu.com,https,benign,HULU.COM,"CSC CORPORATE DOMAINS, INC.",2022-02-18,1997-02-21,2023-02-22,"Hulu, LLC",US
+onlinesbi.com,https,benign,ONLINESBI.COM,"Register.com, Inc.",2021-07-24,2000-07-24,2031-07-24,,US
+researchgate.net,https,benign,RESEARCHGATE.NET,MESH DIGITAL LIMITED,2022-02-07,2008-02-08,2023-02-08,,DE
+bet365.com,https,benign,BET365.COM,"MarkMonitor, Inc.",2020-11-04,1999-08-04,2025-08-04,bet365 Group Limited,GB
+envato.com,https,benign,ENVATO.COM,MarkMonitor Inc.,2022-06-25,2006-07-26,2024-07-26,,
+zendesk.com,https,benign,ZENDESK.COM,"MarkMonitor, Inc.",2020-11-11,2005-05-16,2024-05-16,"Zendesk, Inc.",US
+unsplash.com,https,benign,UNSPLASH.COM,1API GmbH,2022-05-30,2013-05-29,2023-05-29,,CA
+grid.id,https,benign,grid.id,Kilat Domain,2021-12-18,2017-02-06,2023-02-06,,
+ikea.com,https,benign,IKEA.COM,"CSC CORPORATE DOMAINS, INC.",2022-07-25,1995-07-29,2023-07-05,Inter IKEA Systems B.V.,NL
+google.com.mx,https,benign,google.com.mx,MarkMonitor,2022-01-25,2003-02-24,2023-02-23,,
+cnet.com,https,benign,CNET.COM,"GoDaddy Corporate Domains, LLC",2022-02-28,1994-03-05,2024-03-06,,US
+smallpdf.com,https,benign,SMALLPDF.COM,DYNADOT LLC,2022-07-12,2013-02-13,2030-02-13,Smallpdf GmbH,CH
+etoro.com,https,benign,ETORO.COM,DomainTheNet.com,2019-10-27,2004-11-26,2025-11-26,******,CY
+jiameng.com,https,benign,JIAMENG.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2020-07-17,2005-06-02,2030-06-02,,
+liputan6.com,https,benign,LIPUTAN6.COM,"Amazon Registrar, Inc.",2021-11-19,1999-12-23,2022-12-23,Whois Privacy Service,US
+51yes.com,https,benign,51YES.COM,"ENOM, INC.",2021-02-22,2003-11-24,2026-11-24,,CA
+skype.com,https,benign,SKYPE.COM,"MarkMonitor, Inc.",2022-03-22,2003-04-23,2023-04-23,Microsoft Corporation,US
+capitalone.com,https,benign,CAPITALONE.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-14,1995-03-13,2023-03-14,"Capital One Services, LLC",US
+hdfcbank.com,https,benign,HDFCBANK.COM,PDR Ltd. d/b/a PublicDomainRegistry.com,2018-03-10,1997-04-10,2027-04-11,HDFC Bank Limited,IN
+sogou.com,https,benign,SOGOU.COM,"MarkMonitor, Inc.",2022-08-05,2001-12-19,2022-12-19,"Beijing Sogou Information Service Co., Ltd.",CN
+mercari.com,https,benign,MERCARI.COM,"MarkMonitor, Inc.",2022-06-14,2004-07-16,2023-07-16,"Mercari, Inc",JP
+etherscan.io,https,benign,etherscan.io,NAMECHEAP INC,2022-06-03,2015-08-12,2029-08-12,,
+fiverr.com,https,benign,FIVERR.COM,"GoDaddy.com, LLC",2022-09-06,2009-12-08,2026-12-08,"Domains By Proxy, LLC",US
+usps.com,https,benign,USPS.COM,"Network Solutions, LLC",2022-06-24,1997-07-10,2023-07-09,US Postal Service,US
+manoramaonline.com,https,benign,MANORAMAONLINE.COM,PDR Ltd. d/b/a PublicDomainRegistry.com,2017-03-02,2001-07-24,2026-07-24,Malayala Manorama,IN
+redd.it,https,benign,redd.it,MarkMonitor International Limited,2022-09-02,2010-05-31,2023-08-17,,
+amazon.fr,https,benign,amazon.fr,HOGAN LOVELLS (PARIS) LLP,2022-06-16,2008-04-16,2023-07-21,,
+deepl.com,https,benign,DEEPL.COM,Key-Systems GmbH,2022-03-22,2010-04-22,2023-04-22,,DE
+agacelebir.com,https,benign,AGACELEBIR.COM,URL SOLUTIONS INC.,2022-06-06,2020-07-06,2023-07-06,GLOBAL DOMAIN PRIVACY SERVICES INC,PA
+slideshare.net,https,benign,SLIDESHARE.NET,"Amazon Registrar, Inc.",2021-02-04,2006-04-04,2024-04-04,Whois Privacy Service,US
+investing.com,https,benign,INVESTING.COM,"GoDaddy.com, LLC",2022-10-10,1995-02-23,2025-02-24,"Domains By Proxy, LLC",US
+namnak.com,https,benign,NAMNAK.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2022-05-03,2009-12-15,2023-12-15,,US
+trendyol.com,https,benign,TRENDYOL.COM,"GoDaddy.com, LLC",2022-09-06,2009-10-07,2028-10-07,"Domains By Proxy, LLC",US
+discord.com,https,benign,DISCORD.COM,"Cloudflare, Inc.",2021-01-14,2000-11-06,2025-11-06,,US
+washingtonpost.com,https,benign,WASHINGTONPOST.COM,"CSC CORPORATE DOMAINS, INC.",2021-11-08,1995-11-13,2022-11-12,WP Company LLC,US
+blackboard.com,https,benign,BLACKBOARD.COM,"CSC CORPORATE DOMAINS, INC.",2022-07-25,1999-04-09,2023-07-15,Blackboard Inc.,US
+iqbroker.com,https,benign,IQBROKER.COM,https://www.101domain.com/,2021-12-22,2007-04-04,2023-01-16,IQOPTION LTD.,VC
+investopedia.com,https,benign,INVESTOPEDIA.COM,"MarkMonitor, Inc.",2022-06-23,1999-07-25,2024-07-25,"About, Inc.",US
+mozilla.org,https,benign,mozilla.org,MarkMonitor Inc.,2020-12-22,1998-01-24,2023-01-23,Mozilla Corporation,US
+americanexpress.com,https,benign,AMERICANEXPRESS.COM,"CSC CORPORATE DOMAINS, INC.",2022-05-30,1995-06-04,2023-06-03,"American Express Travel Related Services Company, Inc.",US
+dailymotion.com,https,benign,DAILYMOTION.COM,Nameshield SAS,2022-03-08,2005-03-15,2026-03-15,DAILYMOTION,FR
+sindonews.com,https,benign,SINDONEWS.COM,PDR Ltd. d/b/a PublicDomainRegistry.com,2018-10-15,2011-08-05,2023-08-05,"Privacy Protect, LLC (PrivacyProtect.org)",US
+cricbuzz.com,https,benign,CRICBUZZ.COM,"ENOM, INC.",2019-02-28,2004-04-16,2024-04-16,"Whois Privacy Protection Service, Inc.",US
+manage.wix.com,https,benign,WIX.COM,"GoDaddy.com, LLC",2022-09-11,1995-05-12,2029-05-13,"Domains By Proxy, LLC",US
+metropoles.com,https,benign,METROPOLES.COM,"GoDaddy.com, LLC",2022-09-18,2003-07-28,2025-07-28,"Domains By Proxy, LLC",US
+bankofamerica.com,https,benign,BANKOFAMERICA.COM,"CSC CORPORATE DOMAINS, INC.",2022-05-30,1998-12-28,2023-12-28,Bank of America Corporation,US
+realtor.com,https,benign,REALTOR.COM,"Register.com, Inc.",2022-09-14,1995-09-14,2023-09-13,,US
+wikihow.com,https,benign,WIKIHOW.COM,"Network Solutions, LLC",2022-06-12,2004-06-12,2032-06-12,Wikihow Inc.,US
+chegg.com,https,benign,CHEGG.COM,"MarkMonitor, Inc.",2015-06-17,2000-02-23,2024-02-23,Chegg Inc.,US
+quizlet.com,https,benign,QUIZLET.COM,"GoDaddy.com, LLC",2022-09-09,2004-07-15,2023-07-15,"Domains By Proxy, LLC",US
+ca.gov,https,benign,CA.GOV,,,,,,
+yelp.com,https,benign,YELP.COM,"MarkMonitor, Inc.",2021-11-11,2003-12-12,2023-12-12,Yelp Inc.,US
+op.gg,https,benign,,,,,,,
+google.ca,https,benign,google.ca,MarkMonitor International Canada Ltd.,2022-09-01,2000-10-04,2023-04-28,,
+merdeka.com,https,benign,MERDEKA.COM,Google LLC,2022-02-09,1999-09-04,2026-09-04,Contact Privacy Inc. Customer 7151571251,CA
+okta.com,https,benign,OKTA.COM,"MarkMonitor, Inc.",2020-08-06,2004-06-11,2025-06-11,"Okta, Inc.",US
+coursera.org,https,benign,coursera.org,"GoDaddy.com, LLC",2022-09-11,2012-01-12,2023-01-12,"Domains By Proxy, LLC",US
+in.gr,https,benign,,,,,,,
+line.me,https,benign,LINE.ME,MarkMonitor Inc.,2022-03-29,2008-04-29,2024-04-29,,
+setn.com,https,benign,SETN.COM,"GoDaddy.com, LLC",2022-09-16,2000-01-12,2024-01-12,"Domains By Proxy, LLC",US
+worldometers.info,https,benign,worldometers.info,"GoDaddy.com, LLC",2022-10-18,2004-09-03,2023-09-03,"Domains By Proxy, LLC",US
+ups.com,https,benign,UPS.COM,"CSC CORPORATE DOMAINS, INC.",2022-04-13,1992-04-07,2032-04-08,"United Parcel Service of America, Inc.",US
+amazon.it,https,benign,amazon.it,Hogan Lovells (Paris) LLP,2022-01-28,2000-02-10,2023-01-12,,
+sonhoo.com,https,benign,SONHOO.COM,"Xiamen 35.Com Technology Co., Ltd",2021-11-18,2004-11-24,2022-11-24,,CN
+liansuo.com,https,benign,LIANSUO.COM,"eName Technology Co.,Ltd.",2016-10-26,1999-12-07,2022-12-07,,CN
+flipkart.com,https,benign,FLIPKART.COM,"GoDaddy.com, LLC",2022-09-04,2007-06-03,2025-06-03,"Domains By Proxy, LLC",US
+googlevideo.com,https,benign,GOOGLEVIDEO.COM,"MarkMonitor, Inc.",2022-04-23,2003-05-25,2023-05-25,Google LLC,US
+icicibank.com,https,benign,ICICIBANK.COM,"Network Solutions, LLC",2021-08-04,1996-07-16,2026-07-15,ICICI Bank Limited,IN
+y2mate.com,https,benign,Y2MATE.COM,URL SOLUTIONS INC.,2020-11-25,2016-08-10,2026-08-10,GLOBAL DOMAIN PRIVACY SERVICES INC,PA
+bukalapak.com,https,benign,BUKALAPAK.COM,"Amazon Registrar, Inc.",2020-12-28,2009-09-10,2027-09-10,bukalapak.com,ID
+1337x.to,https,benign,,,,,,,
+asos.com,https,benign,ASOS.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-04,2000-02-27,2023-02-27,ASOS.COM LTD,GB
+icloud.com,https,benign,ICLOUD.COM,"CSC CORPORATE DOMAINS, INC.",2022-01-11,1999-01-15,2023-01-15,Apple Inc.,US
+forbes.com,https,benign,FORBES.COM,"MarkMonitor, Inc.",2022-05-15,1993-06-17,2023-06-16,Forbes Media LLC,US
+proiezionidiborsa.it,https,benign,proiezionidiborsa.it,Aruba Business s.r.l.,2022-05-11,2012-06-20,2023-05-11,,
+google.co.th,https,benign,GOOGLE.CO.TH,THNIC,21,,,,
+evernote.com,https,benign,EVERNOTE.COM,"GoDaddy.com, LLC",2020-02-27,2000-01-20,2029-01-20,"Domains By Proxy, LLC",US
+reverso.net,https,benign,REVERSO.NET,Gandi SAS,2022-06-29,2000-01-13,2029-01-13,,
+airbnb.com,https,benign,AIRBNB.COM,"MarkMonitor, Inc.",2022-07-04,2008-08-05,2024-08-05,"Airbnb, Inc.",US
+globo.com,https,benign,GLOBO.COM,1API GmbH,2019-03-01,1998-12-21,2025-12-21,27.865.757/0001-02,BR
+fidelity.com,https,benign,FIDELITY.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-26,1996-08-31,2023-08-30,FMR LLC,US
+chouftv.ma,https,benign,,,,,,,
+blogger.com,https,benign,BLOGGER.COM,"MarkMonitor, Inc.",2022-05-21,1999-06-22,2023-06-22,Google LLC,US
+google.com.ar,https,benign,google.com.ar,nicar,2022-06-09,2013-10-29,2023-07-08,,
+taboola.com,https,benign,TABOOLA.COM,"Ascio Technologies, Inc",2022-02-23,2007-02-23,2031-02-23,Not Disclosed,US
+wikimedia.org,https,benign,wikimedia.org,MarkMonitor Inc.,2022-02-12,2003-03-16,2023-03-16,"Wikimedia Foundation, Inc.",US
+target.com,https,benign,TARGET.COM,"CSC CORPORATE DOMAINS, INC.",2019-07-03,1997-01-02,2027-01-01,"Target Brands, Inc.",US
+alwafd.news,https,benign,,,,,,,
+fedex.com,https,benign,FEDEX.COM,"CSC CORPORATE DOMAINS, INC.",2021-11-25,1991-02-26,2022-11-29,FedEx Corp. Services,US
+geeksforgeeks.org,https,benign,geeksforgeeks.org,PDR Ltd. d/b/a PublicDomainRegistry.com,2022-04-21,2009-03-19,2030-03-19,"Privacy Protect, LLC (PrivacyProtect.org)",US
+freepik.com,https,benign,FREEPIK.COM,IONOS SE,2022-08-05,2010-08-04,2023-08-04,GRAPHIC RESOURCES SL,ES
+coindesk.com,https,benign,COINDESK.COM,123-Reg Limited,2019-03-28,2008-05-04,2023-05-04,CoinDesk Ltd,GB
+weather.com,https,benign,WEATHER.COM,"CSC CORPORATE DOMAINS, INC.",2022-01-21,1994-08-09,2023-01-25,"TWC Product and Technology, LLC",US
+ebay.co.uk,https,benign,ebay.co.uk,Markmonitor Inc. [Tag = MARKMONITOR],2022-08-13,1998-09-14,2023-09-14,,
+pancakeswap.finance,https,benign,pancakeswap.finance,"MarkMonitor, Inc.",2021-04-04,2020-09-12,2023-09-12,DNStination Inc.,US
+t.co,https,benign,t.co,"CSC Corporate Domains, Inc.",2022-04-26,2010-04-26,2023-04-25,"Twitter, Inc.",US
+sciencedirect.com,https,benign,SCIENCEDIRECT.COM,Safenames Ltd,2021-04-01,1997-03-12,2023-03-13,,UK
+360.com,https,benign,360.COM,"eName Technology Co.,Ltd.",2021-09-24,2000-03-07,2023-03-07,,CN
+padlet.com,https,benign,PADLET.COM,Gandi SAS,2022-06-18,2004-07-19,2023-07-19,,
+redfin.com,https,benign,REDFIN.COM,"GoDaddy.com, LLC",2022-09-22,2000-05-02,2024-05-02,"Domains By Proxy, LLC",US
+get-express-vpn.online,https,benign,GET-EXPRESS-VPN.ONLINE,TLD Registrar Solutions Ltd.,2022-10-19,2017-05-22,2023-05-22,,
+gusuwang.com,https,benign,GUSUWANG.COM,"Xiamen 35.Com Technology Co., Ltd",2022-01-30,2009-06-04,2030-06-04,,CN
+businessinsider.com,https,benign,BUSINESSINSIDER.COM,"GoDaddy.com, LLC",2022-09-08,1998-03-06,2023-09-08,"Domains By Proxy, LLC",US
+crunchyroll.com,https,benign,CRUNCHYROLL.COM,"Amazon Registrar, Inc.",2022-07-24,2006-05-14,2023-08-28,Whois Privacy Service,US
+allegro.pl,https,benign,allegro.pl,Corporation Service Company,2022-10-17,1999-10-27,2023-10-26,,
+samsung.com,https,benign,SAMSUNG.COM,Whois Corp.,2021-06-12,1994-11-29,2025-11-28,,
+mercadolivre.com.br,https,benign,mercadolivre.com.br,,2018-11-29,1999-05-14,2023-05-14,,BR
+irs.gov,https,benign,IRS.GOV,,,,,,
+rt.com,https,benign,RT.COM,"Regional Network Information Center, JSC dba RU-CENTER",2022-02-25,1991-09-23,2025-09-22,ANO TV-Novosti,RU
+squarespace.com,https,benign,SQUARESPACE.COM,"MarkMonitor, Inc.",2021-05-06,2003-03-25,2023-03-25,"Squarespace, Inc.",US
+cnbc.com,https,benign,CNBC.COM,MarkMonitor Inc.,2021-08-29,1997-09-30,2023-09-29,,
+nike.com,https,benign,NIKE.COM,"MarkMonitor, Inc.",2022-02-01,1995-03-04,2024-03-05,"Nike, Inc.",US
+dailymail.co.uk,https,benign,dailymail.co.uk,Nom-IQ Limited t/a Com Laude [Tag = NOMIQ],2019-02-15,1996-08-01,2028-06-17,,
+namu.wiki,https,benign,namu.wiki,DYNADOT LLC,2022-07-24,2015-04-11,2030-04-11,,
+aporasal.net,https,benign,APORASAL.NET,NAMECHEAP INC,2022-04-10,2020-01-20,2023-01-20,Privacy service provided by Withheld for Privacy ehf,IS
+sahibinden.com,https,benign,SAHIBINDEN.COM,"Network Solutions, LLC",2019-05-24,1999-12-30,2025-12-30,,US
+nicovideo.jp,https,benign,NICOVIDEO.JP,,,,,,
+ndtv.com,https,benign,NDTV.COM,"Network Solutions, LLC",2022-09-25,1996-09-26,2032-09-25,,US
+mercadolibre.com.mx,https,benign,mercadolibre.com.mx,MarkMonitor,2022-07-31,1999-09-03,2024-09-02,,
+idntimes.com,https,benign,IDNTIMES.COM,PT Ardh Global Indonesia,2017-09-12,2014-06-02,2023-06-02,"Privacy Protect, LLC (PrivacyProtect.org)",US
+dell.com,https,benign,DELL.COM,Safenames Ltd,2022-09-17,1988-11-22,2024-11-21,,US
+donya-e-eqtesad.com,https,benign,DONYA-E-EQTESAD.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2020-01-28,2003-01-02,2023-01-02,c/o IDPS International Domain Privacy Services GmbH,DE
+indiamart.com,https,benign,INDIAMART.COM,"Network Solutions, LLC",2022-03-09,1996-03-08,2032-03-09,IndiaMART InterMESH Limited,IN
+cloudfront.net,https,benign,CLOUDFRONT.NET,"MarkMonitor, Inc.",2019-05-07,2008-04-25,2024-04-25,"Amazon.com, Inc.",US
+hp.com,https,benign,HP.COM,"MarkMonitor, Inc.",2022-01-31,1986-03-03,2023-03-04,HP Inc.,US
+ibicn.com,https,benign,IBICN.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-09-19,2009-12-01,2023-12-01,,
+google.pl,https,benign,google.pl,"Markmonitor, Inc.",2022-08-17,2002-09-19,2023-09-18,,
+ask.com,https,benign,ASK.COM,"MarkMonitor, Inc.",2022-09-17,1998-10-20,2024-10-19,Ask.com,US
+kompas.tv,https,benign,KOMPAS.TV,"Domain.com, LLC",2022-01-16,2011-01-31,2023-01-31,,ID
+thepiratebay.org,https,benign,thepiratebay.org,easyDNS Technologies Inc.,2020-09-17,2004-06-28,2030-06-28,Data Protected,CA
+patria.org.ve,https,benign,,NIC-VE,,,,,
+thestartmagazine.com,https,benign,THESTARTMAGAZINE.COM,"GoDaddy.com, LLC",2022-10-18,2016-12-13,2024-12-13,"Taboola, Inc",US
+google.com.eg,https,benign,,,,,,,
+wordpress.org,https,benign,wordpress.org,MarkMonitor Inc.,2022-02-24,2003-03-28,2024-03-28,"DNStination, Inc.",US
+elwatannews.com,https,benign,ELWATANNEWS.COM,"GoDaddy.com, LLC",2022-10-17,2012-03-15,2023-03-15,"Domains By Proxy, LLC",US
+foxnews.com,https,benign,FOXNEWS.COM,"GoDaddy Corporate Domains, LLC",2022-09-20,1995-06-21,2031-06-20,,
+namasha.com,https,benign,NAMASHA.COM,"ENOM, INC.",2022-07-25,2014-08-23,2023-08-23,"Whois Privacy Protection Service, Inc.",US
+iyiou.com,https,benign,IYIOU.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-10-11,2013-12-30,2028-12-30,,
+douban.com,https,benign,DOUBAN.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-12-16,2004-09-19,2023-09-19,,
+freelancer.com,https,benign,FREELANCER.COM,"ENOM, INC.",2020-02-02,1995-08-18,2029-08-17,,AU
+heavy.com,https,benign,HEAVY.COM,"Network Solutions, LLC",2022-09-22,1998-09-23,2032-09-22,,US
+mercadolibre.com.ar,https,benign,mercadolibre.com.ar,nicar,2022-04-25,2013-10-18,2023-05-11,,
+hbomax.com,https,benign,HBOMAX.COM,"MarkMonitor, Inc.",2021-10-04,2000-02-18,2031-02-18,"Home Box Office, Inc.",US
+onlyfans.com,https,benign,ONLYFANS.COM,"GoDaddy.com, LLC",2022-05-03,2013-01-29,2027-01-29,"Domains By Proxy, LLC",US
+fast.com,https,benign,FAST.COM,"MarkMonitor, Inc.",2022-07-10,1994-08-12,2024-08-11,"Netflix, Inc.",US
+amazon.es,https,benign,,,,,,,
+patreon.com,https,benign,PATREON.COM,"MarkMonitor, Inc.",2018-11-01,2013-02-27,2024-02-27,"Patreon, Inc.",US
+weebly.com,https,benign,WEEBLY.COM,Safenames Ltd,2022-03-28,2006-03-29,2023-03-28,,US
+xfinity.com,https,benign,XFINITY.COM,"CSC CORPORATE DOMAINS, INC.",2016-06-22,2003-01-23,2025-01-23,Comcast Corporation,US
+scribd.com,https,benign,SCRIBD.COM,Gandi SAS,2022-08-24,2006-09-24,2023-09-24,,
+banvenez.com,https,benign,BANVENEZ.COM,"TUCOWS, INC.",2022-07-01,1997-07-04,2024-07-03,,VE
+canada.ca,https,benign,canada.ca,Authentic Web Inc.,2022-09-17,2002-11-25,2023-10-16,,
+spankbang.com,https,benign,SPANKBANG.COM,NAMECHEAP INC,2018-02-12,2011-02-19,2023-02-19,Privacy service provided by Withheld for Privacy ehf,IS
+yts.mx,https,benign,yts.mx,Tucows.com Co.,2022-03-08,2019-04-11,2025-04-11,,
+360doc.com,https,benign,360DOC.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-28,2005-05-25,2023-05-25,,
+goodreads.com,https,benign,GOODREADS.COM,"MarkMonitor, Inc.",2014-05-02,2002-12-09,2023-12-09,Goodreads LLC,US
+kakao.com,https,benign,KAKAO.COM,"Megazone Corp., dba HOSTING.KR",2021-11-22,1996-12-29,2022-12-28,Kakao Corp,KR
+citi.com,https,benign,CITI.COM,"CSC CORPORATE DOMAINS, INC.",2021-06-11,1998-12-29,2022-12-29,"CitiBank, N.A.",US
+istockphoto.com,https,benign,ISTOCKPHOTO.COM,"CSC CORPORATE DOMAINS, INC.",2022-01-02,2000-01-06,2023-01-06,"Getty Images (US), Inc.",US
+tripadvisor.com,https,benign,TRIPADVISOR.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-19,1999-03-23,2023-03-23,TripAdvisor LLC,US
+lowes.com,https,benign,LOWES.COM,"CSC CORPORATE DOMAINS, INC.",2022-06-24,1995-06-29,2023-06-28,"LF, LLC",US
+pinimg.com,https,benign,PINIMG.COM,"MarkMonitor, Inc.",2021-04-27,2010-05-29,2023-05-29,DNStination Inc.,US
+aol.com,https,benign,AOL.COM,MarkMonitor Inc.,2021-10-23,1995-06-22,2022-11-23,,
+getadblock.com,https,benign,GETADBLOCK.COM,"ENOM, INC.",2022-08-27,2012-09-03,2023-09-03,"Whois Privacy Protection Service, Inc.",US
+google.co.id,https,benign,google.co.id,Digital Registra,2022-08-07,2004-12-18,2023-09-01,,
+meituan.com,https,benign,MEITUAN.COM,"eName Technology Co.,Ltd.",2021-02-22,2009-03-29,2027-03-29,,CN
+flickr.com,https,benign,FLICKR.COM,"MarkMonitor, Inc.",2019-03-27,2003-11-22,2022-11-22,"SmugMug, Inc.",US
+uniswap.org,https,benign,uniswap.org,"CloudFlare, Inc.",2022-03-29,2018-11-26,2031-11-26,,US
+ameblo.jp,https,benign,AMEBLO.JP,,,,,,
+teachable.com,https,benign,TEACHABLE.COM,"Amazon Registrar, Inc.",2022-03-11,2003-04-14,2023-04-14,Whois Privacy Service,US
+coursehero.com,https,benign,COURSEHERO.COM,"GoDaddy.com, LLC",2022-09-04,2008-01-11,2023-01-11,"Domains By Proxy, LLC",US
+bengekoo.com,https,benign,BENGEKOO.COM,URL SOLUTIONS INC.,2022-02-28,2021-03-30,2023-03-30,GLOBAL DOMAIN PRIVACY SERVICES INC,PA
+iqiyi.com,https,benign,IQIYI.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-06-08,2010-07-11,2024-07-11,,
+laroza.net,https,benign,LAROZA.NET,NAMECHEAP INC,2021-10-23,2020-11-22,2022-11-22,Privacy service provided by Withheld for Privacy ehf,IS
+linktr.ee,https,benign,linktr.ee,Instra Corporation Pty Ltd,2021-09-16,2016-03-08,2023-03-09,,
+costco.com,https,benign,COSTCO.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-14,1997-03-17,2023-03-18,"Costco Wholesale Membership, Inc.",US
+filimo.com,https,benign,FILIMO.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2020-01-15,2012-12-28,2023-12-28,c/o IDPS International Domain Privacy Services GmbH,DE
+naukri.com,https,benign,NAUKRI.COM,"Network Solutions, LLC",2022-03-28,1997-03-27,2032-03-28,,US
+ninisite.com,https,benign,NINISITE.COM,1API GmbH,2022-08-28,2005-06-09,2027-06-09,,GB
+wayfair.com,https,benign,WAYFAIR.COM,"MarkMonitor, Inc.",2022-03-10,2004-06-16,2023-06-16,"Wayfair, LLC",US
+rutracker.org,https,benign,rutracker.org,Internet Domain Service BS Corp,2022-08-23,2010-02-17,2025-02-17,Whois Privacy Corp.,BS
+softonic.com,https,benign,SOFTONIC.COM,"Network Solutions, LLC",2019-01-28,2000-01-28,2029-01-28,Statutory Masking Enabled,ES
+genius.com,https,benign,GENIUS.COM,"Amazon Registrar, Inc.",2022-05-27,1994-08-05,2032-05-27,Whois Privacy Service,US
+tv9marathi.com,https,benign,TV9MARATHI.COM,"GoDaddy.com, LLC",2022-09-17,2014-09-09,2023-09-09,"Domains By Proxy, LLC",US
+rezka.ag,https,benign,REZKA.AG,1API GmbH,2022-08-03,2017-07-05,2024-07-05,Registrant of rezka.ag,GB
+laodong.vn,https,benign,,,,,,,
+hespress.com,https,benign,HESPRESS.COM,Genious Communications SARL/AU,2020-01-28,2007-02-15,2029-02-15,"Privacy Protect, LLC (PrivacyProtect.org)",US
+shein.com,https,benign,SHEIN.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-11-09,1998-01-16,2023-01-15,,
+trustpilot.com,https,benign,TRUSTPILOT.COM,NameWeb BVBA,2022-06-28,2007-06-30,2023-06-30,Trustpilot A/S,DK
+binance.us,https,benign,binance.us,"MarkMonitor, Inc.",2021-06-22,2017-10-27,2030-10-27,,
+zerodha.com,https,benign,ZERODHA.COM,"Cloudflare, Inc.",2020-02-26,2010-02-17,2025-02-17,,IN
+steamcommunity.com,https,benign,STEAMCOMMUNITY.COM,"Network Solutions, LLC",2022-03-28,2006-05-28,2023-05-28,,US
+ouedkniss.com,https,benign,OUEDKNISS.COM,"OVH, SAS",2022-07-06,2006-08-28,2027-08-28,OuedKniss.com,
+9gag.com,https,benign,9GAG.COM,"Name.com, Inc.",2017-01-16,2008-04-12,2026-04-12,"Domain Protection Services, Inc.",US
+nvidia.com,https,benign,NVIDIA.COM,Safenames Ltd,2022-05-01,1993-04-20,2024-04-21,,US
+cambridge.org,https,benign,cambridge.org,"CSC Corporate Domains, Inc.",2022-02-12,1998-04-18,2022-12-30,Cambridge University Press,GB
+eghtesadonline.com,https,benign,EGHTESADONLINE.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2022-09-27,2009-09-21,2024-09-21,,DE
+twimg.com,https,benign,TWIMG.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-10,2008-09-22,2023-09-22,"Twitter, Inc.",US
+rctiplus.com,https,benign,RCTIPLUS.COM,WEBCC,2022-02-16,2019-02-18,2023-02-18,Whoisprotection.cc,Malaysia
+outbrain.com,https,benign,OUTBRAIN.COM,"Network Solutions, LLC",2021-09-18,2004-08-09,2023-08-09,,US
+quora.com,https,benign,QUORA.COM,"CSC CORPORATE DOMAINS, INC.",2020-05-20,2000-03-29,2024-03-29,"Quora, Inc",US
+wazirx.com,https,benign,WAZIRX.COM,"MarkMonitor, Inc.",2021-07-26,2017-12-05,2023-12-05,DNStination Inc.,US
+deviantart.com,https,benign,DEVIANTART.COM,"GoDaddy.com, LLC",2022-08-08,2000-04-25,2023-08-08,"Domains By Proxy, LLC",US
+tejaratnews.com,https,benign,TEJARATNEWS.COM,Atak Domain,2022-10-12,2007-09-30,2027-09-30,Registrant of tejaratnews.com,GB
+google.co.kr,https,benign,google.co.kr,Whois Corp.(http://whois.co.kr),2010-10-04,1999-07-28,2023-07-28,,
+kakaku.com,https,benign,KAKAKU.COM,"GMO INTERNET, INC.",2022-06-21,1998-07-08,2023-07-07,"Kakaku.com, Inc.",JP
+hostgator.com,https,benign,HOSTGATOR.COM,"ENOM, INC.",2022-10-14,2002-10-23,2028-10-23,,US
+coinbase.com,https,benign,COINBASE.COM,"MarkMonitor, Inc.",2014-08-14,2011-07-02,2024-07-02,"Coinbase, Inc.",US
+shopee.co.id,https,benign,shopee.co.id,Digital Registra,2021-10-23,2014-11-28,2023-11-28,,
+td.com,https,benign,TD.COM,"CSC CORPORATE DOMAINS, INC.",2022-04-10,1998-04-15,2024-04-14,The Toronto-Dominion Bank,CA
+ladbible.com,https,benign,LADBIBLE.COM,123-Reg Limited,2021-09-21,2011-07-08,2030-07-08,Identity Protect Limited,GB
+mlb.com,https,benign,MLB.COM,"GoDaddy Corporate Domains, LLC",2021-12-15,1994-11-01,2024-10-31,"MLB Advanced Media, L.P.",US
+glassdoor.com,https,benign,GLASSDOOR.COM,"MarkMonitor, Inc.",2019-12-17,2003-05-22,2023-05-22,"Glassdoor, Inc.",US
+alodokter.com,https,benign,ALODOKTER.COM,"GoDaddy.com, LLC",2022-09-15,2013-12-20,2022-12-20,"Domains By Proxy, LLC",US
+dmm.co.jp,https,benign,,,,,,,
+espncricinfo.com,https,benign,ESPNCRICINFO.COM,"CSC CORPORATE DOMAINS, INC.",2022-03-04,2007-03-08,2023-03-08,"Disney Enterprises, Inc.",US
+hootsuite.com,https,benign,HOOTSUITE.COM,"GoDaddy.com, LLC",2022-09-06,2009-01-21,2023-07-16,"Domains By Proxy, LLC",US
+prothomalo.com,https,benign,PROTHOMALO.COM,GoDaddy Online Services Cayman Islands Ltd.,2022-10-11,2001-05-18,2027-05-18,,
+gh0089.com,https,benign,GH0089.COM,Metaregistrar BV,2022-03-11,2021-11-15,2023-11-15,,NL
+discordapp.com,https,benign,DISCORDAPP.COM,"Cloudflare, Inc.",2021-11-29,2015-02-26,2023-02-26,,US
+tencent.com,https,benign,TENCENT.COM,"MarkMonitor, Inc.",2021-11-17,1998-09-14,2030-09-13,"Shenzhen Tencent Computer Systems CO.,Ltd",CN
+mbc.net,https,benign,MBC.NET,"Register.com, Inc.",2022-07-17,2001-07-16,2032-07-16,,
+yoox.com,https,benign,YOOX.COM,NOM-IQ Ltd dba Com Laude,2022-03-10,1999-11-24,2023-11-24,YOOX NET-A-PORTER GROUP S.p.A.,IT
+att.com,https,benign,ATT.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-19,1986-04-25,2023-04-26,"AT&T SERVICES, INC.",US
+eghtesadnews.com,https,benign,EGHTESADNEWS.COM,CSL Computer Service Langenbach GmbH d/b/a joker.com,2020-08-01,2010-09-25,2023-09-25,c/o IDPS International Domain Privacy Services GmbH,DE
+livejournal.com,https,benign,LIVEJOURNAL.COM,"Regional Network Information Center, JSC dba RU-CENTER",2022-03-15,1999-04-15,2023-04-15,Privacy protection service - whoisproxy.ru,RU
+marca.com,https,benign,MARCA.COM,Eurodns S.A.,2022-02-01,1997-03-12,2023-02-10,"UNIDAD EDITORIAL INFORMACION DEPORTIVA, S.L.U",ES
+marketwatch.com,https,benign,MARKETWATCH.COM,"CSC CORPORATE DOMAINS, INC.",2022-07-26,1997-07-31,2023-07-30,"Dow Jones & Company, Inc.",US
+messenger.com,https,benign,MESSENGER.COM,"RegistrarSafe, LLC",2022-01-26,1998-11-04,2031-11-03,"Meta Platforms, Inc.",US
+fc2.com,https,benign,FC2.COM,"TUCOWS, INC.",2019-01-23,1999-05-20,2028-05-20,Contact Privacy Inc. Customer 014173950,CA
+tutorialspoint.com,https,benign,TUTORIALSPOINT.COM,"GoDaddy.com, LLC",2022-09-03,2006-09-30,2025-09-30,"Domains By Proxy, LLC",US
+calendly.com,https,benign,CALENDLY.COM,"GoDaddy.com, LLC",2022-09-13,2013-02-26,2027-02-26,,
+google.gr,https,benign,,,,,,,
+epicgames.com,https,benign,EPICGAMES.COM,"MarkMonitor, Inc.",2021-10-20,1995-01-10,2023-11-20,"Epic Games, Inc.",US
+feedly.com,https,benign,FEEDLY.COM,Gandi SAS,2022-02-18,2008-05-25,2030-05-25,,
+ecer.com,https,benign,ECER.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-08-08,2002-05-02,2025-05-02,,
+webmd.com,https,benign,WEBMD.COM,"MarkMonitor, Inc.",2019-08-16,1998-04-06,2023-04-05,"WebMD, LLC",US
+ensonhaber.com,https,benign,ENSONHABER.COM,"IHS Telekom, Inc",2022-02-18,2005-04-29,2031-04-29,GDPR Masked,TR
+google.com.ua,https,benign,google.com.ua,MarkMonitor Inc.,2021-11-02,2002-12-04,2022-12-04,,
+themeforest.net,https,benign,THEMEFOREST.NET,"MarkMonitor, Inc.",2021-10-26,2007-11-27,2023-11-27,Envato Pty Ltd,AU
+livescore.com,https,benign,LIVESCORE.COM,"CSC CORPORATE DOMAINS, INC.",2020-12-30,1998-07-15,2027-07-14,Livescore Limited,GI
+sourceforge.net,https,benign,SOURCEFORGE.NET,"GoDaddy.com, LLC",2020-09-17,1999-08-08,2024-08-08,"Domains By Proxy, LLC",US
+eksisozluk.com,https,benign,EKSISOZLUK.COM,"GoDaddy.com, LLC",2022-09-20,2001-07-13,2025-11-09,,
+wish.com,https,benign,WISH.COM,"MarkMonitor, Inc.",2016-07-25,1995-01-03,2025-12-07,ContextLogic Inc.,US
+wsj.com,https,benign,WSJ.COM,"CSC CORPORATE DOMAINS, INC.",2022-05-21,1994-05-26,2023-05-25,"Dow Jones & Company, Inc.",US
+youporn.com,https,benign,YOUPORN.COM,Eurodns S.A.,2022-05-13,2005-12-02,2027-05-23,Whois Privacy (enumDNS dba),LU
+trello.com,https,benign,TRELLO.COM,MarkMonitor Inc.,2022-05-17,2004-08-20,2025-06-01,,
+hm.com,https,benign,HM.COM,NOM-IQ Ltd dba Com Laude,2021-10-19,1997-11-14,2030-11-13,H&M Hennes & Mauritz AB,SE
+jawapos.com,https,benign,JAWAPOS.COM,"Network Solutions, LLC",2022-02-02,1998-04-03,2023-04-02,Jawa Pos,ID
+breitbart.com,https,benign,BREITBART.COM,"GoDaddy.com, LLC",2022-09-17,1999-03-14,2031-03-14,,
+amazon.com.br,https,benign,amazon.com.br,,2020-10-26,1995-09-27,2024-09-27,,"['BR', 'GB']"
+orange.fr,https,benign,orange.fr,ORANGE,2022-10-14,2001-02-01,2023-10-14,,
+cnnindonesia.com,https,benign,CNNINDONESIA.COM,"CSC CORPORATE DOMAINS, INC.",2021-12-17,1999-12-21,2022-12-21,"Turner Broadcasting System, Inc.",US
+runoob.com,https,benign,RUNOOB.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-02-28,2015-06-23,2023-06-23,,
+patch.com,https,benign,PATCH.COM,Moniker Online Services LLC,2019-02-19,1994-03-01,2028-03-02,,US
+brilio.net,https,benign,BRILIO.NET,Google LLC,2022-02-09,2015-02-26,2023-02-26,Contact Privacy Inc. Customer 7151571251,CA
+surveymonkey.com,https,benign,SURVEYMONKEY.COM,"MarkMonitor, Inc.",2022-10-05,1999-11-06,2024-11-06,SurveyMonkey Inc.,US
+it168.com,https,benign,IT168.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2021-09-07,1999-05-25,2025-05-25,,
+macys.com,https,benign,MACYS.COM,"Network Solutions, LLC",2017-04-06,1994-02-07,2025-02-08,"Macy's Systems and Technology, Inc.",US
+thesaurus.com,https,benign,THESAURUS.COM,"CSC CORPORATE DOMAINS, INC.",2022-05-25,1995-05-30,2023-05-29,"Dictionary.com, LLC",US
+clickpost.jp,https,benign,CLICKPOST.JP,,,,,,
+kapanlagi.com,https,benign,KAPANLAGI.COM,Google LLC,2022-02-09,2003-02-25,2024-02-25,Contact Privacy Inc. Customer 7151571251,CA
+kooora.com,https,benign,KOOORA.COM,"Register.com, Inc.",2021-10-01,2002-09-01,2026-09-01,,US
+ribunews.com,https,benign,RIBUNEWS.COM,DANESCO TRADING LTD,2022-09-18,2020-09-18,2023-09-18,DANESCO TRADING LTD.,Cyprus
+arzdigital.com,https,benign,ARZDIGITAL.COM,1API GmbH,2021-05-31,2017-07-03,2030-07-03,Registrant of arzdigital.com,GB
+expedia.com,https,benign,EXPEDIA.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-10,1995-11-25,2026-10-12,"Expedia, Inc",US
+51sole.com,https,benign,51SOLE.COM,JIANGSU BANGNING SCIENCE & TECHNOLOGY CO. LTD,2019-11-11,2007-08-18,2023-08-18,,CN
+creditkarma.com,https,benign,CREDITKARMA.COM,"CSC CORPORATE DOMAINS, INC.",2022-08-26,2005-08-30,2023-08-30,"Credit Karma, Inc.",US
+kuronekoyamato.co.jp,https,benign,,,,,,,
+rottentomatoes.com,https,benign,ROTTENTOMATOES.COM,"MarkMonitor, Inc.",2021-10-06,1999-05-14,2023-05-14,"Fandango Media, LLC",US
+aajtak.in,https,benign,aajtak.in,MPS Infotecnics Limited,2020-06-03,2005-01-06,2028-01-06,,IN
+schwab.com,https,benign,SCHWAB.COM,"MarkMonitor, Inc.",2022-10-07,1993-04-07,2023-04-08,"Charles Schwab & Co., Inc.",US
+abs-cbn.com,https,benign,ABS-CBN.COM,"GoDaddy.com, LLC",2022-10-17,1996-01-18,2031-06-09,"Domains By Proxy, LLC",US
+indianexpress.com,https,benign,INDIANEXPRESS.COM,"GoDaddy.com, LLC",2022-10-15,2002-05-20,2024-05-20,"Domains By Proxy, LLC",US
+olx.ua,https,benign,olx.ua,"ТОВ ""Геонiк Нет""",2022-01-17,2013-02-27,2023-02-27,,
+mehrnews.com,https,benign,MEHRNEWS.COM,"TUCOWS, INC.",2019-08-19,2002-11-05,2025-11-05,,CA
+mathrubhumi.com,https,benign,MATHRUBHUMI.COM,PDR Ltd. d/b/a PublicDomainRegistry.com,2021-08-06,1997-09-05,2026-09-04,Mathrubhumi Printing and Publishing Co Ltd,IN
+uptodown.com,https,benign,UPTODOWN.COM,"Interdominios, Inc.",2017-06-26,2002-12-20,2027-06-24,GDPR Masked,ES
+academia.edu,https,benign,ACADEMIA.EDU,,,,,,
+toutiao.com,https,benign,TOUTIAO.COM,"eName Technology Co.,Ltd.",2022-05-18,2004-02-16,2027-02-16,,CN
+youku.com,https,benign,YOUKU.COM,"Alibaba Cloud Computing (Beijing) Co., Ltd.",2022-07-05,2003-12-22,2023-12-22,,
+akamaized.net,https,benign,AKAMAIZED.NET,"MarkMonitor, Inc.",2022-04-11,2014-03-18,2025-03-18,"Akamai Technologies, Inc.",US

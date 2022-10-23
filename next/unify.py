@@ -43,7 +43,7 @@ def invalid_to_empty(col):
     return col
 
 if __name__ == '__main__':
-    with open("C:\\dev\\dataset-urls\\next\\parsed_phishtank.csv", 'r', encoding="utf-8") as r:
+    with open("C:\\dev\\dataset-urls\\parsed_phishtank_7.csv", 'r', encoding="utf-8") as r:
         with open("phishtank_unified.csv", 'w', newline="", encoding="utf-8") as w:
             reader = csv.reader(r, delimiter=",")
             writer = csv.writer(w, delimiter=",")
