@@ -6,7 +6,7 @@ base = "C:\\dev\\k"
 def scrape_save_batch(source_indicators, target, scrape):
     collect = []
     for indicator in source_indicators:
-        print(f"\nScraping {indicator:<45} ... ", end='')
+        print(f"\nScraping {indicator:<60} ... ", end='')
         try:
             res, error = scrape(indicator)
             if error is not None:
