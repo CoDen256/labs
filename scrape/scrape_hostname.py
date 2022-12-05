@@ -14,6 +14,6 @@ def scrape_hostname(hostname):
 
 
 load_scrape_save("datasets/group/hostname.csv", "datasets/parsed/hostname_parsed.csv", scrape_hostname,
-                 start=0,
+                 start=50,
                  count=50,
-                 batch_size=10)
+                 batch_size=30)
