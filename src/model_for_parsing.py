@@ -4,6 +4,8 @@ from model import *
 # все поля брать со странички ИОКа, там должны быть Апи 
 # если не ошибаюсь, достаточно просто в поиск ввести имя
 
+domain name + ipv + no hostname = domain + ipv
+
 Domain = [domain_name, ip]
 Hostname = [hostname_name, domain_name, ip]
 if (Domain.name == Hostname.name):
