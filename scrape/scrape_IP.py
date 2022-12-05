@@ -10,19 +10,14 @@ def parseIpReverseDns(page):
     return page["facts"]["reverse_dns"]
 
 
-def parseIp4():
-    ipv4s = load("datasets/group/IPv4.csv")
-    collect = []
-    for ip in ipv4s[:5]:
-        print(f"scraping {ip}")
-        try:
-            dns = scrape("ip/analysis", ip, parseIpReverseDns)
-            if dns is None: continue
-            pulses = scrape_details(IndicatorTypes.IPv4, ip, "general", parseIpPulses)
-            collect.append([ip, dns, pulses])
-        except Exception as e:
-            print(f"Exception {e} for {ip}")
-    save("datasets/parsed/IP_parsed.csv", collect)
-    print(f"Written {len(collect)} entries")
+def scrape_ip(ip):
+    dns = scrape("ip/analysis", ip, parseIpReverseDns)
+    if dns is None: return None, "no dns"
+    pulses = scrape_details(IndicatorTypes.IPv4, ip, "general", parseIpPulses)
+    return [ip, dns, pulses], None
 
-parseIp4()
+
+load_scrape_save("datasets/group/IPv4.csv", "datasets/parsed/IP_parsed.csv", scrape_ip,
+                 start=0,
+                 count=10,
+                 batch_size=3)
