@@ -17,6 +17,9 @@ def scrape(endpoint, indicator, parse_function):
 def parseIpPulses(page):
     return page["pulse_info"]["count"]
 
+def parse_hostname(page):
+    return page
+
 def parseIpReverseDns(page):
     return page["facts"]["reverse_dns"]
 
@@ -85,15 +88,52 @@ def group():
     print(groups)
     for (key, value) in groups.items():
         print("writing", key)
-        with open(f"C:\\dev\\k\\datasets\\group\\{key.replace(' ', '')}.csv", "w", newline='') as f:
+        with open(f"C:\\dev\\k\\datasets\\group\\{key.replace(' ', '')}_2.csv", "w", newline='') as f:
             writer = csv.writer(f, delimiter=",")
             for row in value:
                 print(row)
                 writer.writerow([row])
             
 
-group()
+def parseIp4():
+    ipv4s = loadIndicators("C:\\dev\\k\\datasets\\group\\IPv4.csv", 0)
+    collect = []
+    for ip in ipv4s[:500]:
+        print(f"scraping {ip}")
+        try:
+            dns = scrape("ip/analysis", ip, parseIpReverseDns)
+            if dns is None: continue
+            pulses = scrapeAPI(IndicatorTypes.IPv4, ip, "general", parseIpPulses)
+            collect.append([ip, dns, pulses])
+        except Exception as e:
+            print(f"Exception {e} for {ip}")
+    with open(f"C:\\dev\\k\\datasets\\parsed\\IP_parsed.csv", "w", newline='') as f:
+        writer = csv.writer(f, delimiter=",")
+        for row in collect:
+            writer.writerow(row)
+    print(f"Written {len(collect)} entries")
+
+def parseHostname():
+    ipv4s = loadIndicators("C:\\dev\\k\\datasets\\group\\hostname.csv", 0)
+    collect = []
+    for ip in ipv4s:
+        print(f"scraping {ip}")
+        try:
+            dns = scrape("ip/analysis", ip, parseIpReverseDns)
+            if dns is None: continue
+            pulses = scrapeAPI(IndicatorTypes.IPv4, ip, "general", parseIpPulses)
+            collect.append([ip, dns, pulses])
+        except Exception as e:
+            print(f"Exception {e} for {ip}")
+    with open(f"C:\\dev\\k\\datasets\\parsed\\IP_parsed.csv", "w", newline='') as f:
+        writer = csv.writer(f, delimiter=",")
+        for row in collect:
+            writer.writerow(row)
+    print(f"Written {len(collect)} entries")
+parseIp4()
+#parseHostname()
 # ipv4 = scrape("ip/analysis", "68.47.128.161", parseIpReverseDns)
 # print(ipv4)
-# ipv4Pulses = scrapeAPI(IndicatorTypes.IPv4, "68.47.128.161", "general", parseIpPulses)
-# print(ipv4Pulses)
+#ipv4Pulses = scrapeAPI(IndicatorTypes.HOSTNAME, "di.upa.penega.com", "general", parse_hostname)
+#print(otx.get_indicator_details_full(IndicatorTypes.HOSTNAME, "device-0ec82908-d2df-491b-bca8-2bc0b603db56.remotewd.com"))
+#print(ipv4Pulses)
