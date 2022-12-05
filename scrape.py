@@ -98,7 +98,7 @@ def group():
 def parseIp4():
     ipv4s = loadIndicators("C:\\dev\\k\\datasets\\group\\IPv4.csv", 0)
     collect = []
-    for ip in ipv4s[:500]:
+    for ip in ipv4s[500:700]:
         print(f"scraping {ip}")
         try:
             dns = scrape("ip/analysis", ip, parseIpReverseDns)
