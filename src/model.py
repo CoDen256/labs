@@ -1,5 +1,5 @@
 class IOC:
-  def __init__(self, name, weight, pulses=0):
+  def __init__(self, name, weight, pulses):
     self.name = name
     self.weight = weight
     self.pulses = pulses
@@ -10,5 +10,5 @@ class IOC:
 
 class Subset:
     def __init__(self, iocs_list, price):
-      self.price = price     # computed sum of bytes of all (non unique) entries
+      self.price = price    
       self.iocs_list = iocs_list[:]

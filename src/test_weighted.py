@@ -57,10 +57,11 @@ class TestSum(unittest.TestCase):
         ioc6 = IOC("www.killme.plz", 48)
         ioc7 = IOC("some_info", 10)
 
-        subset0 = Subset([ioc0, ioc2, ioc1, ioc3], 1)
+        subset0 = Subset([ioc0, ioc2, ioc1, ioc3, ioc5], 1)
         subset1 = Subset([ioc0, ioc2, ioc1, ioc3, ioc6], 1)
         subset2 = Subset([ioc0], 1)
         subset3 = Subset([ioc0, ioc2], 1)
+
 
         subset0 = subset0.iocs_list
         subset1 = subset1.iocs_list
@@ -72,11 +73,12 @@ class TestSum(unittest.TestCase):
         cover1 = weighted_maximum_cover(k1, subsets) 
 
         ## ASSERT
-     
-        self.assertEqual(cover1,[subset1, subset0])
+        print(cover1)
+        print("end")
+        self.assertEqual(cover1,[subset1,subset0])
 
    def test_set_cover_two(self):
-        k1 = 3
+        k1 = 8
 
         ioc0 = IOC("jhdkgh@gmail.com", 2)
         ioc1 = IOC("Ip:128.2.2.2", 36)
@@ -91,8 +93,9 @@ class TestSum(unittest.TestCase):
         subset1 = Subset([ioc1, ioc3, ioc6], 1)
         subset2 = Subset([ioc0], 1)
         subset3 = Subset([ioc0, ioc2], 1)
-        subset4 = Subset([ioc7, ioc2, ioc4], 1)
+        subset4 = Subset([ioc7, ioc2, ioc4, ioc0], 1)
         subset5 = Subset([ioc0, ioc2], 1)
+        subset6 = Subset([ioc5], 1)
 
         subset0 = subset0.iocs_list
         subset1 = subset1.iocs_list
@@ -100,14 +103,15 @@ class TestSum(unittest.TestCase):
         subset3 = subset3.iocs_list
         subset4 = subset4.iocs_list
         subset5 = subset5.iocs_list
-        subsets = [subset0, subset1, subset2, subset3, subset4, subset5]
+        subset6 = subset6.iocs_list
+        subsets = [subset0, subset1, subset2, subset3, subset4, subset5, subset6]
 
        ## ACT 
         cover1 = weighted_maximum_cover(k1, subsets) 
 
         ## ASSERT
-     
-        self.assertEqual(cover1,[subset1, subset4, subset0])    
+        print(cover1)
+        self.assertEqual(cover1,[subset1, subset4, subset6])    
 
 if __name__ == '__main__':
     unittest.main()

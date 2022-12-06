@@ -7,11 +7,11 @@ class TestSum(unittest.TestCase):
     def test_set_cover(self):
         ## ARRANGE
         #Universe, set
-        ioc0 = IOC("jhdkgh@gmail.com", 2)
-        ioc1 = IOC("Ip:128.2.2.2", 36)
-        ioc2 = IOC("www.evil", 34)
-        ioc3 = IOC("MD5:98s35956ntnh9659reg286gr35963gf2", 278)
-        ioc4 = IOC("IpV6", 13)
+        ioc0 = IOC("jhdkgh@gmail.com", 2, 1)
+        ioc1 = IOC("Ip:128.2.2.2",36, 1)
+        ioc2 = IOC("www.evil",34, 1)
+        ioc3 = IOC("MD5:98s35956ntnh9659reg286gr35963gf2",278, 1)
+        ioc4 = IOC("IpV6",13, 1)
         universe = {ioc0.name, ioc1.name, ioc2.name, ioc3.name, ioc4.name}
 
         
@@ -36,7 +36,7 @@ class TestSum(unittest.TestCase):
     def test_set_cover_one(self):
         ## ARRANGE
         #Universe, set
-        ioc0 = IOC("jhdkgh@gmail.com", 2)
+        ioc0 = IOC("jhdkgh@gmail.com", 2,1)
         universe = {ioc0.name}
 
         
@@ -52,19 +52,16 @@ class TestSum(unittest.TestCase):
         self.assertEqual(cover, [{"jhdkgh@gmail.com"}])
     def test_subset(self):
         ## ARRANGE
-        ioc0 = IOC("jhdkgh@gmail.com", 2)
-        ioc1 = IOC("Ip:128.2.2.2", 36)
+        ioc0 = IOC("jhdkgh@gmail.com", 2,1)
+        ioc1 = IOC("Ip:128.2.2.2", 36,1)
         
 
         ## ACT 
         s = Subset([ioc0, ioc1], 0)   
         result = s.iocs_list
 
-        i0 = s.get_IOC_by_index(0)
-
         ## ASSERT
-        self.assertEqual(["jhdkgh@gmail.com", "Ip:128.2.2.2"], result )
-        self.assertEqual("jhdkgh@gmail.com", i0)
+        self.assertEqual(["jhdkgh@gmail.com", "Ip:128.2.2.2"], result)
     
 #  print(ioc0.__dict__)     !!!!!!!!!!!!!
 

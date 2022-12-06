@@ -1,0 +1,102 @@
+file1, Subset1
+"Ipv4", "8.8.8.8", ""
+"Ipv4", "1.2.3.4", ""
+"Ipv4", "0.0.0.0", ""
+"Ipv4", "1.1.1.1", ""
+
+file2, Subset2
+"email", "mail@jef.com", ""
+"Hostname", "host1.site.com", ""
+"Ipv4", "0.0.0.0", ""
+"email", "mail@l.com",""
+"Hash-sha256", "00000000000000", ""
+
+file3, Subset3
+"Hostname", "host1.site.com", ""
+"Hostname", "host2.site.com", ""
+"Ipv4", "0.0.0.0", ""
+
+file4, Subset4
+"Hash-md5", "1213123123", ""
+"Domen", "b.com", ""
+
+file5, Subset5
+"url", "sjhdfbjsbs.df;sdf.sdf.sfd.", ""
+"Ipv4", "1.2.3.4", ""
+"Domen", "a.com", ""
+"Hash-sha1", "777000", ""
+|||||||||||||||||||||||||||||||||||||||||||||||||
+Website 
+||||||||||||||||||||||||||||||||||||||||||||||||
+
+domen/a.com
+a.com
+0.0.0.0
+
+domen/b.com 
+b.com
+192.168.0.1
+
+hostname/host1.site.com
+b.com
+122.13124.123.14.14
+
+hostname/host2.site.com
+site.com 
+8.8.8.8
+
+ip/8.8.8.8
+8.8.8.8
+host2.site.com
+
+ip/1.2.3.4
+1.2.3.4
+host0.a.com
+
+ip/0.0.0.0
+0.0.0.0
+host1.site.com
+
+ip/1.1.1.1
+1.1.1.1
+reverse.site.com
+
+email/mail@l.com
+mail@l.com
+
+file/любое_значение_любого:ша1,ша256,мд5_хеша
+777000
+1213123123
+00000000000000
+
+
+||||||||||||||||||||||||||||||||
+Результат
+|||||||||||||||||||||||||||||||||||||
+file1, Subset1
+host2.site.com
+1.2.3.4  // host0.a.com - нигде в сетах не записан
+host1.site.com
+1.1.1.1
+
+file2, Subset2
+mail@jef.com
+host1.site.com
+host1.site.com
+пусто, видалено
+00000000000000
+
+file3, Subset3
+host1.site.com
+host2.site.com
+host1.site.com
+
+file4, Subset4
+00000000000000
+host1.site.com
+
+file5, Subset5
+пусто, видалено
+1.2.3.4
+a.com
+00000000000000
