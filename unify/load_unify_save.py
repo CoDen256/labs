@@ -14,11 +14,11 @@ def parse_file_md5(row):
 
 
 def parse_file_sha1(row):
-    return FileHashMD5(row[0], row[1], int(row[2]))
+    return FileHashSHA1(row[0], row[1], int(row[2]))
 
 
 def parse_file_sha256(row):
-    return FileHashMD5(row[0], row[1], int(row[2]))
+    return FileHashSHA256(row[0], row[1], int(row[2]))
 
 
 def parse_email(row):
@@ -47,6 +47,8 @@ def load_files():
     print(f"Unifying md5({len(md5)}) sha1({len(sha1)}) sha256({len(sha256)}) ...")
     unified = unify_md5_sha1_sha256(md5, sha1, sha256)
     print(f"Unified total (md5, sha1,sha256): {len(unified)} ")
+    log_distribution(unified)
+
     return unified
 
 
@@ -63,6 +65,7 @@ def load_hostnames():
     unified = unify_hostnames_domains_ips(hostname, domain, ipv4 + ipv6)
 
     print(f"Unified total (md5, sha1,sha256): {len(unified)} ")
+    log_distribution(unified)
     return unified
 
 def load_emails():
@@ -72,11 +75,8 @@ def load_emails():
     return emails
 
 def convert_and_save(list):
-    sorted_list = sorted(list, key=lambda i: str(type(i)))
+    print("---")
 
-    group = [(k, len([i for i in g])) for k, g in groupby(sorted_list, key=lambda x: str(type(x)))]
-    for (k, l) in group:
-        print(f"{k}: {l}")
 
     print(f"Converting and computing weight of {len(list)} elements...")
     w: List[WeightedIOC] = convert_weighted(list)
@@ -90,6 +90,13 @@ def convert_and_save(list):
     save("datasets/unique/total.csv", w, compile_ioc)
     print(f"Written {len(w)}")
 
+
+def log_distribution(iocs):
+    sorted_list = sorted(iocs, key=lambda i: str(type(i)))
+
+    group = [(k, len([i for i in g])) for k, g in groupby(sorted_list, key=lambda x: str(type(x)))]
+    for (k, l) in group:
+        print(f"{k}: {l}")
 
 if __name__ == '__main__':
     convert_and_save(load_files() | load_hostnames() | load_emails())
