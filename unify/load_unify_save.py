@@ -1,4 +1,5 @@
 from model import *
+from itertools import groupby
 
 from unify import *
 from utils import *
@@ -37,6 +38,8 @@ def compile_ioc(ioc: WeightedIOC):
 
 
 def load_files():
+    print("----")
+
     md5 = load("datasets/parsed/FileHash-MD5_parsed.csv", parse_file_md5)
     sha1 = load("datasets/parsed/FileHash-SHA1_parsed.csv", parse_file_sha1)
     sha256 = load("datasets/parsed/FileHash-SHA256_parsed.csv", parse_file_sha256)
@@ -48,6 +51,8 @@ def load_files():
 
 
 def load_hostnames():
+    print("----")
+
     ipv4 = load("datasets/parsed/IPv4_parsed.csv", parse_ip)
     ipv6 = load("datasets/parsed/IPv6_parsed.csv", parse_ip)
     hostname = load("datasets/parsed/hostname_parsed.csv", parse_hostname)
@@ -60,8 +65,19 @@ def load_hostnames():
     print(f"Unified total (md5, sha1,sha256): {len(unified)} ")
     return unified
 
+def load_emails():
+    print("----")
+    emails = set(load("datasets/group/email.csv", parse_email))
+    print(f"Loaded {len(emails)} emails")
+    return emails
 
 def convert_and_save(list):
+    sorted_list = sorted(list, key=lambda i: str(type(i)))
+
+    group = [(k, len([i for i in g])) for k, g in groupby(sorted_list, key=lambda x: str(type(x)))]
+    for (k, l) in group:
+        print(f"{k}: {l}")
+
     print(f"Converting and computing weight of {len(list)} elements...")
     w: List[WeightedIOC] = convert_weighted(list)
     pulse_sum = sum([ioc.pulses for ioc in w])
@@ -73,12 +89,6 @@ def convert_and_save(list):
     print(f"Successfully converted")
     save("datasets/unique/total.csv", w, compile_ioc)
     print(f"Written {len(w)}")
-
-
-def load_emails():
-    emails = load("datasets/group/email.csv", parse_email)
-    print(f"Loaded {len(emails)} emails")
-    return emails
 
 
 if __name__ == '__main__':
