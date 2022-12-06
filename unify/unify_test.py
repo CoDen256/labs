@@ -293,7 +293,7 @@ class Test(TestCase):
         # ARRANGE
         sha256 = [
             FileHashSHA256("2", -1, 0),
-            FileHashSHA256("2", -1, 0),
+            FileHashSHA256("22", -1, 0),
 
             FileHashSHA256("2", 0, 0), # sha256 + md5
             FileHashSHA256("2", 1, 0), # sha256 + md5 + sha1
@@ -302,7 +302,7 @@ class Test(TestCase):
         ]
         md5 = [
             FileHashMD5("m", -2, 0),
-            FileHashMD5("m", -2, 0),
+            FileHashMD5("m2", -2, 0),
 
             FileHashMD5("m", 0, 0), # sha256 + md5
             FileHashMD5("m", 1, 0), # sha256 + md5 + sha1
@@ -311,7 +311,7 @@ class Test(TestCase):
         ]
         sha1 = [
             FileHashSHA1("1", -3, 0),
-            FileHashSHA1("1", -3, 0),
+            FileHashSHA1("12", -3, 0),
 
             FileHashSHA1("1", 1, 0),  # sha256 + md5 + sha1
             FileHashSHA1("1", 2, 0),  # sha256 + sha1

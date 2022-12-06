@@ -68,15 +68,16 @@ def load_hostnames():
     log_distribution(unified)
     return unified
 
+
 def load_emails():
     print("----")
     emails = set(load("datasets/group/email.csv", parse_email))
     print(f"Loaded {len(emails)} emails")
     return emails
 
+
 def convert_and_save(list):
     print("---")
-
 
     print(f"Converting and computing weight of {len(list)} elements...")
     w: List[WeightedIOC] = convert_weighted(list)
@@ -84,7 +85,7 @@ def convert_and_save(list):
     pulse_total = len(w)
     print(f"Total len: \t{pulse_total}")
     print(f"Total sum: \t{pulse_sum}")
-    print(f"Total avg: \t{float(pulse_sum)/float(pulse_total)}")
+    print(f"Total avg: \t{float(pulse_sum) / float(pulse_total)}")
 
     print(f"Successfully converted")
     save("datasets/unique/total.csv", w, compile_ioc)
@@ -97,6 +98,7 @@ def log_distribution(iocs):
     group = [(k, len([i for i in g])) for k, g in groupby(sorted_list, key=lambda x: str(type(x)))]
     for (k, l) in group:
         print(f"{k}: {l}")
+
 
 if __name__ == '__main__':
     convert_and_save(load_files() | load_hostnames() | load_emails())
