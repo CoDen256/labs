@@ -10,5 +10,5 @@ class IOC:
 
 class Subset:
     def __init__(self, iocs_list, price):
-      self.price = price    
+      self.price = price     # computed sum of bytes of all (non unique) entries
       self.iocs_list = iocs_list[:]

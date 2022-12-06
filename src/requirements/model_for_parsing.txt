@@ -4,35 +4,38 @@ from model import *
 # все поля брать со странички ИОКа, там должны быть Апи 
 # если не ошибаюсь, достаточно просто в поиск ввести имя
 
+# values, pulses, weight
+
 domain name + ipv + no hostname = domain + ipv
 
 Domain = [domain_name, ip]
-Hostname = [hostname_name, domain_name, ip]
+Hostname = [hostname_name, domain_name]
 if (Domain.name == Hostname.name):
     #записать объект
-    # weight = длинна строки 
+    # weight = 1/длинна строки (hostname) (обратнопропорциональная величина)
+    # pulse of hostname(resulting)
     # new_ioc = IOC(Hostname.name, weight, pulses)
 IPv4 = [ip, reverse_DNS]
 if (IPv4.ip == Hostname.name):
     #записать объект
-    # weight = 1/длинна строки (обратнопропорциональная величина)
+    # weight = 1/длинна строки (hostname or ip if no hostname)(обратнопропорциональная величина)
     # new_ioc = IOC(Hostname.name, weight, pulses)
 
 IPv6 = [ip, reverse_DNS]
 if (IPv6.ip == Hostname.name):
     #записать объект
-    # weight = длинна строки 
+    # weight = 1/длинна строки (обратнопропорциональная величина)
     # new_ioc = IOC(Hostname.name, weight, pulses)
 
 Email = [email]
     #записать объект
-    # weight = длинна строки 
+    # weight = 1/длинна строки (обратнопропорциональная величина)
     # new_ioc = IOC(Email.email, weight, pulses)
 
 Filehash = [md5, sha1, sha256]
     #если мд5 или ша1 или ша 256 совпадают, то записать ток 256
     #записать объект
-    # weight = длинна строки 
+    # weight = 1/длинна строки (обратнопропорциональная величина)
     # new_ioc = IOC(Filehash.sha256, weight, pulses)
 
 

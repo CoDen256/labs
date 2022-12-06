@@ -1,44 +1,48 @@
+from dataclasses import dataclass
+
+
+@dataclass(unsafe_hash=True)
 class Domain:
-    def __init__(self, domain, pulses):
-        self.domain = domain
-        self.pulses = pulses
+    domain: str
+    pulses: int
 
 
+@dataclass(unsafe_hash=True)
 class Email:
-    def __init__(self, email, pulses):
-        self.email = email
-        self.pulses = pulses
+    email: str
+    pulses: int
 
 
+@dataclass(unsafe_hash=True)
 class FileHashMD5:
-    def __init__(self, hash, id, pulses):
-        self.hash = hash
-        self.id = id
-        self.pulses = pulses
+    hash: str
+    id: int
+    pulses: int
 
 
+@dataclass(unsafe_hash=True)
 class FileHashSHA1:
-    def __init__(self, hash, id, pulses):
-        self.hash = hash
-        self.id = id
-        self.pulses = pulses
+    hash: str
+    id: int
+    pulses: int
 
 
+@dataclass(unsafe_hash=True)
 class FileHashSHA256:
-    def __init__(self, hash, id, pulses):
-        self.hash = hash
-        self.id = id
-        self.pulses = pulses
+    hash: str
+    id: int
+    pulses: int
 
+
+@dataclass(unsafe_hash=True)
 class Hostname:
-    def __init__(self, hostname, domain, ips, pulses):
-        self.hostname = hostname
-        self.domain = domain
-        self.ips = ips[:]
-        self.pulses = pulses
+    hostname: str
+    domain: str
+    pulses: int
 
+
+@dataclass(unsafe_hash=True)
 class IP:
-    def __init__(self, ip, hostname, pulses):
-        self.hostname = hostname
-        self.ip = ip
-        self.pulses = pulses
+    ip: str
+    hostname: str
+    pulses: int
