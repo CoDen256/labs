@@ -425,7 +425,7 @@ class Test(TestCase):
                 WeightedIOC("123456789012345", 1/15, 324),
                 WeightedIOC("1234", 1 / 4, 91),
                 WeightedIOC("123", 1 / 3, 92),
-                WeightedIOC("12", 1 / 2, 93),
+                WeightedIOC("12", 0.5, 93),
                 WeightedIOC("12", 1 / 2, 194),
                 WeightedIOC("1", 1 / 1, 159),
                 WeightedIOC("123456", 1 / 6, 169),
