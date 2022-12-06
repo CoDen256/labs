@@ -24,10 +24,11 @@ def get_file_size(file):
     return os.stat(file).st_size
 
 
-def load_subsets():
+def load_subsets(limit):
     files = f"{os.path.dirname(__file__)}\\..\\datasets\\source\\*.csv"
     subsets = []
-    for filepath in glob.iglob(files):
+    for index, filepath in enumerate(glob.iglob(files)):
+        if index >= limit: break
         print(f"Found {filepath}")
         subset = load(filepath, parse_weighted_IOC)
         size = get_file_size(filepath)
@@ -39,5 +40,3 @@ def load_subsets():
     for index, subset in enumerate(subsets):
         print(f"Subset {index}: {len(subset.iocs_list)} indicators, {subset.price} bytes ")
     return subsets
-
-

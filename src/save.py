@@ -18,5 +18,3 @@ def save(file, subsets: List[Subset]):
         for index, subset in enumerate(subsets):
             f.write(to_str(index, subset))
 
-
-save("result.txt", [Subset([IOC("hello", 10), IOC("world", 10)], 0), Subset([IOC("my hello", 10)], 0)])

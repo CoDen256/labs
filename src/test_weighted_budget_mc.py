@@ -1,6 +1,6 @@
 import unittest
 from model import *
-from weighted_budjet_maxcover import weighted_budget_maximum_cover
+from weighted_budget_maxcover import weighted_budget_maximum_cover
 
 
 class TestSum(unittest.TestCase):
