@@ -7,11 +7,11 @@ class TestSum(unittest.TestCase):
     def test_set_cover(self):
         ## ARRANGE
         #Universe, set
-        ioc0 = IOC("jhdkgh@gmail.com", 2, 1)
-        ioc1 = IOC("Ip:128.2.2.2",36, 1)
-        ioc2 = IOC("www.evil",34, 1)
-        ioc3 = IOC("MD5:98s35956ntnh9659reg286gr35963gf2",278, 1)
-        ioc4 = IOC("IpV6",13, 1)
+        ioc0 = IOC("jhdkgh@gmail.com", 2)
+        ioc1 = IOC("Ip:128.2.2.2",36)
+        ioc2 = IOC("www.evil",34)
+        ioc3 = IOC("MD5:98s35956ntnh9659reg286gr35963gf2",278)
+        ioc4 = IOC("IpV6",13)
         universe = {ioc0, ioc1, ioc2, ioc3, ioc4}
 
         
@@ -33,7 +33,7 @@ class TestSum(unittest.TestCase):
     def test_set_cover_one(self):
         ## ARRANGE
         #Universe, set
-        ioc0 = IOC("jhdkgh@gmail.com", 2,1)
+        ioc0 = IOC("jhdkgh@gmail.com", 2)
         universe = {ioc0}
 
         
@@ -46,8 +46,8 @@ class TestSum(unittest.TestCase):
         self.assertEqual(cover, [subset0])
     def test_subset(self):
         ## ARRANGE
-        ioc0 = IOC("jhdkgh@gmail.com", 2,1)
-        ioc1 = IOC("Ip:128.2.2.2", 36,1)
+        ioc0 = IOC("jhdkgh@gmail.com", 2)
+        ioc1 = IOC("Ip:128.2.2.2", 36)
         
 
         ## ACT 

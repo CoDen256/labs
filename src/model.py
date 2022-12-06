@@ -1,11 +1,25 @@
 class IOC:
-    def __init__(self, name, weight, pulses=0):
+    def __init__(self, name, weight):
+        self.name = name
+        self.weight = weight
+
+    def __eq__(self, other):
+        if isinstance(other, IOC):
+            return self.name == other.name
+        return False
+
+    def __hash__(self):
+        return hash(self.name)
+
+
+class WeightedIOCEntry:
+    def __init__(self, name, weight, pulses):
         self.name = name
         self.weight = weight
         self.pulses = pulses
 
     def __eq__(self, other):
-        if isinstance(other, IOC):
+        if isinstance(other, WeightedIOCEntry):
             return self.name == other.name
         return False
 
