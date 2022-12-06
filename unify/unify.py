@@ -1,10 +1,18 @@
+from model import *
+from typing import List
 
 
-def unify_hostnames_domains_ips(hostnames, domains, ips):
+def unify_hostnames_domains_ips(hostnames: List[Hostname], domains: List[Domain], ips: List[IP]):
     total = []
-    total += list(set(ips))
+    primary_domains = list(map(lambda h: h.domain, hostnames))
+    primary_hostnames = list(map(lambda h: h.hostname, hostnames))
+
+    result_ip = [ip for ip in ips if ip.hostname not in primary_hostnames]
+    result_domains = [domain for domain in domains if domain.domain not in primary_domains]
+
+    total += list(set(result_ip))
     total += list(set(hostnames))
-    total += list(set(domains))
+    total += list(set(result_domains))
     return total
 
 
