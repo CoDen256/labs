@@ -1,7 +1,5 @@
-import csv
 import random
 from typing import List
-import os.path
 from utils import *
 from model import *
 from load_unify_save import compile_ioc
@@ -49,7 +47,7 @@ def duplicate_randomly(subsets, max_duplicates, chance):
                 target = random.randint(1, max_duplicates-1)
                 for i in range(1, target):
                     duplicated[(i + index) % max_duplicates].append(indicator)
-    return set(duplicated) # randomize order
+    return duplicated # set() - randomize order
 
 
 def save_subsets(subsets):
