@@ -13,9 +13,9 @@ class IOC:
 
 
 class WeightedIOCEntry:
-    def __init__(self, name, weight, pulses):
+    def __init__(self, name, memory, pulses):
         self.name = name
-        self.weight = weight
+        self.memory = memory
         self.pulses = pulses
 
     def __eq__(self, other):

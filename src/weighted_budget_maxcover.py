@@ -1,7 +1,7 @@
 from model import *
 
 
-def subset_weight(covered, subset):
+def subset_weight(covered, subset: Subset):
     weight_sum = 0
     for ioc in subset.iocs_list:
         if ioc not in covered:

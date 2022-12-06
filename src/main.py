@@ -12,12 +12,12 @@ def prompt_initial():
 
 
 def prompt_subset_limit():
-    limit = int(input("Enter the number of subsets [3-10] to work with"))
+    limit = int(input("Enter the number of subsets [3-10] to work with: "))
     return limit
 
 
 def prompt_limit_covered_subsets():
-    limit = int(input("Enter the limit of covered subsets"))
+    limit = int(input("Enter the limit of covered subsets: "))
     return limit
 
 
@@ -27,7 +27,7 @@ def prompt_subset_budget():
 
 
 def prompt_algo(algo_choice):
-    for (key, algo) in algo_choice:
+    for (key, algo) in algo_choice.items():
         name, _ = algo
         print(f"{key}.{name}")
     choice = int(input("Enter the algorithm that you want to select:"))
@@ -35,14 +35,14 @@ def prompt_algo(algo_choice):
 
 
 def prompt_weight_type(weight_choice):
-    for (key, weight) in weight_choice:
+    for (key, weight) in weight_choice.items():
         name, _ = weight
         print(f"{key}.{name}")
     choice = int(input("Enter the type of weight based on which IOCs will be processed:"))
     return weight_choice[choice]
 
 
-def get_universe(subsets: List[Subset]) -> Set[IOC]:
+def flatten(subsets: List[Subset]) -> Set[IOC]:
     return set([e for s in subsets for e in s.iocs_list])
 
 
@@ -59,15 +59,15 @@ def convert_to_IOCs(subsets: List[Subset], weight_extractor) -> List[Subset]:
 
 def invoke_set_cover(subsets: List[Subset]):
     normalized = convert_to_IOCs(subsets, lambda i: i.weight)
-    universe = get_universe(normalized)
+    universe = flatten(normalized)
     return set_cover(universe, normalized)
 
 
 def invoke_weighted_maximum_cover(subsets: List[Subset]):
     limit = prompt_limit_covered_subsets()
 
-    weight_extractor = prompt_weight_type({
-        0: ("Pulses", lambda indicator:  indicator.pulse),
+    name, weight_extractor = prompt_weight_type({
+        0: ("Pulses", lambda indicator:  indicator.pulses),
         1: ("Memory", lambda indicator:  indicator.memory)
     })
 
@@ -78,8 +78,8 @@ def invoke_weighted_maximum_cover(subsets: List[Subset]):
 def invoke_weighted_budgeted_maximum_cover(subsets: List[Subset]):
     budget = prompt_subset_budget()
 
-    weight_extractor = prompt_weight_type({
-        0: ("Pulses", lambda indicator:  indicator.pulse),
+    name, weight_extractor = prompt_weight_type({
+        0: ("Pulses", lambda indicator:  indicator.pulses),
         1: ("Memory", lambda indicator:  indicator.memory)
     })
 
@@ -101,7 +101,9 @@ def main():
     name, algo = algo_result
     result: List[Subset] = algo(subsets)
 
+    print(f"Percent of covered IOCs: {len(flatten(result))/len(flatten(subsets))*100}% ")
     save("result.txt", result)
+    print(f"Written to result.txt: {len(result)} sets")
 
 
 if __name__ == '__main__':
