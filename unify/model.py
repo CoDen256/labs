@@ -1,29 +1,34 @@
 class Domain:
-    def __init__(self, domain):
+    def __init__(self, domain, pulses):
         self.domain = domain
+        self.pulses = pulses
 
 
 class Email:
-    def __init__(self, email):
+    def __init__(self, email, pulses):
         self.email = email
+        self.pulses = pulses
 
 
 class FileHashMD5:
     def __init__(self, hash, id, pulses):
         self.hash = hash
         self.id = id
+        self.pulses = pulses
 
 
 class FileHashSHA1:
     def __init__(self, hash, id, pulses):
         self.hash = hash
         self.id = id
+        self.pulses = pulses
 
 
 class FileHashSHA256:
     def __init__(self, hash, id, pulses):
         self.hash = hash
         self.id = id
+        self.pulses = pulses
 
 class Hostname:
     def __init__(self, hostname, domain, ips, pulses):

@@ -5,20 +5,20 @@ from api import *
 
 
 def scrape_file(indicator, type):
-    details = scrape_details(type, hash, "general")
+    details = scrape_details(type, indicator, "general")
     return [indicator, details["pulse_info"]["count"]], None
 
 
 if __name__ == '__main__':
-    load_scrape_save("datasets/group/domain.csv", "datasets/parsed/FileHash-MD5_parsed.csv",
-                     lambda h: scrape_file(h, IndicatorTypes.FILE_HASH_MD5),
+    load_scrape_save("datasets/group/domain.csv", "datasets/parsed/domain_parsed.csv",
+                     lambda h: scrape_file(h, IndicatorTypes.DOMAIN),
                      start=0,
-                     count=300,
+                     count=500,
                      batch_size=50)
 
-    load_scrape_save("datasets/group/email.csv", "datasets/parsed/FileHash-SHA1_parsed.csv",
-                     lambda h: scrape_file(h, IndicatorTypes.FILE_HASH_SHA1),
+    load_scrape_save("datasets/group/email.csv", "datasets/parsed/email_parsed.csv",
+                     lambda h: scrape_file(h, IndicatorTypes.EMAIL),
                      start=0,
-                     count=300,
-                     batch_size=50)
+                     count=64,
+                     batch_size=10)
 
