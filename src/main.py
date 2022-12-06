@@ -1,8 +1,10 @@
 from set_cover import set_cover
 from weighted_max_cover import weighted_maximum_cover
 from weighted_budget_maxcover import weighted_budget_maximum_cover
-from load import *
-from save import *
+from load import load_subsets
+from save import save
+from typing import List, Set
+from model import Subset, IOC, WeightedIOCEntry
 
 
 def prompt_initial():
@@ -10,7 +12,17 @@ def prompt_initial():
 
 
 def prompt_subset_limit():
-    limit = int(input("Enter the number of subsets [3-10]"))
+    limit = int(input("Enter the number of subsets [3-10] to work with"))
+    return limit
+
+
+def prompt_limit_covered_subsets():
+    limit = int(input("Enter the limit of covered subsets"))
+    return limit
+
+
+def prompt_subset_budget():
+    limit = int(input("Enter the budget in bytes"))
     return limit
 
 
@@ -22,21 +34,57 @@ def prompt_algo(algo_choice):
     return algo_choice[choice]
 
 
+def prompt_weight_type(weight_choice):
+    for (key, weight) in weight_choice:
+        name, _ = weight
+        print(f"{key}.{name}")
+    choice = int(input("Enter the type of weight based on which IOCs will be processed:"))
+    return weight_choice[choice]
+
+
+def get_universe(subsets: List[Subset]) -> Set[IOC]:
+    return set([e for s in subsets for e in s.iocs_list])
+
+
+def convert_to_IOCs(subsets: List[Subset], weight_extractor) -> List[Subset]:
+    total: List[Subset] = []
+    for s in subsets:
+        indicators = []
+        for indicator in s.iocs_list:
+            ioc = IOC(indicator.name, weight_extractor(indicator))
+            indicators.append(ioc)
+        total.append(Subset(indicators, s.price))
+    return total
+
+
 def invoke_set_cover(subsets: List[Subset]):
-    return set_cover()
+    normalized = convert_to_IOCs(subsets, lambda i: i.weight)
+    universe = get_universe(normalized)
+    return set_cover(universe, normalized)
 
 
 def invoke_weighted_maximum_cover(subsets: List[Subset]):
-    pass
+    limit = prompt_limit_covered_subsets()
+
+    weight_extractor = prompt_weight_type({
+        0: ("Pulses", lambda indicator:  indicator.pulse),
+        1: ("Memory", lambda indicator:  indicator.memory)
+    })
+
+    normalized = convert_to_IOCs(subsets, weight_extractor=weight_extractor)
+    return weighted_maximum_cover(limit, normalized)
 
 
 def invoke_weighted_budgeted_maximum_cover(subsets: List[Subset]):
-    pass
+    budget = prompt_subset_budget()
 
+    weight_extractor = prompt_weight_type({
+        0: ("Pulses", lambda indicator:  indicator.pulse),
+        1: ("Memory", lambda indicator:  indicator.memory)
+    })
 
-algo_mapping = [
-
-]
+    normalized = convert_to_IOCs(subsets, weight_extractor=weight_extractor)
+    return weighted_budget_maximum_cover(budget, normalized)
 
 
 def main():
@@ -54,6 +102,7 @@ def main():
     result: List[Subset] = algo(subsets)
 
     save("result.txt", result)
+
 
 if __name__ == '__main__':
     main()
