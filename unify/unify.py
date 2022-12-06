@@ -31,3 +31,11 @@ def unify_md5_sha1_sha256(md5: List[FileHashMD5], sha1: List[FileHashSHA1], sha2
     total.update(result_sha1)
     total.update(result_md5)
     return total
+
+
+def convert_weighted(indicators, key_extractor):
+    collect = []
+    for indicator in indicators:
+        ioc = WeightedIOC(key_extractor(indicator), 1 / len(key_extractor(indicator)), indicator.pulses)
+        collect.append(ioc)
+    return collect

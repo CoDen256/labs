@@ -46,3 +46,10 @@ class IP:
     ip: str
     hostname: str
     pulses: int
+
+
+@dataclass(unsafe_hash=True)
+class WeightedIOC:
+    value: str
+    weight: float
+    pulses: int

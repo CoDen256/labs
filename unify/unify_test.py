@@ -353,3 +353,41 @@ class Test(TestCase):
             md5 + sha1 + sha256
             , result
         )
+
+    def test_convert_weighted(self):
+        self.assertCountEqual(
+            convert_weighted([FileHashSHA1("1234", 1, 9)], lambda i: i.hash),
+            [WeightedIOC("1234", 1/4, 9)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([FileHashMD5("12", 1, 19)], lambda i: i.hash),
+            [WeightedIOC("12", 1 / 2, 19)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([FileHashSHA256("1", 1, 0)], lambda i: i.hash),
+            [WeightedIOC("1", 1 , 0)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([Email("abcde", 98)], lambda i: i.email),
+            [WeightedIOC("abcde", 1 / 5, 98)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([Domain("1234567890", 99)], lambda i: i.domain),
+            [WeightedIOC("1234567890", 1 / 10, 99)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([IP("123456789012", "h", 199)], lambda i: i.ip),
+            [WeightedIOC("123456789012", 1 / 12, 199)]
+        )
+
+        self.assertCountEqual(
+            convert_weighted([Hostname("123456789012345", "h", 300)], lambda i: i.hostname),
+            [WeightedIOC("123456789012345", 1 / 15, 300)]
+        )
+
+
