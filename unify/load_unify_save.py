@@ -1,4 +1,5 @@
 from model import *
+from typing import List
 from itertools import groupby
 
 from unify import *
