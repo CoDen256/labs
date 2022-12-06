@@ -46,10 +46,10 @@ def duplicate_randomly(subsets, max_duplicates, chance):
     for index, subset in enumerate(duplicated):
         for indicator in subset:
             if random.randint(0, chance) == 0:
-                target = random.randint(1, max_duplicates)
-                for i in range(target):
-                    duplicated[(target + index) % max_duplicates].append(indicator)
-    return duplicated
+                target = random.randint(1, max_duplicates-1)
+                for i in range(1, target):
+                    duplicated[(i + index) % max_duplicates].append(indicator)
+    return set(duplicated) # randomize order
 
 
 def save_subsets(subsets):
@@ -67,7 +67,7 @@ def main():
     secondary = generate_subsets(universe, 7, 10)
     print(f"Generated secondary {len(secondary)} {[len(s) for s in secondary]}")
 
-    randomized = duplicate_randomly(secondary, 7, 10)  # 100-150
+    randomized = duplicate_randomly(secondary, 6, 10)  # 100-150
     print(f"Randomized {len(secondary)} {[len(s) for s in secondary]}")
 
     total = [primary, first_sub, second_sub] + randomized
