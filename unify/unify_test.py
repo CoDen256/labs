@@ -356,38 +356,92 @@ class Test(TestCase):
 
     def test_convert_weighted(self):
         self.assertCountEqual(
-            convert_weighted([FileHashSHA1("1234", 1, 9)], lambda i: i.hash),
+            convert_weighted([FileHashSHA1("1234", 1, 9)]),
             [WeightedIOC("1234", 1/4, 9)]
         )
 
         self.assertCountEqual(
-            convert_weighted([FileHashMD5("12", 1, 19)], lambda i: i.hash),
+            convert_weighted([FileHashMD5("12", 1, 19)]),
             [WeightedIOC("12", 1 / 2, 19)]
         )
 
         self.assertCountEqual(
-            convert_weighted([FileHashSHA256("1", 1, 0)], lambda i: i.hash),
+            convert_weighted([FileHashSHA256("1", 1, 0)]),
             [WeightedIOC("1", 1 , 0)]
         )
 
         self.assertCountEqual(
-            convert_weighted([Email("abcde", 98)], lambda i: i.email),
+            convert_weighted([Email("abcde", 98)]),
             [WeightedIOC("abcde", 1 / 5, 98)]
         )
 
         self.assertCountEqual(
-            convert_weighted([Domain("1234567890", 99)], lambda i: i.domain),
+            convert_weighted([Domain("1234567890", 99)]),
             [WeightedIOC("1234567890", 1 / 10, 99)]
         )
 
         self.assertCountEqual(
-            convert_weighted([IP("123456789012", "h", 199)], lambda i: i.ip),
+            convert_weighted([IP("123456789012", "h", 199)]),
             [WeightedIOC("123456789012", 1 / 12, 199)]
         )
 
         self.assertCountEqual(
-            convert_weighted([Hostname("123456789012345", "h", 300)], lambda i: i.hostname),
+            convert_weighted([Hostname("123456789012345", "h", 300)]),
             [WeightedIOC("123456789012345", 1 / 15, 300)]
+        )
+
+    def test_convert_weighted_full(self):
+        self.assertCountEqual(
+            convert_weighted([
+                Hostname("123456789012345", "h", 300),
+                Hostname("123456789012345", "h", 321),
+                Hostname("123456789012345", "h", 322),
+                Hostname("123456789012345", "h", 323),
+                Hostname("123456789012345", "h", 324),
+                FileHashSHA1("1234", 1, 91),
+                FileHashSHA1("123", 1, 92),
+                FileHashSHA1("12", 1, 93),
+                FileHashMD5("12", 1, 194),
+                FileHashMD5("1", 1, 159),
+                FileHashMD5("123456", 1, 169),
+                FileHashSHA256("12345", 1, 70),
+                FileHashSHA256("123456", 1, 80),
+                FileHashSHA256("1234567", 1, 900),
+                Email("12345678", 981),
+                Email("123456789", 982),
+                Email("1234567891", 983),
+                Domain(" ", 994),
+                Domain("  ", 995),
+                Domain("   ", 996),
+                IP("s"*50, "h", 1997),
+                IP("s"*150, "h", 1998),
+                IP("s"*250, "h", 1999),
+            ]),
+            [
+                WeightedIOC("123456789012345", 1/15, 300),
+                WeightedIOC("123456789012345", 1/15, 321),
+                WeightedIOC("123456789012345", 1/15, 322),
+                WeightedIOC("123456789012345", 1/15, 323),
+                WeightedIOC("123456789012345", 1/15, 324),
+                WeightedIOC("1234", 1 / 4, 91),
+                WeightedIOC("123", 1 / 3, 92),
+                WeightedIOC("12", 1 / 2, 93),
+                WeightedIOC("12", 1 / 2, 194),
+                WeightedIOC("1", 1 / 1, 159),
+                WeightedIOC("123456", 1 / 6, 169),
+                WeightedIOC("12345", 1 / 5, 70),
+                WeightedIOC("123456", 1 / 6, 80),
+                WeightedIOC("1234567", 1 / 7, 900),
+                WeightedIOC("12345678", 1 / 8, 981),
+                WeightedIOC("123456789", 1 / 9, 982),
+                WeightedIOC("1234567891", 1 / 10, 983),
+                WeightedIOC(" ", 1 / 1, 994),
+                WeightedIOC("  ", 1 / 2, 995),
+                WeightedIOC("   ", 1 / 3, 996),
+                WeightedIOC("s" * 50, 1 / 50, 1997),
+                WeightedIOC("s" * 150, 1 / 150, 1998),
+                WeightedIOC("s" * 250, 1 / 250, 1999),
+            ]
         )
 
 

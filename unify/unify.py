@@ -5,10 +5,10 @@ from typing import List
 def unify_hostnames_domains_ips(hostnames: List[Hostname], domains: List[Domain], ips: List[IP]):
     total = set()
     primary_domains = list(map(lambda h: h.domain, hostnames))
-    primary_hostnames = list(map(lambda h: h.hostname, hostnames))
+    primary_hostnames = list(map(lambda h: h.value, hostnames))
 
     result_ip = [ip for ip in ips if ip.hostname not in primary_hostnames]
-    result_domains = [domain for domain in domains if domain.domain not in primary_domains]
+    result_domains = [domain for domain in domains if domain.value not in primary_domains]
 
     total.update(result_ip)
     total.update(hostnames)
@@ -33,9 +33,9 @@ def unify_md5_sha1_sha256(md5: List[FileHashMD5], sha1: List[FileHashSHA1], sha2
     return total
 
 
-def convert_weighted(indicators, key_extractor):
+def convert_weighted(indicators):
     collect = []
     for indicator in indicators:
-        ioc = WeightedIOC(key_extractor(indicator), 1 / len(key_extractor(indicator)), indicator.pulses)
+        ioc = WeightedIOC(indicator.value, 1 / len(indicator.value), indicator.pulses)
         collect.append(ioc)
     return collect

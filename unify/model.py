@@ -3,47 +3,47 @@ from dataclasses import dataclass
 
 @dataclass(unsafe_hash=True)
 class Domain:
-    domain: str
+    value: str
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class Email:
-    email: str
+    value: str
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class FileHashMD5:
-    hash: str
+    value: str
     id: int
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class FileHashSHA1:
-    hash: str
+    value: str
     id: int
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class FileHashSHA256:
-    hash: str
+    value: str
     id: int
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class Hostname:
-    hostname: str
+    value: str
     domain: str
     pulses: int
 
 
 @dataclass(unsafe_hash=True)
 class IP:
-    ip: str
+    value: str
     hostname: str
     pulses: int
 
