@@ -2,7 +2,7 @@ from model import *
 from typing import Set, List
 
 
-def set_cover(universe: Set[IOC], subsets: List[Subset]): #List[Set[str]]
+def set_cover(universe: Set[IOC], subsets: List[Subset]):
     elements: Set[IOC] = set(e for subset in subsets for e in subset.iocs_list)
     # Check the subsets cover the universe
     if elements != universe:
