@@ -1,3 +1,6 @@
+from typing import List
+
+
 class IOC:
     def __init__(self, name, weight):
         self.name = name

@@ -6,7 +6,7 @@ import os.path
 
 
 def parse_weighted_IOC(row):
-    return WeightedIOCEntry(row[0], row[1], row[2])
+    return WeightedIOCEntry(row[0], float(row[1]), int(row[2]))
 
 
 def load(file, supplier):

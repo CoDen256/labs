@@ -6,7 +6,6 @@ def subset_weight(covered, subset: Subset):
     for ioc in subset.iocs_list:
         if ioc not in covered:
             weight_sum += ioc.weight
-    print(weight_sum)
     return weight_sum
 
 
@@ -16,8 +15,7 @@ def heaviest_subset(subsets, covered_iocs):
         all_weights.append((subset, subset_weight(covered_iocs, subset)))
     biggest_weight = max(all_weights, key=max_by_weight)
     if biggest_weight[1] == 0:
-        biggest_weight[0].iocs_list.clear()
-        print(biggest_weight[0].iocs_list)
+        return None
     return biggest_weight[0]
 
 
@@ -26,9 +24,9 @@ def max_by_weight(subset):
 
 
 def weighted_budget(budget, subsets, covered_iocs, subset_sum, covered_subsets):
-    while (subset_sum < budget):
+    while subset_sum < budget:
         heaviest_set = heaviest_subset(subsets, covered_iocs)
-        if not heaviest_set.iocs_list:
+        if not heaviest_set:
             break
         else:
             if subset_sum + heaviest_set.price < budget:
