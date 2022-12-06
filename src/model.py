@@ -1,5 +1,5 @@
 class IOC:
-  def __init__(self, name, weight, pulses):
+  def __init__(self, name, weight, pulses=0):
     self.name = name
     self.weight = weight
     self.pulses = pulses

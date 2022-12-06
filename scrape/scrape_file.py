@@ -6,7 +6,7 @@ from api import *
 
 def scrape_file(hash, type):
     details = scrape_details(type, hash, "general")
-    return [hash, details["base_indicator"]["id"]], None
+    return [hash, details["base_indicator"]["id"], details["pulse_info"]["count"]], None
 
 
 if __name__ == '__main__':

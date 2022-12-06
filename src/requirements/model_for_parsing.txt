@@ -40,3 +40,33 @@ Filehash = [md5, sha1, sha256]
 # ИОКИ, все уникальные сущности, - мб в файле? я не знаю
 # Сабсеты - это каждый файл из архива 
 # и юниверс со всеми иоками
+||||||||||||||||||||||||||||||||
+Результат
+|||||||||||||||||||||||||||||||||||||
+file1, Subset1
+host2.site.com
+1.2.3.4  // host0.a.com - нигде в сетах не записан
+host1.site.com
+1.1.1.1
+
+file2, Subset2
+mail@jef.com
+host1.site.com
+host1.site.com
+пусто, видалено
+00000000000000
+
+file3, Subset3
+host1.site.com
+host2.site.com
+host1.site.com
+
+file4, Subset4
+00000000000000
+host1.site.com
+
+file5, Subset5
+пусто, видалено
+1.2.3.4
+a.com
+00000000000000
