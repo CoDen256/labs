@@ -1,8 +1,8 @@
 from model import *
-from typing import List
+from typing import Iterable
 
 
-def unify_hostnames_domains_ips(hostnames: List[Hostname], domains: List[Domain], ips: List[IP]):
+def unify_hostnames_domains_ips(hostnames: Iterable[Hostname], domains: Iterable[Domain], ips: Iterable[IP]):
     total = set()
     primary_domains = list(map(lambda h: h.domain, hostnames))
     primary_hostnames = list(map(lambda h: h.value, hostnames))
@@ -16,7 +16,7 @@ def unify_hostnames_domains_ips(hostnames: List[Hostname], domains: List[Domain]
     return total
 
 
-def unify_md5_sha1_sha256(md5: List[FileHashMD5], sha1: List[FileHashSHA1], sha256: List[FileHashSHA256]):
+def unify_md5_sha1_sha256(md5: Iterable[FileHashMD5], sha1: Iterable[FileHashSHA1], sha256: Iterable[FileHashSHA256]):
     total = set()
 
     primary_ids = list(map(lambda sha256_hash: sha256_hash.id, sha256))

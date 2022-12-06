@@ -40,9 +40,9 @@ def compile_ioc(ioc: WeightedIOC):
 def load_files():
     print("----")
 
-    md5 = load("datasets/parsed/FileHash-MD5_parsed.csv", parse_file_md5)
-    sha1 = load("datasets/parsed/FileHash-SHA1_parsed.csv", parse_file_sha1)
-    sha256 = load("datasets/parsed/FileHash-SHA256_parsed.csv", parse_file_sha256)
+    md5 = set(load("datasets/parsed/FileHash-MD5_parsed.csv", parse_file_md5))
+    sha1 = set(load("datasets/parsed/FileHash-SHA1_parsed.csv", parse_file_sha1))
+    sha256 = set(load("datasets/parsed/FileHash-SHA256_parsed.csv", parse_file_sha256))
 
     print(f"Unifying md5({len(md5)}) sha1({len(sha1)}) sha256({len(sha256)}) ...")
     unified = unify_md5_sha1_sha256(md5, sha1, sha256)
@@ -55,14 +55,14 @@ def load_files():
 def load_hostnames():
     print("----")
 
-    ipv4 = load("datasets/parsed/IPv4_parsed.csv", parse_ip)
-    ipv6 = load("datasets/parsed/IPv6_parsed.csv", parse_ip)
-    hostname = load("datasets/parsed/hostname_parsed.csv", parse_hostname)
-    domain = load("datasets/parsed/domain_parsed.csv", parse_domain)
+    ipv4 = set(load("datasets/parsed/IPv4_parsed.csv", parse_ip))
+    ipv6 = set(load("datasets/parsed/IPv6_parsed.csv", parse_ip))
+    hostname = set(load("datasets/parsed/hostname_parsed.csv", parse_hostname))
+    domain = set(load("datasets/parsed/domain_parsed.csv", parse_domain))
 
     print(f"Unifying hostnames({len(hostname)}) domains({len(domain)}) ipv4({len(ipv4)}) ipv6({len(ipv6)})...")
 
-    unified = unify_hostnames_domains_ips(hostname, domain, ipv4 + ipv6)
+    unified = unify_hostnames_domains_ips(hostname, domain, ipv4 | ipv6)
 
     print(f"Unified total (md5, sha1,sha256): {len(unified)} ")
     log_distribution(unified)
