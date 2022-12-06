@@ -12,7 +12,7 @@ class TestSum(unittest.TestCase):
         ioc2 = IOC("www.evil",34, 1)
         ioc3 = IOC("MD5:98s35956ntnh9659reg286gr35963gf2",278, 1)
         ioc4 = IOC("IpV6",13, 1)
-        universe = {ioc0.name, ioc1.name, ioc2.name, ioc3.name, ioc4.name}
+        universe = {ioc0, ioc1, ioc2, ioc3, ioc4}
 
         
         #all subsets:
@@ -21,35 +21,29 @@ class TestSum(unittest.TestCase):
         subset2 = Subset([ioc4], 1)
         subset3 = Subset([ioc0, ioc2], 1)
 
-        subset0 = set(subset0.iocs_list)
-        subset1 = set(subset1.iocs_list)
-        subset2 = set(subset2.iocs_list)
-        subset3 = set(subset3.iocs_list)
-        subsets = [subset0, subset1, subset2, subset3]
-
-        ## ACT    
-        cover = set_cover(universe, subsets) 
+        ## ACT
+        cover = set_cover(universe, [subset0, subset1, subset2, subset3])
 
         ## ASSERT
-        self.assertEqual(cover, [{'Ip:128.2.2.2', 'jhdkgh@gmail.com', 'www.evil', 'MD5:98s35956ntnh9659reg286gr35963gf2'}, {'IpV6'}])
+        self.assertEqual(cover, [
+            subset0,
+            subset2
+        ])
 
     def test_set_cover_one(self):
         ## ARRANGE
         #Universe, set
         ioc0 = IOC("jhdkgh@gmail.com", 2,1)
-        universe = {ioc0.name}
+        universe = {ioc0}
 
         
         #all subsets:
         subset0 = Subset([ioc0], 1)
-        subset0 = set(subset0.iocs_list)
-        subsets = [subset0]
-
-        ## ACT    
-        cover = set_cover(universe, subsets) 
+        ## ACT
+        cover = set_cover(universe, [subset0])
 
         ## ASSERT
-        self.assertEqual(cover, [{"jhdkgh@gmail.com"}])
+        self.assertEqual(cover, [subset0])
     def test_subset(self):
         ## ARRANGE
         ioc0 = IOC("jhdkgh@gmail.com", 2,1)
@@ -61,9 +55,4 @@ class TestSum(unittest.TestCase):
         result = s.iocs_list
 
         ## ASSERT
-        self.assertEqual(["jhdkgh@gmail.com", "Ip:128.2.2.2"], result)
-    
-#  print(ioc0.__dict__)     !!!!!!!!!!!!!
-
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual([ioc0, ioc1], result)
