@@ -4,4 +4,4 @@
 # which knows the public part.
 
 
-192.168.70.5 192.168.70.6 : PSK "student"
+192.168.70.6 192.168.70.5 : PSK "student"

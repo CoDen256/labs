@@ -7,16 +7,14 @@ config setup
 	# uniqueids = no
 
 # Add connections here.
-conn AtoB_psk
+conn BtoA_psk
     authby=secret
     auto=route
     keyexchange=ikev2
-    left=192.168.70.5
-    right=192.168.70.6
+    left=192.168.70.6
+    right=192.168.70.5
     type=transport
 # Sample VPN connections
-
-
 
 #conn sample-self-signed
 #      leftsubnet=10.1.0.0/16
