@@ -20,3 +20,4 @@ touch index.txt
 echo 2000 > serial
 echo 2000 > crlnumber
 cp ../openssl.cnf .
+cd ..
