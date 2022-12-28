@@ -1,0 +1,4 @@
+config setup
+
+conn AtoB_psk
+    a
