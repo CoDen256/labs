@@ -39,7 +39,7 @@ default_ca	= CA_default		# The default ca section
 ####################################################################
 [ CA_default ]
 
-dir		= ./demoCA		# Where everything is kept
+dir		= ./home/student/kasy22_ca/ca1		# Where everything is kept
 certs		= $dir/certs		# Where the issued certs are kept
 crl_dir		= $dir/crl		# Where the issued crl are kept
 database	= $dir/index.txt	# database index file.
@@ -47,12 +47,12 @@ database	= $dir/index.txt	# database index file.
 					# several certs with same subject.
 new_certs_dir	= $dir/newcerts		# default place for new certs.
 
-certificate	= $dir/cacert.pem 	# The CA certificate
+certificate	= $dir/certs/ca1.cert.pem 	# The CA certificate
 serial		= $dir/serial 		# The current serial number
 crlnumber	= $dir/crlnumber	# the current crl number
 					# must be commented out to leave a V1 CRL
 crl		= $dir/crl.pem 		# The current CRL
-private_key	= $dir/private/cakey.pem# The private key
+private_key	= $dir/private/ca1.key.pem  # The private key
 RANDFILE	= $dir/private/.rand	# private random number file
 
 x509_extensions	= usr_cert		# The extensions to add to the cert
@@ -72,13 +72,13 @@ cert_opt 	= ca_default		# Certificate field options
 
 default_days	= 365			# how long to certify for
 default_crl_days= 30			# how long before next CRL
-default_md	= default		# use public key default MD
+default_md	= sha256		# use public key default MD
 preserve	= no			# keep passed DN ordering
 
 # A few difference way of specifying how similar the request should look
 # For type CA, the listed attributes must be the same, and the optional
 # and supplied fields are just that :-)
-policy		= policy_match
+policy		= policy_anything
 
 # For the CA policy
 [ policy_match ]
@@ -103,6 +103,7 @@ emailAddress		= optional
 
 ####################################################################
 [ req ]
+default_md = sha256
 default_bits		= 2048
 default_keyfile 	= privkey.pem
 distinguished_name	= req_distinguished_name
@@ -126,17 +127,18 @@ string_mask = utf8only
 
 [ req_distinguished_name ]
 countryName			= Country Name (2 letter code)
-countryName_default		= AU
+countryName_default		= SE
 countryName_min			= 2
 countryName_max			= 2
 
 stateOrProvinceName		= State or Province Name (full name)
-stateOrProvinceName_default	= Some-State
+stateOrProvinceName_default	= Blekinge
 
 localityName			= Locality Name (eg, city)
+localityName_default = Karlskrona
 
 0.organizationName		= Organization Name (eg, company)
-0.organizationName_default	= Internet Widgits Pty Ltd
+0.organizationName_default	= ET2540
 
 # we can do this but it is not needed normally :-)
 #1.organizationName		= Second Organization Name (eg, company)
@@ -185,7 +187,8 @@ basicConstraints=CA:FALSE
 # nsCertType = client, email, objsign
 
 # This is typical in keyUsage for a client certificate.
-# keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+keyUsage = critical, nonRepudiation, digitalSignature, keyEncipherment
+extendedKeyUsage = clientAuth, emailProtection
 
 # This will be displayed in Netscape's comment listbox.
 nsComment			= "OpenSSL Generated Certificate"
@@ -214,6 +217,14 @@ authorityKeyIdentifier=keyid,issuer
 # This is required for TSA certificates.
 # extendedKeyUsage = critical,timeStamping
 
+[ server_cert ]
+basicConstraints = CA:FALSE
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid, issuer:always
+keyUsage = critical, digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth
+
+
 [ v3_req ]
 
 # Extensions to add to a certificate request
@@ -238,7 +249,7 @@ basicConstraints = critical,CA:true
 # Key usage: this is typical for a CA certificate. However since it will
 # prevent it being used as an test self-signed certificate it is best
 # left out by default.
-# keyUsage = cRLSign, keyCertSign
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
 
 # Some might want this also
 # nsCertType = sslCA, emailCA
@@ -344,3 +355,9 @@ tsa_name		= yes	# Must the TSA name be included in the reply?
 				# (optional, default: no)
 ess_cert_id_chain	= no	# Must the ESS cert id chain be included?
 				# (optional, default: no)
+
+[ v3_intermediate_ca ]
+subjectKeyIdentifier = hash
+authorityKeyIdentifier = keyid:always,issuer
+basicConstraints = critical, CA:true, pathlen:0
+keyUsage = critical, digitalSignature, cRLSign, keyCertSign
