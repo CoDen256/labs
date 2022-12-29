@@ -7,7 +7,15 @@ config setup
 	# uniqueids = no
 
 # Add connections here.
-
+conn AtoB_cert
+    auto=route
+    keyexchange=ikev2
+    left=192.168.70.5
+	leftcert=192.168.70.5.cert.pem
+	leftid="C=SE, ST=Blekinge, L=Karlskrona, O=ET2540, CN=192.168.70.5"
+    right=192.168.70.6
+	rightid="C=SE, ST=Blekinge, L=Karlskrona, O=ET2540, CN=192.168.70.6"
+    type=transport
 # Sample VPN connections
 
 #conn sample-self-signed

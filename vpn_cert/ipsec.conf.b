@@ -7,7 +7,15 @@ config setup
 	# uniqueids = no
 
 # Add connections here.
-
+conn BtoA_cert
+    auto=route
+    keyexchange=ikev2
+    left=192.168.70.6
+	leftcert=192.168.70.6.cert.pem
+	leftid="C=SE, ST=Blekinge, L=Karlskrona, O=ET2540, CN=192.168.70.6"
+    right=192.168.70.5
+	rightid="C=SE, ST=Blekinge, L=Karlskrona, O=ET2540, CN=192.168.70.5"
+    type=transport
 # Sample VPN connections
 
 #conn sample-self-signed

@@ -19,10 +19,12 @@ openssl req -text -noout -verify -in ca1/csr/192.168.70.6.csr.pem
 openssl ca -config ca1/openssl.cnf -extensions server_cert -days 365 -notext -md sha256 -in ca1/csr/192.168.70.6.csr.pem -out ca1/certs/192.168.70.6.cert.pem
 openssl verify -CAfile certs/root.cert.pem -untrusted ca1/certs/ca1.cert.pem ca1/certs/192.168.70.6.cert.pem
 
-# Copy and reread Server B and Server A
+# Copy CA and reread Server B and Server A
 sudo cp ca1.cert.pem /etc/ipsec.d/cacerts/
 sudo cp root.cert.pem /etc/ipsec.d/cacerts/
 
 sudo ipsec rereadcacerts
 
 sudo ipsec listcacerts
+
+# where to put certs ?
