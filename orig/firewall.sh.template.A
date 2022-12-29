@@ -1,0 +1,65 @@
+#!/bin/sh
+
+IPT=/sbin/iptables
+# NAT interface
+NIF=enp0s9
+# NAT IP address
+NIP='10.0.98.100'
+
+# Host-only interface
+HIF=enp0s3
+# Host-only IP addres
+HIP='192.168.60.100'
+
+# DNS nameserver 
+NS='10.0.98.3'
+
+## Reset the firewall to an empty, but friendly state
+
+# Flush all chains in FILTER table
+$IPT -t filter -F
+# Delete any user-defined chains in FILTER table
+$IPT -t filter -X
+# Flush all chains in NAT table
+$IPT -t nat -F
+# Delete any user-defined chains in NAT table
+$IPT -t nat -X
+# Flush all chains in MANGLE table
+$IPT -t mangle -F
+# Delete any user-defined chains in MANGLE table
+$IPT -t mangle -X
+# Flush all chains in RAW table
+$IPT -t raw -F
+# Delete any user-defined chains in RAW table
+$IPT -t mangle -X
+
+# Default policy is to send to a dropping chain
+$IPT -t filter -P INPUT ACCEPT
+$IPT -t filter -P OUTPUT ACCEPT
+$IPT -t filter -P FORWARD ACCEPT
+
+
+# Create logging chains
+#$IPT -t filter -N input_log
+#$IPT -t filter -N output_log
+#$IPT -t filter -N forward_log
+
+# Set some logging targets for DROPPED packets
+#$IPT -t filter -A input_log -j LOG --log-level notice --log-prefix "input drop: " 
+#$IPT -t filter -A output_log -j LOG --log-level notice --log-prefix "output drop: " 
+#$IPT -t filter -A forward_log -j LOG --log-level notice --log-prefix "forward drop: " 
+#echo "Added logging"
+
+# Return from the logging chain to the built-in chain
+#$IPT -t filter -A input_log -j RETURN
+#$IPT -t filter -A output_log -j RETURN
+#$IPT -t filter -A forward_log -j RETURN
+
+
+
+# These rules must be inserted at the end of the built-in
+# chain to log packets that will be dropped by the default
+# DROP policy
+#$IPT -t filter -A INPUT -j input_log
+#$IPT -t filter -A OUTPUT -j output_log
+#$IPT -t filter -A FORWARD -j forward_log

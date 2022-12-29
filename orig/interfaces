@@ -1,0 +1,9 @@
+# interfaces(5) file used by ifup(8) and ifdown(8)
+auto lo
+iface lo inet loopback
+
+# Connection to subnet B (host-only interface)
+auto enp0s3
+iface enp0s3 inet static
+address 192.168.80.111
+netmask 255.255.255.0

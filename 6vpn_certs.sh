@@ -28,3 +28,12 @@ sudo ipsec rereadcacerts
 sudo ipsec listcacerts
 
 # where to put certs ?
+
+
+# nano ipsec conf and secrets
+
+sudo ipsec statusall
+sudo ip xfrm state
+sudo ip xfrm policy
+
+ping -c 7 192.168.70.6
