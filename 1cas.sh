@@ -2,8 +2,8 @@
 
 
 
-mkdir kassy_ca/
-cd kassy_ca
+mkdir kasy22_ca/
+cd kasy22_ca
 mkdir certs crl newcerts private
 chmod 700 private
 touch index.txt
