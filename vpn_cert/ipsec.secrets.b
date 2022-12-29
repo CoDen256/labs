@@ -4,4 +4,4 @@
 # which knows the public part.
 
 
-: RSA "192.168.70.6.key.pem"
+: RSA 192.168.70.6.key.pem
