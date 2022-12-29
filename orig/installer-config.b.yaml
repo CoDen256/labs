@@ -1,0 +1,12 @@
+# This is the network config written by 'subiquity'
+network:
+  ethernets:
+    enp0s5:
+      addresses:
+        - 192.168.80.100/24
+    enp0s6:
+      addresses:
+        - 192.168.70.6/24
+    enp0s7:
+      dhcp4: true
+  version: 2

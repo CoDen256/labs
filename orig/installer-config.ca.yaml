@@ -1,0 +1,5 @@
+network:
+  ethernets:
+    enp0s5:
+      addresses:
+        - 192.168.60.111/24
