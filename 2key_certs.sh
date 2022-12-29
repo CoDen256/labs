@@ -13,11 +13,12 @@ chmod 400 private/root.key.pem
 chmod 400 ca1/private/ca1.key.pem
 
 ###
-
+ # CN = Sydorenko Root
 openssl req -config openssl.cnf -key private/root.key.pem -new -x509 -days 7300 -sha256 -extensions v3_ca -out certs/root.cert.pem
 openssl x509 -noout -text -in certs/root.cert.pem
 
-openssl req -config ca1/openssl.cnf -new -sha256 -key ca1/private/ca1.key.pem -out ca1/csr/ca1.cert.pem
+ # CN = Sydorenko CA1
+openssl req -config ca1/openssl.cnf -new -sha256 -key ca1/private/ca1.key.pem -out ca1/csr/ca1.csr.pem
 openssl req -text -noout -verify -in ca1/csr/ca1.csr.pem
 
 
@@ -31,7 +32,10 @@ cat ca1/certs/ca1.cert.pem certs/root.cert.pem > ca1/certs/ca1.cert-chain.pem
 chmod 444 ca1/certs/ca1.cert-chain.pem
 
 # Server Certificate
+
 openssl genrsa -out ca1/private/server.key.pem 2048
+
+# CN = localhost
 openssl req -config ca1/openssl.cnf -new -sha256 -key ca1/private/server.key.pem -out ca1/csr/server.csr.pem
 openssl req -text -noout -verify -in ca1/csr/server.csr.pem
 
