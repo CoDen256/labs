@@ -10,7 +10,8 @@ touch index.txt
 echo 1000 > serial
 pwd
 
-cp /etc/ssl/openssl.cnf ./
+#cp /etc/ssl/openssl.cnf ./
+cp /home/student/kvpn/openssl.cnf .
 
 mkdir ca1
 cd ca1
@@ -19,5 +20,6 @@ chmod 700 private
 touch index.txt
 echo 2000 > serial
 echo 2000 > crlnumber
-cp ../openssl.cnf .
+#cp ../openssl.cnf .
+cp /home/student/kvpn/openssl.cnf .
 cd ..
