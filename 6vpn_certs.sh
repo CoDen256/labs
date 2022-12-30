@@ -3,6 +3,8 @@
 
 cd /home/student/kasy22_ca
 
+read T
+
 # Server A
 openssl genrsa -out ca1/private/192.168.70.5.key.pem 2048
 openssl req -config ca1/openssl.cnf -key ca1/private/192.168.70.5.key.pem -new -sha256 -out ca1/csr/192.168.70.5.csr.pem
