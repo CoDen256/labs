@@ -74,7 +74,7 @@ sudo ipsec statusall
 
 ### RUN ###
 
-ping -c 4 192.168.70.6
+ping  192.168.70.6 -c 4
 
 sudo ipsec statusall
 sudo ip xfrm state
