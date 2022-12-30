@@ -51,7 +51,9 @@ scp /home/student/kvpn/vpn_cert/ipsec.secrets.b student@192.168.70.6:/tmp/ipsec.
 ssh -t student@192.168.70.6 "sudo mv /tmp/ipsec.secrets /etc/ipsec.secrets"
 
 # Server B: sudo ipsec restart && sudo ipsec statusall
-# ssh -t student@192.168.70.6 "sudo ipsec restart" &
+#ssh -t student@192.168.70.6 "sudo ipsec restart" &
+echo "Run sudo ipsec restart on server B"
+read T
 
 ## Server A CAs, Cert, Private Key
 sudo cp ca1/certs/ca1.cert.pem /etc/ipsec.d/cacerts/
