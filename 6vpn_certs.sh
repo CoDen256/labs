@@ -3,7 +3,6 @@
 
 cd /home/student/kasy22_ca
 
-read T
 
 # Server A
 openssl genrsa -out ca1/private/192.168.70.5.key.pem 2048
