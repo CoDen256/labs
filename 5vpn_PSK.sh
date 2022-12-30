@@ -8,28 +8,20 @@
 
 # server B: .80.100  + .70.6
 # client B: .80.111
-read T
+read T # a or b
+
 
 sudo apt-get update
 sudo apt-get install -y strongswan
-sudo apt-get install -y charon-systemd
 
 sudo cp /home/student/kvpn/vpn_psk/ipsec.conf.$T /etc/ipsec.conf
 sudo cp /home/student/kvpn/vpn_psk/ipsec.secrets.$T /etc/ipsec.secrets
 
-#sudo nano /etc/ipsec.conf
-#sudo nano /etc/ipsec.secrets
-
-#sudo systemctl enable strongswan-starter
-#sudo systemctl start strongswan-starter
-sudo systemctl enable strongswan.service
-sudo systemctl enable strongswan-swanctl
-sudo systemctl start strongswan.service
-sudo systemctl start strongswan-swanctl
-sudo ipsec start
 sudo ipsec restart
 
 sudo ipsec statusall
+
+ping 192.168.70.6
 
 ## DECRYPT with wrieshark
 sudo ipsec statusall

@@ -1,3 +1,5 @@
 #!/bin/bash
 
-sudo cp /home/student/kvpn/orig/installer-config.sa.yaml /etc/netplan/00-installer-config.yaml
+read T # a,b, ca or cb
+
+sudo cp /home/student/kvpn/orig/installer-config.$T.yaml /etc/netplan/00-installer-config.yaml
