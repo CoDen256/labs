@@ -8,6 +8,8 @@ iface enp0s9 inet static
 address 10.0.99.100
 netmask 255.255.255.0
 gateway 10.0.99.2
+# added dns-nameservers
+dns-nameservers 10.0.99.3 
 
 # Connection to subnet B (host-only interface)
 auto enp0s3
