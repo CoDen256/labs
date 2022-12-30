@@ -7,7 +7,7 @@ config setup
 	# uniqueids = no
 
 # Add connections here.
-conn BtoA_cert
+conn BtoA_tunnel
     auto=route
     keyexchange=ikev2
     left=192.168.70.6
