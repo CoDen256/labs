@@ -20,3 +20,5 @@ sudo cp /home/student/kvpn/vpn_psk/ipsec.secrets.$T /etc/ipsec.secrets
 sudo ipsec restart
 
 sudo ipsec statusall
+
+echo $T | bash -x /home/student/kvpn/0network.sh
