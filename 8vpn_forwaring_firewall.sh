@@ -36,10 +36,17 @@ sudo ipsec statusall
 sudo ip xfrm state
 sudo ip xfrm policy
 
-
+exit 1
 # FIREWALL
+# Server A
+sudo cp /home/student/kvpn/vpn_forward_drop/firewall.sh.A /home/student/firewall.sh
+sudo chmod +x ./firewall.sh
+sudo ./firewall.sh
 
-# nano firewall.sh.template
+# Server B
+# sudo cp /home/student/kvpn/vpn_forward_drop/firewall.sh.B /home/student/firewall.sh
+# sudo chmod +x ./firewall.sh
+# sudo ./firewall.sh
 
 # Client A
 ping 192.168.80.111 -c 4
