@@ -8,6 +8,7 @@
 
 # server B: .80.100  + .70.6
 # client B: .80.111
+echo "Server Name (a/b): "
 read T # a or b
 
 
