@@ -55,6 +55,7 @@ $IPT -t filter -A OUTPUT -o $TIF -p esp -j ACCEPT
 $IPT -t filter -A INPUT -i $TIF -p udp -m multiport --dports 500,4500 -j ACCEPT
 $IPT -t filter -A OUTPUT -o $TIF -p udp -m multiport --sports 500,4500 -j ACCEPT
 
+$IPT -t nat -A POSTROUTING -j SNAT -o $NIF --to $NIP #SNAT
 
 # Create logging chains
 #$IPT -t filter -N input_log

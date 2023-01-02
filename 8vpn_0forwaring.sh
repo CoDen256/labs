@@ -23,8 +23,6 @@ scp /home/student/kvpn/vpn_forward_drop/interfaces.cb student@192.168.70.6:/tmp/
 ssh -t student@192.168.70.6 "scp /tmp/interfaces student@192.168.80.111:/tmp/interfaces"
 ssh -t student@192.168.70.6 "ssh -t student@192.168.80.111 \"sudo mv /tmp/interfaces /etc/network/interfaces\""
 
-
-
 echo "Run on Client A: ping 192.168.80.111 -c 4 && traceroute 192.168.80.111"
 echo "Run on Client B: ping 192.168.60.111 -c 4 && traceroute 192.168.60.111"
 read T # a or b
@@ -39,38 +37,3 @@ read T # a or b
 sudo ipsec statusall
 sudo ip xfrm state
 sudo ip xfrm policy
-
-exit 1
-# FIREWALL
-# Server A
-sudo cp /home/student/kvpn/vpn_forward_drop/firewall.sh.A /home/student/firewall.sh
-sudo chmod +x ./firewall.sh
-sudo ./firewall.sh
-
-# Server B
-# sudo cp /home/student/kvpn/vpn_forward_drop/firewall.sh.B /home/student/firewall.sh
-# sudo chmod +x ./firewall.sh
-# sudo ./firewall.sh
-
-# Client A
-ping 192.168.80.111 -c 4
-
-# Client B
-ping 192.168.80.111 -c 4
-
-
-# Client B -> Client A
-ssh clientA
-
-
-# Client B -> Server A
-ssh serverA
-
-
-# Server A
-ipsec statusall
-sudo ip xfrm state
-
-
-# Client A + Client B
-ping 8.8.8.8
