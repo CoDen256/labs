@@ -1,7 +1,7 @@
 #!/bin/bash
 
-cp /home/student/kvpn/orig/ipsec.conf.a /etc/ipsec.conf
-cp /home/student/kvpn/orig/ipsec.secrets.a /etc/ipsec.secrets
+sudo cp /home/student/kvpn/orig/ipsec.conf.a /etc/ipsec.conf
+sudo cp /home/student/kvpn/orig/ipsec.secrets.a /etc/ipsec.secrets
 
 sudo ipsec restart
 
