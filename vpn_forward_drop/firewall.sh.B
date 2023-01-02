@@ -49,13 +49,19 @@ $IPT -t filter -A FORWARD -i $HIF -o $TIF -j ACCEPT
 $IPT -t filter -A FORWARD -i $TIF -o $HIF -j ACCEPT
 
 # Site to Site VPN
+
 $IPT -t filter -A INPUT -i $TIF -p esp -j ACCEPT
 $IPT -t filter -A OUTPUT -o $TIF -p esp -j ACCEPT
 
 $IPT -t filter -A INPUT -i $TIF -p udp -m multiport --dports 500,4500 -j ACCEPT
 $IPT -t filter -A OUTPUT -o $TIF -p udp -m multiport --sports 500,4500 -j ACCEPT
 
+# NAT
+$IPT -t filter -A FORWARD -i $HIF -j ACCEPT
+$IPT -t filter -A FORWARD -i $NIF -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 $IPT -t nat -A POSTROUTING -j SNAT -o $NIF --to $NIP #SNAT
+
+
 
 # Create logging chains
 #$IPT -t filter -N input_log
