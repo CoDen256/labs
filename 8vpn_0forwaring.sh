@@ -12,7 +12,7 @@ ssh -t student@192.168.60.111 "sudo mv /tmp/interfaces /etc/network/interfaces"
 # Server B
 scp /home/student/kvpn/vpn_forward_drop/sysctl.conf student@192.168.70.6:/tmp/sysctl.conf
 ssh -t student@192.168.70.6 "sudo mv /tmp/sysctl.conf /etc/sysctl.conf"
-ssh -t student@192.168.70.6 "sudo mv sudo sysctl --system"
+ssh -t student@192.168.70.6 "sudo sysctl --system"
 
 # Client B
 

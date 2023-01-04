@@ -20,6 +20,7 @@ chmod 700 private
 touch index.txt
 echo 2000 > serial
 echo 2000 > crlnumber
-#cp ../openssl.cnf .
+pwd
+ls
 cp /home/student/kvpn/openssl.cnf.ca1 ./openssl.cnf
 cd ..
