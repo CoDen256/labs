@@ -196,35 +196,51 @@ procedure Main is
       return vectorPlusVector(left, right);
    end computeAh;
 
-
-   type AbstractTask is task interface;
-   -- Task specifications for parallel processing
    
-   type AbstractTask_Ref is access AbstractTask;
+   type TSK;
    
-
-   task type T(prev: AbstractTask_Ref) is new AbstractTask with
+   type TSK_Acc is access TSK;
+   
+   
+   task type TSK(prev: TSK_Acc) is 
       entry MX_B(newMX: in Matrix; newB: in Vector);
-      --  entry Z_D_C_MR(newMA: in Matrix);
-      --  entry ai(newA: in Integer);
-      --  entry bi(newB: in Integer);
-      --  entry a_b(newA: in Integer; newB: in Integer);
-      --  entry Ah(newAh: in Vector);
-   end T;
+     end TSK;
+
+   --  type AbstractTask is task interface;
+   --  -- Task specifications for parallel processing
+   --  
+   --  type AbstractTask_Ref is access AbstractTask;
+   
+
+   --  task type T(prev: AbstractTask_Ref) is new AbstractTask with
+   --     entry MX_B(newMX: in Matrix; newB: in Vector);
+   --     --  entry Z_D_C_MR(newMA: in Matrix);
+   --     --  entry ai(newA: in Integer);
+   --     --  entry bi(newB: in Integer);
+   --     --  entry a_b(newA: in Integer; newB: in Integer);
+   --     --  entry Ah(newAh: in Vector);
+   --  end T;
    
    
 
-   task body T is
+   task body TSK is
       MA: Matrix(1..N, 1..N);
       V: Vector(1..N);
    begin
       Put_line("Process 1 is started");
+      
+      if prev = null then
+         Put_Line("Nullich");
+      else 
+         Put_Line("NonNullich");
+         prev.MX_B(MA, V);
+      end if;
 
       --  Put_Line(Item => Integer'Image(prev));
       
-      --  accept MX_B(newMX: in Matrix; newB: in Vector) do
-      --     Put_line("Process 1 is started");
-      --  end MX_B;
+      accept MX_B(newMX: in Matrix; newB: in Vector) do
+          Put_line("Process 1 is MX_B'ed");
+        end MX_B;
        
       
       MA := createMatrix;
@@ -236,11 +252,12 @@ procedure Main is
 
       Put(Item => Integer'Image(vectorByVector(V,V)) & " ");
       
-   end T;
+   end TSK;
    
-   T1: T := new T(null);
-   T2: T(T1);
-   
+   --  T1: T := new T(null);
+   --  T2: T(T1);
+   T1: TSK_Acc := new TSK(null);
+   T2: TSK(T1);
 begin
    null;
 end Main;
