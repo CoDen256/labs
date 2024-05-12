@@ -202,10 +202,10 @@ procedure Main is
       DxMAh: Vector(1..H);
       right: Vector(1..H);
    begin
-      Zh := getVectorChunk(Z, chunkNum);
-      left := scalarByVector(bi, Z);
-      DxMAh := vectorByMatrix(D, MAh);
-      right := scalarByVector(ai, DxMAh);
+      Zh := getVector
+      left :=
+      DxMAh :=
+      right :=
 
       return vectorPlusVector(left, right);
    end computeAh;
