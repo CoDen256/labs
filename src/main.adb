@@ -160,26 +160,12 @@ procedure Main is
       return Result;
    end scalarByVector;
 
-
-   function computeZh(X: Vector; MA: Matrix; MSh: Matrix; m0: Integer; Fh: Vector) return Vector is
-      MA_MSh: Matrix(1..N, 1..H);
-      X_MA_MSh: Vector(1..H);
-      m_Fh: Vector(1..H);
-   begin
-      Put_Line("Computing Zh");
-      MA_MSh := matrixByMatrix(MA, Msh);    -- (NxN) x (NxH) -> (NxH)
-      X_MA_MSh := vectorByMatrix(X, transpose(MA_MSh));     -- transposed(NxH)-> (H x N) x (N x 1) -> (H x 1)
-      m_Fh := scalarByVector(m0, Fh);
-
-      return vectorPlusVector(X_MA_MSh, m_Fh); -- (Hx1) + (Hx1) = (Hx1)
-   end computeZh;
-
    function computeAi(D: Vector; chunkNum: Integer) return Integer is
    begin
       return min(getVectorChunk(D, chunkNum));
    end computeAi;
 
-   function computeBi(D: Vector; C: Vector; chunkNum: Integer) return Integer is
+   function computeBi(B: Vector; C: Vector; chunkNum: Integer) return Integer is
    begin
       return vectorByVector(
          getVectorChunk(B, chunkNum),
@@ -211,18 +197,36 @@ procedure Main is
    end computeAh;
 
 
--- Task specifications for parallel processing
+   type AbstractTask is task interface;
+   -- Task specifications for parallel processing
+   
+   type AbstractTask_Ref is access AbstractTask;
+   
 
-   task T1 is
-      
-   end T1;
+   task type T(prev: AbstractTask_Ref) is new AbstractTask with
+      entry MX_B(newMX: in Matrix; newB: in Vector);
+      --  entry Z_D_C_MR(newMA: in Matrix);
+      --  entry ai(newA: in Integer);
+      --  entry bi(newB: in Integer);
+      --  entry a_b(newA: in Integer; newB: in Integer);
+      --  entry Ah(newAh: in Vector);
+   end T;
+   
+   
 
-   task body T1 is
+   task body T is
       MA: Matrix(1..N, 1..N);
       V: Vector(1..N);
    begin
       Put_line("Process 1 is started");
 
+      --  Put_Line(Item => Integer'Image(prev));
+      
+      --  accept MX_B(newMX: in Matrix; newB: in Vector) do
+      --     Put_line("Process 1 is started");
+      --  end MX_B;
+       
+      
       MA := createMatrix;
       V := createVector;
       Put_line("Process 1 is ended");
@@ -232,8 +236,11 @@ procedure Main is
 
       Put(Item => Integer'Image(vectorByVector(V,V)) & " ");
       
-   end T1;
-
+   end T;
+   
+   T1: T := new T(null);
+   T2: T(T1);
+   
 begin
    null;
 end Main;
