@@ -196,28 +196,48 @@ procedure Main is
       return vectorPlusVector(left, right);
    end computeAh;
 
-
    
    type T;
-
+   
    type TRef is access T;
    
-   task type T is
-      entry init(newPrev: in TRef; newNext: in TRef; newNum: in Integer);
+   type TaskStack is array(Integer range <>) of TRef;
+   
+   task type T1 is
+      entry init(newTasks: TaskStack);
+      entry submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix);
+      entry submit_a_b(newA: in Integer; newB: in Integer);
+      entry submit_Ah(newAh: in Vector);
+   end T1;
+   
+   type T1Ref is access T1;
+   
+   task type TP is
+      entry init(newTasks: TaskStack);
       entry submit_MX_B(newMX: in Matrix; newB: in Vector);
-      entry submit_Z_D_C_MR(newMA: in Matrix);
+      entry submit_ai(newA: in Integer);
+      entry submit_bi(newB: in Integer);
+   end TP;
+   type TPRef is access TP;
+   
+   task type T is 
+      entry init(newNum: in Integer;  newTasks: in TaskStack; f : in T1Ref; l: in TPRef);
+      entry submit_MX_B(newMX: in Matrix; newB: in Vector);
+      entry submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix);
       entry submit_ai(newA: in Integer);
       entry submit_bi(newB: in Integer);
       entry submit_a_b(newA: in Integer; newB: in Integer);
       entry submit_Ah(newAh: in Vector);
    end T;
+   
 
    
    task body T is
-      
-      prev: TRef;
-      next: TRef;
       num: Integer;
+      tasks: TaskStack(1..P-2);
+      first: T1Ref;
+      last: TPRef;
+
    
       ai: Integer;
       bi: Integer;
@@ -226,7 +246,6 @@ procedure Main is
       sumB: Integer;
       
       MX: Matrix(1..N, 1..N);
-      DC: Matrix(1..N, 1..N);
       MR: Matrix(1..N, 1..N);
       A: Vector(1..N);
       Ah: Vector(1..H);
@@ -241,35 +260,61 @@ procedure Main is
 
    begin
       
-      accept init(newPrev: in TRef; newNext: in TRef; newNum: in Integer) do
-         prev := newPrev;
-         next := newNext;
+      accept init(newNum: in Integer;  newTasks: in TaskStack; f : in T1Ref; l: in TPRef) do
          num := newNum;
+         tasks := newTasks;
+         first := f;
+         last := l;
       end init;
+      
       Put_Line("Launched  T" & Integer'Image(num));
       
+      accept submit_MX_B(newMX: in Matrix; newB: in Vector) do
+         Put_Line("Got MX_B:" & Integer'Image(num));
+         MX := newMx;
+         B := newB;
+      end submit_MX_B;
+      
+      if (num = P - 2) then
+         Put_Line("submitting to the last one");
+         last.submit_MX_B(MX, B);
+      else 
+         Put_Line("submitting from" & Integer'Image(num) & " to " & Integer'Image(num+1));
+         Tasks(num+1).submit_MX_B(MX,B);
+      end if;
       
       -- If T1 create, else receive
-      if prev = null then
-         MX := createMatrix;
-         B := createVector;
-      else -- T2..TP
-        accept submit_MX_B(newMX: in Matrix; newB: in Vector) do
-            Put_Line("Got MX_B:" & Integer'Image(num));
-            MX := newMx;
-            B := newB;
-         end submit_MX_B;
-      end if;
+      --  if prev = null then
 
-      -- IF not T1..TP-1
-      if next /= null then
-         next.submit_MX_B(MX, B);
-      end if;
+      --  else -- T2..TP
+
+      --  end if;
+      --  
+      --  -- If TP
+      --  if next = null then
+      --     Z := createVector;
+      --     D := createVector;
+      --     C := createVector;
+      --     MR := createMatrix;
+      --  else
+      --     next.submit_MX_B(MX, B);
+      --     accept submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix) do
+      --        Put_Line("Got Z_D_C_MR:"& Integer'Image(num));
+      --        Z := newZ;
+      --        D := newD;
+      --        C := newC;
+      --        MR := newMR;
+      --     end submit_Z_D_C_MR;
+      --  end if;
+      
+      --  if prev /= null then
+      --     prev.submit_Z_D_C_MR(Z, D, C, MR);
+      --  end if;
 
       
-      --  accept submit_Z_D_C_MR(newMA: in Matrix) do
-      --  Put_Line("");
-      --  end submit_Z_D_C_MR;
+      
+      
+
       --  
       --  accept submit_ai(newA: in Integer) do
       --  Put_Line("");
@@ -289,14 +334,98 @@ procedure Main is
       --  
    end T;
    
-   T1: TRef := new T;
-   T2: TRef := new T;
-   TP: TRef := new T;
+   
+  task body T1 is
+      num: Integer:=0; 
+      tasks: TaskStack(1..P-2);
+      
+      ai: Integer;
+      bi: Integer;
+      
+      minA: Integer;
+      sumB: Integer;
+      
+      MX: Matrix(1..N, 1..N);
+      MR: Matrix(1..N, 1..N);
+      A: Vector(1..N);
+      Ah: Vector(1..H);
+      Z: Vector(1..N);
+      Zh: Vector(1..H);
+      D: Vector(1..N);
+      Dh: Vector(1..H);
+      C: Vector(1..N);
+      Ch: Vector(1..H);
+      B: Vector(1..N);
+      Bh: Vector(1..H);
+
+   begin
+      
+      accept init(newTasks: TaskStack) do
+         tasks := newTasks;
+      end init;
+      
+      Put_Line("Launched  T0");
+      MX := createMatrix;
+      B := createVector;
+      Tasks(1).submit_MX_B(MX, B);
+  
+   end T1;
+   
+     task body TP is
+      num: Integer := P - 1;
+      tasks: TaskStack(1..P-2);
+      
+      ai: Integer;
+      bi: Integer;
+      
+      minA: Integer;
+      sumB: Integer;
+      
+      MX: Matrix(1..N, 1..N);
+      MR: Matrix(1..N, 1..N);
+      A: Vector(1..N);
+      Ah: Vector(1..H);
+      Z: Vector(1..N);
+      Zh: Vector(1..H);
+      D: Vector(1..N);
+      Dh: Vector(1..H);
+      C: Vector(1..N);
+      Ch: Vector(1..H);
+      B: Vector(1..N);
+      Bh: Vector(1..H);
+
+   begin
+      
+      accept init(newTasks: TaskStack) do
+         tasks := newTasks;
+      end init;
+      
+      Put_Line("Launched  T" & Integer'Image(num));
+     
+     accept submit_MX_B(newMX: in Matrix; newB: in Vector) do
+     Put_Line("Got MX_B:" & Integer'Image(num));
+         MX := newMx;
+         B := newB;
+     end submit_MX_B;
+      
+   end TP;
+   
+
+      
+   Tasks : TaskStack(1..P-2);
+   Task1: T1Ref := new T1;
+   TaskP: TPRef := new TP;
    
 begin
    
-   T1.init(null, T2, 0);
-   T2.init(T1, TP, 1);
-   TP.init(T2, null, 2);
+   for i in Tasks'Range(1) loop
+      Tasks(i) := new T;
+   end loop;
+   
+   Task1.init(Tasks);
+   TaskP.init(Tasks);
 
+   for i in Tasks'Range(1) loop
+      Tasks(i).init(i, Tasks, Task1, TaskP);
+   end loop;
 end Main;
