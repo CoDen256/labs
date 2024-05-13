@@ -196,68 +196,115 @@ procedure Main is
       return vectorPlusVector(left, right);
    end computeAh;
 
-   
-   type TSK;
-   
-   type TSK_Acc is access TSK;
-   
-   
-   task type TSK(prev: TSK_Acc) is 
-      entry MX_B(newMX: in Matrix; newB: in Vector);
-     end TSK;
 
-   --  type AbstractTask is task interface;
-   --  -- Task specifications for parallel processing
-   --  
-   --  type AbstractTask_Ref is access AbstractTask;
-   
+      type ITask;
+      type TRef is access ITask;
+      type ITask is task interface;
+      procedure init(X: in ITask; newNum: in Integer) is abstract;
 
-   --  task type T(prev: AbstractTask_Ref) is new AbstractTask with
-   --     entry MX_B(newMX: in Matrix; newB: in Vector);
-   --     --  entry Z_D_C_MR(newMA: in Matrix);
-   --     --  entry ai(newA: in Integer);
-   --     --  entry bi(newB: in Integer);
-   --     --  entry a_b(newA: in Integer; newB: in Integer);
-   --     --  entry Ah(newAh: in Vector);
-   --  end T;
-   
-   
 
-   task body TSK is
+      
+
+
+   
+   
+   task type T is new ITask with
+      entry init(newNum: in Integer);
+      
+      --  entry MX_B(newMX: in Matrix; newB: in Vector);
+      --  entry Z_D_C_MR(newMA: in Matrix);
+      --  entry ai(newA: in Integer);
+      --  entry bi(newB: in Integer);
+      --  entry a_b(newA: in Integer; newB: in Integer);
+      --  entry Ah(newAh: in Vector);
+   end T;
+   
+   task type T1 is new ITask with
+      entry init(newNum: in Integer);
+   end T1;
+ 
+      
+   
+   
+   task body T is
+      
+      --  prev: TRef;
+      --  next: TRef;
+      num: Integer;
+   
+      --  MA: Matrix(1..N, 1..N);
+      --  V: Vector(1..N);
+
+   begin
+      Put_Line("Launched just T");
+      accept init(newNum: in Integer) do
+         --  prev := newPrev;
+         --  next := newNext;
+         num := newNum;
+      end init;
+      
+     
+
+      --  accept MX_B(newMX: in Matrix; newB: in Vector) do
+      --  
+      --  end MX_B;
+
+
+      --  accept Z_D_C_MR(newMA: in Matrix) do
+      --  
+      --  end Z_D_C_MR;
+      --  
+      --  accept ai(newA: in Integer) do
+      --  
+      --  end ai;
+      --  
+      --  accept bi(newB: in Integer) do
+      --  
+      --  end bi;
+      --  
+      --  accept a_b(newA: in Integer; newB: in Integer) do
+      --  
+      --  end a_b;
+      --  
+      --  accept Ah(newAh: in Vector) do
+      --  
+      --  end Ah;
+      
+   end T;
+   
+   
+  task body T1 is
+      --  prev: TRef;
+      --  next: TRef;
+      num: Integer;
+   
       MA: Matrix(1..N, 1..N);
       V: Vector(1..N);
    begin
-      Put_line("Process 1 is started");
       
-      if prev = null then
-         Put_Line("Nullich");
-      else 
-         Put_Line("NonNullich");
-         prev.MX_B(MA, V);
-      end if;
-
-      --  Put_Line(Item => Integer'Image(prev));
+      Put_Line("Launched T1");
       
-      accept MX_B(newMX: in Matrix; newB: in Vector) do
-          Put_line("Process 1 is MX_B'ed");
-        end MX_B;
-       
       
-      MA := createMatrix;
-      V := createVector;
-      Put_line("Process 1 is ended");
-
-      outputMatrix(MA);
-      outputVector(V);
-
-      Put(Item => Integer'Image(vectorByVector(V,V)) & " ");
       
-   end TSK;
+      accept init(newNum: in Integer) do
+         --  prev := newPrev;
+         --  next := newNext;
+         num := newNum;
+      end init;
+      
+      --  next.init(prev, next, num);
+      
+      end T1;
    
-   --  T1: T := new T(null);
-   --  T2: T(T1);
-   T1: TSK_Acc := new TSK(null);
-   T2: TSK(T1);
+   T1: TRef := new T1;
+   T2: TRef := new T;
+   --  TP: TRef := new T;
+   
 begin
-   null;
+   
+   T1.init(0);
+   T2.init(1);
+   --  T2.init(T1, TP, 1);
+   --  TP.init(T2, null, 2);
+
 end Main;
