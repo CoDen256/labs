@@ -2,10 +2,10 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 
 procedure Main is
-   N: Integer := 4;
-   P: Integer := 8;
+   N: Integer := 16;
+   P: Integer := 16;
    H: Integer := N/P;
-   Cnst: Integer := 2;
+   Cnst: Integer := 16;
 
    type Vector is array(Integer range <>) of Integer;
    type Matrix is array(Integer range <>, Integer range <>) of Integer;
@@ -176,10 +176,12 @@ procedure Main is
    function computeMAh(MX: Matrix; MR: Matrix; chunkNum: Integer) return Matrix is
       MRh: Matrix(1..N, 1..H);
       MXxMRh: Matrix(1..N, 1..H);
+      Transposed: Matrix(1..H, 1..N);
    begin
       MRh := getMatrixChunk(MR, chunkNum);
       MXxMRh := matrixByMatrix(MX, MRh);
-      return transpose(MXxMRh);
+      Transposed := transpose(MXxMRh);
+      return Transposed;
    end computeMAh;
 
    function computeAh(bi: Integer; Z: Vector; D: Vector; MAh: Matrix; ai: Integer; chunkNum: Integer) return Vector is
@@ -189,8 +191,9 @@ procedure Main is
       right: Vector(1..H);
    begin
       Zh := getVectorChunk(Z, chunkNum);
-      left := scalarByVector(bi, Z);
-      DxMAh := vectorByMatrix(D, MAh);
+      left := scalarByVector(bi, Zh);
+      
+      DxMAh := vectorByMatrix(D, MAh); -- (H x N) * (N x 1)
       right := scalarByVector(ai, DxMAh);
 
       return vectorPlusVector(left, right);
@@ -252,7 +255,7 @@ procedure Main is
       MR: Matrix(1..N, 1..N);
       A: Vector(1..N);
       Ah: Vector(1..H);
-      MAh: Matrix(1..N, 1..H);
+      MAh: Matrix(1..H, 1..N);
       
       Z: Vector(1..N);
       D: Vector(1..N);
@@ -302,16 +305,17 @@ procedure Main is
          Tasks(num-1).submit_Z_D_C_MR(Z,D,C,MR);
       end if;
       
+      Put_Line("Calculating a: "&Integer'Image(num));
       ---
       ai := computeAi(D, num);
-      Put_Line("Calculated a"&Integer'Image(num) & " = " & Integer'Image(ai));
+      Put_Line("Calculated a"& Integer'Image(num) & " = " & Integer'Image(ai));
       
       accept submit_ai(newA: in Integer) do
-         Put_Line("Got 'a' from previous"&newA);
+         Put_Line("Got 'a' from previous" & Integer'Image(newA));
          aiSmaller := Integer'Min(ai, newA);
       end submit_ai;
       
-      Put_Line("Submitting min" & aiSmaller);
+      Put_Line("Submitting min" & Integer'Image(aiSmaller));
       if (num = P - 2) then
          Put_Line("submitting ai to the last one");
          last.submit_ai(aiSmaller);
@@ -323,14 +327,14 @@ procedure Main is
       
       ---
       bi := computeBi(B, C, num);
-      Put_Line("Calculated b"&Integer'Image(num) & " = " & Integer'Image(bi));
+      Put_Line("Calculated b"& Integer'Image(num) & " = " & Integer'Image(bi));
       
       accept submit_bi(newB: in Integer) do
-         Put_Line("Got 'b' from previous"&newB);
+         Put_Line("Got 'b' from previous"&Integer'Image(newB));
          biPlus := bi + newB;
       end submit_bi;
       
-      Put_Line("Submitting sum" & biPlus);
+      Put_Line("Submitting sum" & Integer'Image(biPlus));
       if (num = P - 2) then
          Put_Line("submitting bi to the last one");
          last.submit_bi(biPlus);
@@ -342,24 +346,23 @@ procedure Main is
       
       --
       accept submit_a_b(newA: in Integer; newB: in Integer) do
-         Put_Line("Got a and b: "& Integer'Image(num));
+         Put_Line("Got a and b ["& Integer'Image(num) & "]->" & Integer'Image(newA) &" " & Integer'Image(newB));
          minA:=newA;
          sumB:=newB;
       end submit_a_b;
       
-      Put_Line("Submitting a and b" & a & b);
+      Put_Line("Submitting a and b" & Integer'Image(minA) &" " & Integer'Image(sumB));
        if (num = 1) then
-         Put_Line("submitting a&b to the first one");
-         first.submit_a_b(a,b);
+         Put_Line("submitting a&b to the first one:");
+         first.submit_a_b(minA,sumB);
       else 
          Put_Line("submitting a&b from" & Integer'Image(num) & " to " & Integer'Image(num-1));
-         Tasks(num-1).submit_a_b(a,b);
+         Tasks(num-1).submit_a_b(minA,sumB);
       end if;
       
       ---
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
-     
       
       accept submit_A(newA: in Vector) do
          Put_Line("Got Ah: "& Integer'Image(num));
@@ -391,7 +394,7 @@ procedure Main is
       
       minA: Integer;
       sumB: Integer;
-      MAh: Matrix(1..N, 1..H);
+      MAh: Matrix(1..H, 1..N);
       MX: Matrix(1..N, 1..N);
       MR: Matrix(1..N, 1..N);
       A: Vector(1..N);
@@ -423,7 +426,7 @@ procedure Main is
              MR := newMR;
       end submit_Z_D_C_MR;
       
-      
+      Put_Line("Calculating a");
       ---
       ai := computeAi(D, num);
       Put_Line("Calculated a"&Integer'Image(num) & " = " & Integer'Image(ai));
@@ -442,7 +445,7 @@ procedure Main is
       
       --
       accept submit_a_b(newA: in Integer; newB: in Integer) do
-         Put_Line("Got a and b: "& Integer'Image(num));
+         Put_Line("Got a and b ["& Integer'Image(num) & "]->" & Integer'Image(newA) &" " & Integer'Image(newB));
          minA:=newA;
          sumB:=newB;
       end submit_a_b;
@@ -450,7 +453,7 @@ procedure Main is
       ---
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
-     
+      Put_Line("Computed Ah[ " & Integer'Image(num) & "]");
       
       accept submit_A(newA: in Vector) do
          Put_Line("Got Ah: "& Integer'Image(num));
@@ -459,7 +462,7 @@ procedure Main is
         
       insertVectorChunk(A, Ah, num);
       
-      outputMatrix(A);
+      outputVector(A);
       
       Put_Line("Done" & Integer'Image(num));
   
@@ -477,7 +480,7 @@ procedure Main is
       
       MX: Matrix(1..N, 1..N);
       MR: Matrix(1..N, 1..N);
-      MAh: Matrix(1..N, 1..H);
+      MAh: Matrix(1..H, 1..N);
       A: Vector(1..N);
       Ah: Vector(1..H);
       Z: Vector(1..N);
@@ -515,7 +518,7 @@ procedure Main is
       Put_Line("Calculated a"&Integer'Image(num) & " = " & Integer'Image(ai));
       
       accept submit_ai(newA: in Integer) do
-         Put_Line("Got 'a' from previous"&newA);
+         Put_Line("Got 'a' from previous"&Integer'Image(newA));
          minA := Integer'Min(ai, newA);
       end submit_ai;
       
@@ -526,17 +529,18 @@ procedure Main is
       Put_Line("Calculated b"&Integer'Image(num) & " = " & Integer'Image(bi));
       
       accept submit_bi(newB: in Integer) do
-         Put_Line("Got 'b' from previous"&newB);
+         Put_Line("Got 'b' from previous"&Integer'Image(newB));
          sumB := bi + newB;
       end submit_bi;
       
 
-      Put_Line("Submitting a&b" & minA & " " & sumB);
+      Put_Line("Submitting a&b" & Integer'Image(minA) & " " & Integer'Image(sumB));
       Tasks(num-1).submit_a_b(minA, sumB);
 
       ---
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
+      Put_Line("Computed Ah[ " & Integer'Image(num) & "]");
         
       insertVectorChunk(A, Ah, num);
       
