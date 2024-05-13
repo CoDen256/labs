@@ -291,7 +291,7 @@ procedure Main is
    end T;
    
 
-   --- Implementation of the Tasks
+   --- Implementation of an inner chain Task
    task body T is
       num: Integer; -- the num of the task
       tasks: TaskStack(1..P-2);  -- the reference to the task chain (task list)
@@ -323,7 +323,7 @@ procedure Main is
       B: Vector(1..N);
 
    begin
-      
+      -- Just for initializing, no logic in a parallel programming sense, no message passing
       accept init(newNum: in Integer;  newTasks: in TaskStack; head : in T0Ref; tail: in TPRef) do
          num := newNum;
          tasks := newTasks;
@@ -331,20 +331,23 @@ procedure Main is
          last := tail;
       end init;
       
-      ---
+      --- Waiting for MX and B to be passed from this task's predecessor
       accept submit_MX_B(newMX: in Matrix; newB: in Vector) do
          MX := newMx;
          B := newB;
       end submit_MX_B;
       
+      -- Got MX and B, lets propagate it further into the chain to this task's successor
       if (num = P - 2) then
+         -- It means there are no tasks in the chain left this is the last one, pass it to the tail of the chain.
          last.submit_MX_B(MX, B);
       else 
+         -- Pass MX,B to our successor
          Tasks(num+1).submit_MX_B(MX,B);
       end if;
       
       
-      ---
+      --- Waiting for Z,D,C,MR to be passed from this taks's successor (successor because in the opposite direction: from TP to T0)
       accept submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix) do
              Z := newZ;
              D := newD;
@@ -352,46 +355,63 @@ procedure Main is
              MR := newMR;
       end submit_Z_D_C_MR;
       
+      -- Got Z,D,C,MR lets propagate it further to our predecessor
       if (num = 1) then
+         -- This task is first in the chain, thus no more tasks left. pass it to the head of the chain
          first.submit_Z_D_C_MR(Z,D,C,MR);
       else 
+         -- Pass it to the predecessor
          Tasks(num-1).submit_Z_D_C_MR(Z,D,C,MR);
       end if;
       
-      ---
+      --- 
+      -- Computing ai
       ai := computeAi(D, num);
       
+      -- Waiting for a(i-1) from our predecessor
       accept submit_ai(newA: in Integer) do
+         -- compute the smallest of both (ai and a(i-1))
          aiSmaller := Integer'Min(ai, newA);
       end submit_ai;
       
+      -- Propagate the smallest of both ai to our successor
       if (num = P - 2) then
+         -- We are the last one, pass to the tail ('last' is the  tail task)
          last.submit_ai(aiSmaller);
       else 
+         -- Pass to the next task in the chain
          Tasks(num+1).submit_ai(aiSmaller);
       end if;
       
       
       ---
+      -- Computing bi
       bi := computeBi(B, C, num);
       
+      -- Waiting for bi from our predecessor
       accept submit_bi(newB: in Integer) do
+         -- Summing our bi with the b(i-1) of the predecessor
          biPlus := bi + newB;
       end submit_bi;
       
+      -- Pass the sum further
       if (num = P - 2) then
+         -- This is  the last one task in the chain, give it to the tail of the task chain
          last.submit_bi(biPlus);
       else 
+         -- Or Pass the sum to the next task
          Tasks(num+1).submit_bi(biPlus);
       end if;
 
       
       --
+      -- Wait for a,b to be propagated to us by the successor
       accept submit_a_b(newA: in Integer; newB: in Integer) do
          minA:=newA;
          sumB:=newB;
       end submit_a_b;
       
+      -- Propagate further to predecessor or the head of the chain
        if (num = 1) then
          first.submit_a_b(minA,sumB);
       else 
@@ -399,15 +419,17 @@ procedure Main is
       end if;
       
       ---
+      -- Computing Ah
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
       
+      -- Waiting for the aggregated matrix of our successors. They've build up the matrix chunk by chunk and passed it to us
       accept submit_A(newA: in Vector) do
          A := newA;
       end submit_A;
         
+      -- Now its our turn to place our chunk in the matrix and pass it down to the predecessors(or the head)
       insertVectorChunk(A, Ah, num);
-      
        if (num = 1) then
          first.submit_A(A);
       else 
@@ -441,17 +463,20 @@ procedure Main is
       B: Vector(1..N);
 
    begin
-      
+      -- Just for getting the reference to the task chain
       accept init(newTasks: TaskStack) do
          tasks := newTasks;
       end init;
       
       ---
+      -- Creating MX, B 
       MX := createMatrix;
       B := createVector;
-      Tasks(num+1).submit_MX_B(MX, B);
+      -- Passing the matrices upstream to the next task in the chain. He, in turn, will pass it to its successor and so on.
+      Tasks(num+1).submit_MX_B(MX, B); -- Actually its always the Task with num=1, since we are the head.
       
       ---
+      -- Wait for Z,D,C,MR to be passed down to us from TP. We are the head of the chain, no tasks further.
       accept submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix) do
              Z := newZ;
              D := newD;
@@ -460,33 +485,41 @@ procedure Main is
       end submit_Z_D_C_MR;
       
       ---
+      -- Compute ai
       ai := computeAi(D, num);
       
+      -- Pass ai to the next task. Each next task will compute ai and compare it with the a(i-1) of its predecessor and so on and pass the minimum to its successor.
       Tasks(num+1).submit_ai(ai);
       
       
       ---
+      --- Compute bi and pass it upstream to the next task (same as ai)
       bi := computeBi(B, C, num);
 
       Tasks(num+1).submit_bi(bi);
 
       
       --
+      -- Wait for the min(a0...aP) and b0+...bP to come down to us from TP.
       accept submit_a_b(newA: in Integer; newB: in Integer) do
          minA:=newA;
          sumB:=newB;
       end submit_a_b;
       
       ---
+      -- Compute MAh and Ah
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
       
+      -- Wait for the built up matrix A. This matrix will contain the matrix filled with all the chunks of all tasks from T1..TP. Only one chunk left to insert: our chunk.
       accept submit_A(newA: in Vector) do
          A := newA;
       end submit_A;
-        
+      
+      -- Insert our last chunk and complete the matrix fully.
       insertVectorChunk(A, Ah, num);
       
+      -- We have completed matrix A, print it out
       outputVector(A);
         
    end T0;
@@ -518,31 +551,37 @@ procedure Main is
 
    begin
       
+      -- Helper entry to get reference to the task list
       accept init(newTasks: TaskStack) do
          tasks := newTasks;
       end init;
       
      
       ---
+      -- Waiting for the MX, B to come up to us from the T0(head)
      accept submit_MX_B(newMX: in Matrix; newB: in Vector) do
          MX := newMx;
          B := newB;
       end submit_MX_B;
       
       ---
+      -- Create Z,D,C,MR
       Z := createVector;
       D := createVector;
       C := createVector;
       MR := createMatrix;
       
+      -- Pass them downstream to the predecessor. Each task will pass it to its predecessor and so on until the head T0.
       Tasks(num-1).submit_Z_D_C_MR(Z, D, C, MR);
       
       
       ---
+      -- Compute our ai
       ai := computeAi(D, num);
       
+      -- Wait for the a(i-1) of the previous task. This a(i-1) willl contain the minimum of all ai's from the previous task except our ai
       accept submit_ai(newA: in Integer) do
-         minA := Integer'Min(ai, newA);
+         minA := Integer'Min(ai, newA); -- this basically is min(a0....aP), because newA=min(a(P-1), a(P-2)) and so on...
       end submit_ai;
       
       
@@ -550,20 +589,21 @@ procedure Main is
       ---
       bi := computeBi(B, C, num);
       
+      -- Wait for b(i-1) of the previos task, which is the sum of all bi's up to bP.
       accept submit_bi(newB: in Integer) do
-         sumB := bi + newB;
+         sumB := bi + newB; -- this is basically the sum of b0 + b1 + b2 + ... bP
       end submit_bi;
       
 
+      -- Since we (the tail of the chain) have the minimum of all a's and the sum of all b's pass them down the chain to propagate.
       Tasks(num-1).submit_a_b(minA, sumB);
 
       ---
       MAh := computeMAh(MX, MR, num);
       Ah := computeAh(sumB, Z, D, MAh, minA, num);
         
+      -- Compute Ah, we are the first one to start building up the matrix (A). Insert our chunk in the empty matrix and pass it downstream to the T0, where it will be fully completed.
       insertVectorChunk(A, Ah, num);
-      
-  
       Tasks(num-1).submit_A(A);
       
       
