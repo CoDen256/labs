@@ -205,7 +205,7 @@ procedure Main is
    task type T is
       entry init(newPrev: in TRef; newNext: in TRef; newNum: in Integer);
       entry submit_MX_B(newMX: in Matrix; newB: in Vector);
-      entry submit_Z_D_C_MR(newMA: in Matrix);
+      entry submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix);
       entry submit_ai(newA: in Integer);
       entry submit_bi(newB: in Integer);
       entry submit_a_b(newA: in Integer; newB: in Integer);
@@ -261,15 +261,31 @@ procedure Main is
          end submit_MX_B;
       end if;
 
-      -- IF not T1..TP-1
-      if next /= null then
+      -- If TP
+      if next = null then
+         Z := createVector;
+         D := createVector;
+         C := createVector;
+         MR := createMatrix;
+      else 
          next.submit_MX_B(MX, B);
+         accept submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix) do
+            Put_Line("Got Z_D_C_MR:"& Integer'Image(num));
+            Z := newZ;
+            D := newD;
+            C := newC;
+            MR := newMR;
+         end submit_Z_D_C_MR;
+      end if;
+      
+      if prev /= null then
+         prev.submit_Z_D_C_MR(Z, D, C, MR);
       end if;
 
       
-      --  accept submit_Z_D_C_MR(newMA: in Matrix) do
-      --  Put_Line("");
-      --  end submit_Z_D_C_MR;
+      
+      
+
       --  
       --  accept submit_ai(newA: in Integer) do
       --  Put_Line("");
