@@ -2,14 +2,22 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 
 procedure Main is
+   -- The number of elements
    N: Integer := 16;
+   -- The number of tasks
    P: Integer := 16;
+   -- The size of a chunk to process for each task
    H: Integer := N/P;
+   -- Fill value for the matrices and vectors
    Cnst: Integer := 16;
 
+   ---- Helper procedures for calculations ----
+
+   -- Define type for the Vector and Matrix, used in computations
    type Vector is array(Integer range <>) of Integer;
    type Matrix is array(Integer range <>, Integer range <>) of Integer;
 
+   -- Print out the given vector
    procedure outputVector(V : in Vector) is
    begin
       Put ("[");
@@ -20,18 +28,7 @@ procedure Main is
    end outputVector;
 
 
-   procedure outputMatrix(M : in Matrix) is
-   begin
-      for i in M'Range(1) loop
-         Put ("    [");
-         for j in M'Range(2) loop
-            Put(Item => Integer'Image(M(i, j)) & " ");
-         end loop;
-         Put_Line("]");
-      end loop;
-   end outputMatrix;
-
-
+   -- Create a Vector filled by the fill value
    function createVector return Vector is
       vector_buf: Vector(1..N);
       begin
@@ -41,6 +38,7 @@ procedure Main is
          return vector_buf;
       end createVector;
 
+   -- Create a Matrix filled by the fill value
    function createMatrix return Matrix is
       matrix_buf: Matrix(1..N, 1..N);
       begin
@@ -53,6 +51,7 @@ procedure Main is
       end createMatrix;
 
    --  (N x N) -> (N x H)
+   -- Get a chunk (of size N x H) of a matrix based on the given chunk num. 
    function getMatrixChunk(MO: Matrix; chunkNum: Integer) return Matrix is
       M: Matrix(1..N, 1..H);
    begin
@@ -64,6 +63,8 @@ procedure Main is
       return M;
    end getMatrixChunk;
 
+   -- (N x 1) -> (H x 1)
+   -- Get a chunk (of size H) of a vector based on the given chunk num
    function getVectorChunk(VO: Vector; chunkNum: Integer) return Vector is
          V: Vector(1..H);
       begin
@@ -73,6 +74,7 @@ procedure Main is
          return V;
       end getVectorChunk;
 
+   -- Insert the given chunk(V) into the given Vector (VO) based on the given chunk num
    procedure insertVectorChunk(VO: out Vector; V: Vector; chunkNum: Integer) is
       begin
          for i in 1 .. H loop
@@ -80,6 +82,7 @@ procedure Main is
          end loop;
       end insertVectorChunk;
 
+   -- Calculate the minimum of the vector
    function min(Vec: Vector) return Integer is
       Result : Integer;
    begin
@@ -93,6 +96,7 @@ procedure Main is
    end min;
 
    -- (H x N) x (N x 1) -> (H x 1)
+   -- Multiple given matrix by a vector
    function vectorByMatrix(Vec: Vector; Mat: Matrix) return Vector is
          V: Vector(Mat'Range(1));
          sum: Integer;
@@ -107,6 +111,8 @@ procedure Main is
          return V;
       end vectorByMatrix;
 
+   -- (N x 1) x (N x 1) -> (N x 1)
+   -- Multiply given vectors
    function vectorByVector(Vec0: Vector; Vec1: Vector) return Integer is
          sum: Integer;
       begin
@@ -117,6 +123,7 @@ procedure Main is
          return sum;
       end vectorByVector;
 
+   -- Multiple given matrices
    function matrixByMatrix(Mat1, Mat2: Matrix) return Matrix is
       Result : Matrix(Mat1'Range(1), Mat2'Range(2));
    begin
@@ -131,6 +138,8 @@ procedure Main is
       return Result;
    end matrixByMatrix;
 
+   -- (N x H) -> (H x N)
+   -- Transpose the given matrix
    function transpose(Mat: Matrix) return Matrix is
       Result : Matrix(Mat'Range(2), Mat'Range(1));
    begin
@@ -142,6 +151,7 @@ procedure Main is
       return Result;
    end transpose;
 
+   -- Sum the vector values
    function vectorPlusVector (Vec1, Vec2: Vector) return Vector is
       Result : Vector(Vec1'Range(1));
    begin
@@ -151,6 +161,8 @@ procedure Main is
       return Result;
    end vectorPlusVector;
 
+
+   -- Multiple given vector by a scalar
    function scalarByVector (Scalar: Integer; Vec: Vector) return Vector is
       Result : Vector(Vec'Range(1));
    begin
@@ -160,11 +172,16 @@ procedure Main is
       return Result;
    end scalarByVector;
 
+
+   ---- Helper procedures/functions used by tasks to compute a given formula ----
+
+   --- a_i = min(Dh)
    function computeAi(D: Vector; chunkNum: Integer) return Integer is
    begin
       return min(getVectorChunk(D, chunkNum));
    end computeAi;
 
+   --- b_i = Bh x Ch
    function computeBi(B: Vector; C: Vector; chunkNum: Integer) return Integer is
    begin
       return vectorByVector(
@@ -173,6 +190,8 @@ procedure Main is
       );
    end computeBi;
 
+   --- MAh = (MX x MRh)^T
+   --- The result is additionally transposed
    function computeMAh(MX: Matrix; MR: Matrix; chunkNum: Integer) return Matrix is
       MRh: Matrix(1..N, 1..H);
       MXxMRh: Matrix(1..N, 1..H);
@@ -184,6 +203,7 @@ procedure Main is
       return Transposed;
    end computeMAh;
 
+   -- Ah = (b_i x Zh) + (D x MAh x a_i)
    function computeAh(bi: Integer; Z: Vector; D: Vector; MAh: Matrix; ai: Integer; chunkNum: Integer) return Vector is
       Zh: Vector(1..H);
       left: Vector(1..H);
@@ -193,38 +213,75 @@ procedure Main is
       Zh := getVectorChunk(Z, chunkNum);
       left := scalarByVector(bi, Zh);
       
-      DxMAh := vectorByMatrix(D, MAh); -- (H x N) * (N x 1)
+      DxMAh := vectorByMatrix(D, MAh);    -- (H x N) * (N x 1)
       right := scalarByVector(ai, DxMAh);
 
       return vectorPlusVector(left, right);
    end computeAh;
 
-   
+   ---- Task definitions ----
+
+   ---- There are 3 different task types used to implement the linear model
+   ---- 1. T0 is the head of the task chain  (Creating MX, B + Outputing the result A)
+   ---- 2. TP is the tail of the task chain  (Creating Z,D,C,MR)
+   ---- 3. T is an inner node within the task chain 
+
+   ---- Communication diagram 
+   ---- (For example, 8 tasks. T0 - head, TP - tail. T1 - next after the head. T6 the task before the last TP)
+
+   ---- 1. [T0] ->     MX,B     -> [T1] ->     MX,B     -> ... -> [T6] ->     MX,B     -> [TP]   # T0 creats MX, B and propagates chainwise until TP     [-> = submit_MX_B]
+   ---- 2. [T0] <-   Z,D,C,MR   <- [T1] <-   Z,D,C,MR   <- ... <- [T6] <-   Z,D,C,MR   <- [TP]   # TP creates Z,D,C,MR and propagates chainwise until T0 [<- = submit_Z_D_C_MR]
+   ---- 3. [T0] ->      a0      -> [T1] ->  min(a0,a1)  -> ... -> [T6] ->  min(a5,a6)  -> [TP]   # T0 computes a0 and propagates. Each next task computes ai, receives a(i-1) and propagates min(ai, a(i-1)). TP has min(a0, a1...aP) in the end [-> = submit_ai]
+   ---- 4. [T0] ->      b0      -> [T1] ->    b0 + b1   -> ... -> [T6] ->    b0 + b1   -> [TP]   # T0 computes b0 and propagates. Each next task computes bi, receives b(i-1) and propagates bi + b(i-1). TP has (b0+b1...bP) in the end. [-> = submit_bi]
+   ---- 5. [T0] <-     a, b     <- [T1] <-     a, b     <- ... <- [T6] <-     a, b     <- [TP]   # TP has both min(a0, a1...aP) and (b0+b1...bP). TP Propagates both values chainwise to the downstream until T0 [<- = submit_a_b]
+   ---- 6. [T0] <-      Ah      <- [T1] <-      Ah      <- ... <- [T6] <-      Ah      <- [TP]   # TP computes Ah, inserts it to the empty matrix (A) and propagates. Each next task computes Ah, inserts it to the matrix (A) received from the previous. T0 has whole matrix A in the end. [<- = submit_A]
+ 
+
+   -- [T] The type of the inner nodes in the task chain (i.e. T1..T(P-1)). The actual definition follows later. 
    type T;
-   
+
+   -- The type of the reference to T (needed for definition to reference itself)
    type TRef is access T;
-   
+
+   -- The type for an array of references to the inner nodes in the task chain (array of T kinda...). It will contain all the inner nodes
    type TaskStack is array(Integer range <>) of TRef;
    
-   task type T1 is
+   
+   ---[T0] The type for the head task of the chain.
+   task type T0 is
+      -- Helper entry to provide this task with a reference to the chain of tasks. Not included in the logic of parallel processing.
       entry init(newTasks: TaskStack);
+
+      -- Actual entries for message passing
       entry submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix);
       entry submit_a_b(newA: in Integer; newB: in Integer);
       entry submit_A(newA: in Vector);
-   end T1;
+   end T0;
    
-   type T1Ref is access T1;
+   --- The type of the reference to T0
+   type T0Ref is access T0;
+
+
    
+   ---[TP] The type for the tail task of the chain.
    task type TP is
+      -- Helper entry to provide this task with a reference to the chain of tasks. Not included in the logic of parallel processing.
       entry init(newTasks: TaskStack);
+
+      -- Actual entries for message passing
       entry submit_MX_B(newMX: in Matrix; newB: in Vector);
       entry submit_ai(newA: in Integer);
       entry submit_bi(newB: in Integer);
    end TP;
    type TPRef is access TP;
    
+
+   -- [T] (Again) Actual definition of the inner node in the task chain
    task type T is 
-      entry init(newNum: in Integer;  newTasks: in TaskStack; f : in T1Ref; l: in TPRef);
+      -- Not needed in the message logic. Just a way to initialize a task. We prove a new task with a 1) unique number 2) the inner chain of tasks. 3) The head of the chain. 4) The tail of the chain
+      entry init(newNum: in Integer;  newTasks: in TaskStack; head : in T0Ref; tail: in TPRef);
+
+      -- Actual messages to pass between Tasks.
       entry submit_MX_B(newMX: in Matrix; newB: in Vector);
       entry submit_Z_D_C_MR(newZ, newD, newC: in Vector; newMR: in Matrix);
       entry submit_ai(newA: in Integer);
@@ -234,22 +291,25 @@ procedure Main is
    end T;
    
 
-   
+   --- Implementation of the Tasks
    task body T is
-      num: Integer;
-      tasks: TaskStack(1..P-2);
-      first: T1Ref;
-      last: TPRef;
+      num: Integer; -- the num of the task
+      tasks: TaskStack(1..P-2);  -- the reference to the task chain (task list)
+                       -- P-2 because T0 and TP are not in the chain (not in the task list)
+
+      first: T0Ref;  -- the reference to the head of the chain (T0)
+      last: TPRef;   -- the reference to the tail of the chain (TP)
 
    
+      -- Buffer variables for temporary use
       ai: Integer;
-      aiSmaller: Integer;
+      aiSmaller: Integer; -- contains min(ai, a(i-1))
       
-      bi: Integer;
-      biPlus: Integer;
+      bi: Integer;   
+      biPlus: Integer;   -- contains bi + b(i-1)
       
-      minA: Integer;
-      sumB: Integer;
+      minA: Integer;    -- contains min(a0,a1...aP)
+      sumB: Integer;    -- contains b0 + b1 + ... + bP
       
       MX: Matrix(1..N, 1..N);
       MR: Matrix(1..N, 1..N);
@@ -264,11 +324,11 @@ procedure Main is
 
    begin
       
-      accept init(newNum: in Integer;  newTasks: in TaskStack; f : in T1Ref; l: in TPRef) do
+      accept init(newNum: in Integer;  newTasks: in TaskStack; head : in T0Ref; tail: in TPRef) do
          num := newNum;
          tasks := newTasks;
-         first := f;
-         last := l;
+         first := head;
+         last := tail;
       end init;
       
       Put_Line("Launched  T" & Integer'Image(num));
@@ -384,11 +444,14 @@ procedure Main is
       
    end T;
    
-   
-  task body T1 is
+  -- Implementation of the head task 
+  task body T0 is
+      -- The number of the head task is always 0
       num: Integer:=0; 
+      -- The list of the other tasks in chain
       tasks: TaskStack(1..P-2);
       
+      -- Buffer variables for computations
       ai: Integer;
       bi: Integer;
       
@@ -466,12 +529,17 @@ procedure Main is
       
       Put_Line("Done" & Integer'Image(num));
   
-   end T1;
+   end T0;
    
-     task body TP is
+   -- The implementation of the tail task
+   task body TP is
+      -- the number of the tail is always P - 1
       num: Integer := P - 1;
+
+      -- the reference to the inner chain of the tasks
       tasks: TaskStack(1..P-2);
       
+      -- Helper variables for computations
       ai: Integer;
       bi: Integer;
       
@@ -555,21 +623,26 @@ procedure Main is
    end TP;
    
 
-      
+   -- Declare the chain of the task (but not filling out yet)
    Tasks : TaskStack(1..P-2);
-   Task1: T1Ref := new T1;
-   TaskP: TPRef := new TP;
+   -- The actual created instances of the head and tail tasks
+   T0_HEAD: T0Ref := new T0;
+   TP_TAIL: TPRef := new TP;
    
 begin
    
+   -- Filling the list(chain) of the tasks with actual instances.
    for i in Tasks'Range(1) loop
       Tasks(i) := new T;
    end loop;
    
-   Task1.init(Tasks);
-   TaskP.init(Tasks);
+   -- Provide the head and the tail with the list of the inner tasks.
+   T0_HEAD.init(Tasks);
+   TP_TAIL.init(Tasks);
 
+
+   -- Provide for each inner chain task its number, the list of other tasks, the head and the tail of the chain.
    for i in Tasks'Range(1) loop
-      Tasks(i).init(i, Tasks, Task1, TaskP);
+      Tasks(i).init(i, Tasks, T0_HEAD, TP_TAIL);
    end loop;
 end Main;
