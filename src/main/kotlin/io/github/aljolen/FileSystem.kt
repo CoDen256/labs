@@ -10,21 +10,22 @@ import io.github.aljolen.components.operations.Navigation
 import io.github.aljolen.components.operations.Printer
 import io.github.aljolen.utils.Link
 
-class FileSystem {
-    private lateinit var iNodeCounter: INodeCounter
-    private lateinit var hardLinkFactory: HardLinkFactory
-    private lateinit var dirFactory: DirFactory
-    private lateinit var softLinkFactory: SoftLinkFactory
-    private lateinit var printer: Printer
-    private lateinit var fileIO: FileIO
-    private lateinit var navigation: Navigation
-    private lateinit var fileEdit: FileEdit
-    private var ioSizeInBytes: Int = 0
+class FileSystem(
+    n: Int,
+    private var ioSizeInBytes: Int
+) {
+    private var iNodeCounter: INodeCounter = INodeCounter()
+    private var hardLinkFactory: HardLinkFactory = HardLinkFactory(iNodeCounter)
+    private var dirFactory: DirFactory = DirFactory(iNodeCounter)
+    private var softLinkFactory: SoftLinkFactory = SoftLinkFactory(iNodeCounter)
+    private var printer: Printer = Printer()
+    private var fileIO: FileIO
+    private var navigation: Navigation
+    private var fileEdit: FileEdit
 
-    constructor(n: Int, ioSizeInBytes: Int) {
+    init {
         val rootDir = dirFactory.create("root")
         navigation = Navigation(rootDir, rootDir)
-        this.ioSizeInBytes = ioSizeInBytes
         fileIO = FileIO(ioSizeInBytes)
         fileEdit = FileEdit(iNodeCounter, fileIO)
     }

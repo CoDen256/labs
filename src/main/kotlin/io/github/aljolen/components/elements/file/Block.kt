@@ -9,7 +9,7 @@ data class Block(
     }
 
     fun read(from: Int, to: Int): String {
-        check(from < to) { "Invalid range to read: $from .. $to" }
+        check(from <= to) { "Invalid range to read: $from .. $to" }
         return current.substring(from, to)
     }
 
