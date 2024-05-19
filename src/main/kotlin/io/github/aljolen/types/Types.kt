@@ -3,9 +3,10 @@ package io.github.aljolen.types
 import io.github.aljolen.components.elements.Dir
 import io.github.aljolen.components.elements.SoftLink
 
-interface TDirChild{
+interface TDirChild: TINodeOwner{
     val name: String
     var parent: Dir?
+    fun remove()
 }
 
 interface TDir {
@@ -18,9 +19,11 @@ interface TDirParent {
     val dirParent: Dir?
 }
 
-interface SoftLinkValue{
+interface SoftLinkValue: TDirChild{
     fun removeSoftLink(link: SoftLink)
 }
+
+interface ILink
 
 interface THardLink
 

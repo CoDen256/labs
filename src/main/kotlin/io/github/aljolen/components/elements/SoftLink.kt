@@ -4,19 +4,21 @@ import io.github.aljolen.types.SoftLinkValue
 import io.github.aljolen.types.TDirChild
 import io.github.aljolen.types.TINodeOwner
 
-data class SoftLink(
+class SoftLink(
     override val name: String,
-    override var parent: Dir?,
+    v: SoftLinkValue,
     override val node: Int,
 ) : TDirChild, TINodeOwner{
-    var value: SoftLinkValue? = null
+    override var parent: Dir? = null;
+
+    var value: SoftLinkValue? = v
         private set
 
     fun removeValue(){
         this.value = null
     }
 
-    fun remove(){
+    override fun remove(){
         this.parent?.removeChild(this)
         this.value?.removeSoftLink(this)
     }

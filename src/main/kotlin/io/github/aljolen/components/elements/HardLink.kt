@@ -24,7 +24,7 @@ data class HardLink(
 
     fun getSoftLinks() = HashSet(softLinks)
 
-    fun remove(){
+    override fun remove(){
         parent?.removeChild(this)
         file.removeHardLink(this)
         softLinks.forEach { it.removeValue() }

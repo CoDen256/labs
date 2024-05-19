@@ -40,7 +40,7 @@ data class Dir(
         children.add(child)
     }
 
-    fun remove(){
+    override fun remove(){
         parent?.removeChild(this)
         softLinks.forEach { it.removeValue() }
     }
