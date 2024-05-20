@@ -37,19 +37,19 @@ interface FS {
      * begin (hereinafter “offset”). The file just opened has zero offset. This
      * offset is specified for this fd only.
      */
-    fun seek(fd: Int, offset: Long)
+    fun seek(fd: Int, offset: Int)
 
     /**
      * Read size bytes of data from an open file, size is added to the offset
      * value.
      */
-    fun read(fd: Int, size: Long)
+    fun read(fd: Int, size: Int): ByteArray
 
     /**
      * Write size bytes of data to an open file, size is added to the offset
      * value.
      */
-    fun write(fd: Int, size: Long, value: ByteArray)
+    fun write(fd: Int, size: Int, value: ByteArray)
 
     /**
      * Create a hard link named name2 to the file pointed to by the hard link
@@ -64,7 +64,7 @@ interface FS {
      * Change the size of the file pointed to by the hard link named name. If
      * the file size increases, then the uninitialized data is zero.
      */
-    fun truncate(name: String, size: Long)
+    fun truncate(name: String, size: Int)
 }
 
 data class StatInfo(
@@ -92,6 +92,8 @@ data class FileDescriptor(
     val nblock: Int
         get() = map.size
 }
+
+class FileStream(var offset: Int, val id: Int, val fd: Int)
 
 enum class FileType {
     REGULAR, DIRECTORY

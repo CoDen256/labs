@@ -9,6 +9,7 @@ import io.github.aljolen.components.operations.FileIO
 import io.github.aljolen.components.operations.Navigation
 import io.github.aljolen.components.operations.Printer
 import io.github.aljolen.fs.*
+import io.github.aljolen.fs.storage.MemoryStorage
 import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
@@ -26,7 +27,9 @@ class DefaultFileSystem(
     private var fileEdit: FileEdit
 
     private val links = ArrayList<HardLink>()
-    private val fds = arrayOfNulls<FileDescriptor>(256)
+    private val files = arrayOfNulls<FileDescriptor>(256)
+    private val fds = arrayOfNulls<FileStream>(256 * 4)
+    private val storage = MemoryStorage(256, 256)
 
     init {
         val rootDir = dirFactory.create("root")
@@ -50,13 +53,13 @@ class DefaultFileSystem(
 //        fileEdit.close(iNode)
 //    }
 
-    fun seek(iNode: Int, offset: Int) {
-        fileEdit.seek(iNode, offset)
-    }
-
-    fun read(iNode: Int, size: Int): String {
-        return fileEdit.read(iNode, size)
-    }
+//    fun seek(iNode: Int, offset: Int) {
+//        fileEdit.seek(iNode, offset)
+//    }
+//
+//    fun read(iNode: Int, size: Int): String {
+//        return fileEdit.read(iNode, size)
+//    }
 
     fun write(iNode: Int, size: Int, value: String) {
         fileEdit.write(iNode, size, value)
@@ -112,7 +115,15 @@ class DefaultFileSystem(
     }
 
     override fun stat(name: String): StatInfo {
-        TODO("Not yet implemented")
+        return get(get(name)).let {
+            StatInfo(
+                it.id,
+                it.type,
+                it.size,
+                it.nlink,
+                it.nblock
+            )
+        }
     }
 
     override fun ls(): List<HardLink> {
@@ -142,11 +153,28 @@ class DefaultFileSystem(
     private fun newFile(): FileDescriptor {
         val fd = nextFileDescriptorId()
         val new = FileDescriptor(fd, FileType.REGULAR, 0,  java.util.ArrayList())
-        fds[fd] = new
+        files[fd] = new
         return new
     }
+
     private fun nextFileDescriptorId(): Int {
-        for ((index, fileDescriptor) in fds.withIndex()) {
+        for ((index, fileDescriptor) in files.withIndex()) {
+            if (fileDescriptor == null){
+                return index
+            }
+        }
+        throw IllegalArgumentException("Max amount of file descriptors exceeded: ${files.size}")
+    }
+
+    private fun newStream(id: Int): FileStream {
+        val fd = nextNumericFd()
+        val fileStream = FileStream(0, id, fd)
+        fds[fd] = fileStream
+        return fileStream
+    }
+
+    private fun nextNumericFd(): Int{
+        for ((index, fileDescriptor) in fds.withIndex()){
             if (fileDescriptor == null){
                 return index
             }
@@ -154,24 +182,79 @@ class DefaultFileSystem(
         throw IllegalArgumentException("Max amount of file descriptors exceeded: ${fds.size}")
     }
 
+
     override fun open(name: String): Int {
-        TODO("Not yet implemented")
+        return newStream(get(name)).id
     }
 
     override fun close(fd: Int) {
-        TODO("Not yet implemented")
+        fds[fd] = null
     }
 
-    override fun seek(fd: Int, offset: Long) {
-        TODO("Not yet implemented")
+    private fun getFileStream(fd: Int): FileStream {
+        return fds[fd] ?: throw IllegalStateException("FD $fd is not open")
     }
 
-    override fun read(fd: Int, size: Long) {
-        TODO("Not yet implemented")
+    override fun seek(fd: Int, offset: Int) {
+        val fileStream = getFileStream(fd)
+        fileStream.offset = offset
     }
 
-    override fun write(fd: Int, size: Long, value: ByteArray) {
-        TODO("Not yet implemented")
+    override fun read(fd: Int, size: Int): ByteArray {
+        val fileStream = getFileStream(fd)
+        val file = get(fileStream.id)
+
+        var current = fileStream.offset
+        var length = size
+        var result = ByteArray(size)
+
+        for (blockNum in file.map) {
+            if (length == 0) break
+            val block = storage.getBlock(blockNum)
+
+            if (current >storage.getBlockSize()) {
+                current -= storage.getBlockSize()
+                println(current)
+                continue
+            }
+
+            val lengthInTheBlock = minOf(length, storage.getBlockSize() - current)
+
+            result += block.read(current, current + lengthInTheBlock)
+            length -= lengthInTheBlock
+            current = 0
+        }
+        fileStream.offset += size
+        return result
+    }
+
+    override fun write(fd: Int, size: Int, value: ByteArray) {
+        val fileStream = getFileStream(fd)
+        val file = get(fileStream.id)
+
+        var left = fileStream.offset
+        val blocks = file.map.map { storage.getBlock(it) }.toMutableList()
+        var block = blocks.removeFirstOrNull()
+
+        var fullValue = value
+
+        while (block != null && fullValue.isNotEmpty()) {
+            if (left > storage.getBlockSize()) {
+                left -= storage.getBlockSize()
+                continue
+            }
+
+            val blockSize = storage.getBlockSize()
+            val writeLength = blockSize - left
+            val toWrite = fullValue.slice(0 until writeLength)
+
+            fullValue = fullValue.drop(writeLength).toByteArray()
+            block.write(left, toWrite.toByteArray())
+
+            left = 0
+            block = blocks.removeFirstOrNull()
+        }
+        fileStream.offset += size
     }
 
     override fun link(name1: String, name2: String): HardLink {
@@ -182,17 +265,25 @@ class DefaultFileSystem(
         rmHardLink(name)
     }
 
-    override fun truncate(name: String, size: Long) {
-        TODO("Not yet implemented")
+    override fun truncate(name: String, size: Int) {
+        val fullBlocksCount = (size / storage.getBlockSize())
+        val leftBlockSize = size % storage.getBlockSize()
+        val fd = get(get(name))
+        repeat(fullBlocksCount) {
+            val block = storage.newBlock()
+            fd.map.add(block.getId())
+        }
+
+//        if (leftBlockSize != 0) file.addBlock(Block(leftBlockSize))
+        fd.map.add(storage.newBlock().getId())
     }
 
 
     fun get(fileDescriptorId: Int): FileDescriptor {
-        return fds[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
+        return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
     }
 
     fun get(name: String): Int {
         return links.find { it.name == name }?.id ?: throw FileNotFoundException("File <$name> Not Found")
     }
-
 }
