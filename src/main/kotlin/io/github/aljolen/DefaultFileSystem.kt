@@ -12,7 +12,6 @@ import io.github.aljolen.fs.*
 import io.github.aljolen.fs.storage.Storage
 import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
-import java.nio.file.FileAlreadyExistsException
 import kotlin.math.abs
 
 class DefaultFileSystem(
@@ -27,7 +26,8 @@ class DefaultFileSystem(
     private var navigation: Navigation
     private var fileEdit: FileEdit
 
-    private val links = ArrayList<HardLink>()
+    private val directory: Directory = DefaultDirectory()
+
     private val files = arrayOfNulls<FileDescriptor>(256)
     private val fds = arrayOfNulls<FileStream>(256 * 4)
 
@@ -114,8 +114,9 @@ class DefaultFileSystem(
         return printer.getDirChildrenInfo(dir)
     }
 
-    override fun stat(name: String): StatInfo {
-        return get(get(name)).let {
+    override fun stat(pathname: String): StatInfo {
+        val fileDescriptorId = directory.get(Path(pathname)).id
+        return get(fileDescriptorId).let {
             StatInfo(
                 it.id,
                 it.type,
@@ -127,32 +128,34 @@ class DefaultFileSystem(
     }
 
     override fun ls(): List<HardLink> {
-        return links
+        return directory.ls()
     }
 
-    override fun create(name: String): HardLink {
+    override fun create(pathname: String): HardLink {
         val fd = newFile()
-
-        return newHardLink(name, fd.id)
+        return newHardLink(pathname, fd.id)
     }
 
-    private fun newHardLink(name: String, fd: Int): HardLink {
-        if (links.any{it.name == name}){ throw FileAlreadyExistsException("File with name $name already exists") }
-        val hardLink = HardLink(name, fd)
-        links.add(hardLink)
+    private fun newHardLink(path: String, fd: Int): HardLink {
         get(fd).nlink++
-        return hardLink
+        return directory.create(Path(path), fd)
     }
 
-    private fun rmHardLink(name: String) {
-        val link: HardLink = links.firstOrNull { it.name == name } ?: throw FileNotFoundException("No link with name $name")
-        links.remove(link)
-        get(link.id).nlink--
+    private fun rmHardLink(path: String) {
+        val (name, id) = directory.remove(Path(path))
+        get(id).nlink--
     }
 
     private fun newFile(): FileDescriptor {
         val fd = nextFileDescriptorId()
-        val new = FileDescriptor(fd, FileType.REGULAR, 0,  java.util.ArrayList())
+        val new = FileDescriptor(fd, FileType.REGULAR, 0)
+        files[fd] = new
+        return new
+    }
+
+    private fun newDir(): FileDescriptor {
+        val fd = nextFileDescriptorId()
+        val new = FileDescriptor(fd, FileType.DIRECTORY, 0)
         files[fd] = new
         return new
     }
@@ -183,8 +186,8 @@ class DefaultFileSystem(
     }
 
 
-    override fun open(name: String): Int {
-        return newStream(get(name)).id
+    override fun open(pathname: String): Int {
+        return newStream(directory.get(Path(pathname)).id).id
     }
 
     override fun close(fd: Int) {
@@ -271,16 +274,17 @@ class DefaultFileSystem(
         fileStream.offset += size
     }
 
-    override fun link(name1: String, name2: String): HardLink {
-        return newHardLink(name2, get(name1))
+    override fun link(pathname1: String, pathname2: String): HardLink {
+        return newHardLink(pathname2, directory.get(Path(pathname1)).id)
     }
 
-    override fun unlink(name: String) {
-        rmHardLink(name)
+    override fun unlink(pathname: String) {
+        rmHardLink(pathname)
     }
 
     override fun truncate(name: String, size: Int) {
-        val fd = get(get(name))
+        val fileDescriptorId = directory.get(Path(name)).id
+        val fd = get(fileDescriptorId)
         val diff = size - fd.size()
         if (diff == 0) return
         if (diff > 0) {
@@ -288,6 +292,26 @@ class DefaultFileSystem(
             return
         }
         subSize(diff, fd)
+    }
+
+    override fun mkdir(pathname: String): HardLink {
+        return directory.create(Path(pathname), newDir().id)
+    }
+
+    override fun rmdir(pathname: String): HardLink {
+        return directory.remove(Path(pathname))
+    }
+
+    override fun cd(pathname: String): HardLink {
+        return directory.cd(Path(pathname))
+    }
+
+    override fun cwd(): String {
+        return directory.path().toString()
+    }
+
+    override fun symlink(name: String) {
+        TODO("Not yet implemented")
     }
 
     private fun subSize(size: Int, fd: FileDescriptor) {
@@ -316,9 +340,5 @@ class DefaultFileSystem(
 
     internal fun get(fileDescriptorId: Int): FileDescriptor {
         return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
-    }
-
-    internal fun get(name: String): Int {
-        return links.find { it.name == name }?.id ?: throw FileNotFoundException("File <$name> Not Found")
     }
 }

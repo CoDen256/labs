@@ -1,11 +1,9 @@
 package io.github.aljolen.fs
 
-import io.github.aljolen.fs.storage.Storage
-
 interface FS {
 
     /** Output information about a file (file descriptor data). */
-    fun stat(name: String): StatInfo
+    fun stat(pathname: String): StatInfo
 
 
     /** Output a list of hard links to files with file descriptor numbers in a directory. */
@@ -15,7 +13,7 @@ interface FS {
      * Create a regular file and create a hard link named name to it in the
      * directory.
      */
-    fun create(name: String): HardLink
+    fun create(pathname: String): HardLink
 
 
     /**
@@ -26,7 +24,7 @@ interface FS {
      * file can be opened several times. The number of numeric file descriptors
      * can be limited
      */
-    fun open(name: String): Int
+    fun open(pathname: String): Int
 
     /**
      * Close previously opened file with numeric file descriptor fd, fd number
@@ -57,16 +55,27 @@ interface FS {
      * Create a hard link named name2 to the file pointed to by the hard link
      * named name1
      */
-    fun link(name1: String, name2: String): HardLink
+    fun link(pathname1: String, pathname2: String): HardLink
 
     /** Remove the hard link named name */
-    fun unlink(name: String)
+    fun unlink(pathname: String)
 
     /**
      * Change the size of the file pointed to by the hard link named name. If
      * the file size increases, then the uninitialized data is zero.
      */
-    fun truncate(name: String, size: Int)
+    fun truncate(pathname: String, size: Int)
+
+
+    fun mkdir(pathname: String): HardLink
+
+    fun rmdir(pathname: String): HardLink
+
+    fun cd(pathname: String): HardLink
+
+    fun cwd(): String
+
+    fun symlink(pathname: String)
 }
 
 data class StatInfo(
