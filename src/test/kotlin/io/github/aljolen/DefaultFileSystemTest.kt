@@ -100,6 +100,16 @@ class DefaultFileSystemTest {
 
     @Test
     fun stat() {
+        fs.create("test")
+        val (name, id0) = fs.create("test2")
+        fs.link("test2", "test3")
+
+        val (id, type, size, nlink, nblock) = fs.stat("test3")
+        assertEquals(id0, id)
+        assertEquals(FileType.REGULAR, type)
+        assertEquals(2, nlink)
+        assertEquals(0, size)
+        assertEquals(0, nblock)
     }
 
 

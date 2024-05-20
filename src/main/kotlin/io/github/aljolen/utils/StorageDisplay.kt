@@ -4,6 +4,7 @@ import io.github.aljolen.fs.storage.Block
 import io.github.aljolen.fs.storage.Storage
 
 class StorageDisplay {
+
     fun display(storage: Storage): String {
         val occupied = storage
             .getStorageBitMap()

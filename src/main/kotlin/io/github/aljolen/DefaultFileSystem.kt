@@ -131,13 +131,13 @@ class DefaultFileSystem(
     }
 
     override fun create(name: String): HardLink {
-        if (links.any{it.name == name}){ throw FileAlreadyExistsException("File with name $name already exists") }
         val fd = newFile()
 
         return newHardLink(name, fd.id)
     }
 
     private fun newHardLink(name: String, fd: Int): HardLink {
+        if (links.any{it.name == name}){ throw FileAlreadyExistsException("File with name $name already exists") }
         val hardLink = HardLink(name, fd)
         links.add(hardLink)
         get(fd).nlink++
@@ -279,11 +279,11 @@ class DefaultFileSystem(
     }
 
 
-    fun get(fileDescriptorId: Int): FileDescriptor {
+    internal fun get(fileDescriptorId: Int): FileDescriptor {
         return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
     }
 
-    fun get(name: String): Int {
+    internal fun get(name: String): Int {
         return links.find { it.name == name }?.id ?: throw FileNotFoundException("File <$name> Not Found")
     }
 }
