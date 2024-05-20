@@ -24,33 +24,32 @@ interface FS {
      * file can be opened several times. The number of numeric file descriptors
      * can be limited
      */
-    fun open(fd: FileDescriptorId)
-    fun open(name: String): FileDescriptorId
+    fun open(name: String): Int
 
     /**
      * Close previously opened file with numeric file descriptor fd, fd number
      * becomes free.
      */
-    fun close(fd: FileDescriptorId)
+    fun close(fd: Int)
 
     /**
      * Specify the offset for the open file where the next read or write will
      * begin (hereinafter “offset”). The file just opened has zero offset. This
      * offset is specified for this fd only.
      */
-    fun seek(fd: FileDescriptorId, offset: Long)
+    fun seek(fd: Int, offset: Long)
 
     /**
      * Read size bytes of data from an open file, size is added to the offset
      * value.
      */
-    fun read(fd: FileDescriptorId, size: Long)
+    fun read(fd: Int, size: Long)
 
     /**
      * Write size bytes of data to an open file, size is added to the offset
      * value.
      */
-    fun write(fd: FileDescriptorId, size: Long)
+    fun write(fd: Int, size: Long, value: ByteArray)
 
     /**
      * Create a hard link named name2 to the file pointed to by the hard link
@@ -69,7 +68,7 @@ interface FS {
 }
 
 data class StatInfo(
-    val id: FileDescriptorId,
+    val id: Int,
     val type: FileType,
     val size: Int,
     val nlink: Int,
@@ -78,30 +77,25 @@ data class StatInfo(
 
 data class HardLink(
     val name: String,
-    val id: FileDescriptorId
+    val id: Int
 )
 
 data class FileDescriptor(
-    val id: FileDescriptorId,
+    val id: Int,
     val type: FileType,
     var nlink: Int,
-    var size: Int,
-    val map: MutableList<BlockId> = ArrayList()
+    val map: MutableList<Int> = ArrayList()
 ) {
+    val size: Int
+        get() = map.size
+
     val nblock: Int
         get() = map.size
 }
 
-
 enum class FileType {
     REGULAR, DIRECTORY
 }
-
-@JvmInline
-value class FileDescriptorId(val id: Int)
-
-@JvmInline
-value class BlockId(val id: Int)
 
 
 

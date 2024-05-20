@@ -1,7 +1,5 @@
 package io.github.aljolen
 
-import io.github.aljolen.fs.FS
-import io.github.aljolen.fs.FileDescriptorId
 import io.github.aljolen.fs.FileType
 import io.github.aljolen.fs.HardLink
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -11,6 +9,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
+
 
 class DefaultFileSystemTest {
 
@@ -24,27 +23,26 @@ class DefaultFileSystemTest {
     @Test
     fun create_ls() {
 
-        assertThrows<FileNotFoundException> { fs.get(FileDescriptorId(0)) }
+        assertThrows<FileNotFoundException> { fs.get(0) }
         assertTrue(fs.ls().isEmpty())
 
         val (name, id) = fs.create("test")
 
         assertEquals("test", name)
-        assertEquals(id, FileDescriptorId(0))
+        assertEquals(id, 0)
 
-        val (fdId, type, nlink, size, map) = fs.get(id)
+        val (fdId, type, nlink, map) = fs.get(id)
         assertEquals(id, fdId)
         assertEquals(type, FileType.REGULAR)
         assertEquals(nlink, 1)
-        assertEquals(0, size)
         assertTrue(map.isEmpty())
 
         val ls = fs.ls()
         assertEquals(1, ls.size)
 
-        assertEquals(HardLink("test", FileDescriptorId(0)), ls.first())
-        assertEquals(FileDescriptorId(1), fs.create("extra").id)
-        assertEquals(FileDescriptorId(2), fs.create("extra2").id)
+        assertEquals(HardLink("test", 0), ls.first())
+        assertEquals(1, fs.create("extra").id)
+        assertEquals(2, fs.create("extra2").id)
 
         assertThrows<FileAlreadyExistsException> { fs.create("extra2") }
     }
@@ -61,7 +59,7 @@ class DefaultFileSystemTest {
 
         assertThrows<FileNotFoundException> { fs.link("test3", "test") }
 
-        val (id, type, nlink, size, map) = fs.get(link.id)
+        val (id, type, nlink, map) = fs.get(link.id)
         assertEquals(new.id, id)
         assertEquals(FileType.REGULAR, type)
         assertEquals(nlink, 2)
@@ -71,7 +69,7 @@ class DefaultFileSystemTest {
         assertEquals(1, fs.ls().size)
         assertEquals(1, fs.get(link.id).nlink)
         assertEquals("test2", fs.ls().first().name)
-        assertEquals(FileDescriptorId(0), fs.ls().first().id)
+        assertEquals(0, fs.ls().first().id)
 
         assertThrows<FileNotFoundException> { fs.unlink("test") }
     }

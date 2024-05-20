@@ -26,7 +26,7 @@ class DefaultFileSystem(
     private var fileEdit: FileEdit
 
     private val links = ArrayList<HardLink>()
-    private val fds = ArrayList<FileDescriptor>()
+    private val fds = arrayOfNulls<FileDescriptor>(256)
 
     init {
         val rootDir = dirFactory.create("root")
@@ -46,9 +46,9 @@ class DefaultFileSystem(
         return fileEdit.open(file)
     }
 
-    fun close(iNode: Int) {
-        fileEdit.close(iNode)
-    }
+//    fun close(iNode: Int) {
+//        fileEdit.close(iNode)
+//    }
 
     fun seek(iNode: Int, offset: Int) {
         fileEdit.seek(iNode, offset)
@@ -119,16 +119,14 @@ class DefaultFileSystem(
         return links
     }
 
-
     override fun create(name: String): HardLink {
         if (links.any{it.name == name}){ throw FileAlreadyExistsException("File with name $name already exists") }
         val fd = newFile()
-        fds.add(fd)
 
         return newHardLink(name, fd.id)
     }
 
-    private fun newHardLink(name: String, fd: FileDescriptorId): HardLink {
+    private fun newHardLink(name: String, fd: Int): HardLink {
         val hardLink = HardLink(name, fd)
         links.add(hardLink)
         get(fd).nlink++
@@ -142,31 +140,37 @@ class DefaultFileSystem(
     }
 
     private fun newFile(): FileDescriptor {
-        return FileDescriptor(nextFileDescriptorId(), FileType.REGULAR, 0, 0, java.util.ArrayList())
+        val fd = nextFileDescriptorId()
+        val new = FileDescriptor(fd, FileType.REGULAR, 0,  java.util.ArrayList())
+        fds[fd] = new
+        return new
     }
-    private fun nextFileDescriptorId() = FileDescriptorId(fds.size)
+    private fun nextFileDescriptorId(): Int {
+        for ((index, fileDescriptor) in fds.withIndex()) {
+            if (fileDescriptor == null){
+                return index
+            }
+        }
+        throw IllegalArgumentException("Max amount of file descriptors exceeded: ${fds.size}")
+    }
 
-    override fun open(fd: FileDescriptorId) {
+    override fun open(name: String): Int {
         TODO("Not yet implemented")
     }
 
-    override fun open(name: String): FileDescriptorId {
+    override fun close(fd: Int) {
         TODO("Not yet implemented")
     }
 
-    override fun close(fd: FileDescriptorId) {
+    override fun seek(fd: Int, offset: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun seek(fd: FileDescriptorId, offset: Long) {
+    override fun read(fd: Int, size: Long) {
         TODO("Not yet implemented")
     }
 
-    override fun read(fd: FileDescriptorId, size: Long) {
-        TODO("Not yet implemented")
-    }
-
-    override fun write(fd: FileDescriptorId, size: Long) {
+    override fun write(fd: Int, size: Long, value: ByteArray) {
         TODO("Not yet implemented")
     }
 
@@ -183,11 +187,11 @@ class DefaultFileSystem(
     }
 
 
-    fun get(fileDescriptorId: FileDescriptorId): FileDescriptor {
-        return fds.find { it.id == fileDescriptorId } ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
+    fun get(fileDescriptorId: Int): FileDescriptor {
+        return fds[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
     }
 
-    fun get(name: String): FileDescriptorId {
+    fun get(name: String): Int {
         return links.find { it.name == name }?.id ?: throw FileNotFoundException("File <$name> Not Found")
     }
 
