@@ -1,5 +1,7 @@
 package io.github.aljolen.fs.storage
 
+import java.util.BitSet
+
 interface Storage {
 
     /** Block size in Bytes */
@@ -17,11 +19,14 @@ interface Storage {
     /** Get block by its index */
     fun getBlock(id: Int): Block
 
-    /** Create a new block of given size */
+    /** Create a new block of given size (this counts as occupied) */
     fun newBlock(): Block
 
     /** Remove block by id */
     fun removeBlock(id: Int)
+
+    /** Get Bitmap of the occupied blocks */
+    fun getStorageBitMap(): BitSet
 }
 
 interface Block{

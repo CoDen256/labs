@@ -1,5 +1,7 @@
 package io.github.aljolen.fs.storage
 
+import java.util.*
+
 class MemoryStorage(
     private val blockSize: Int,
     private val blockCount: Int
@@ -32,6 +34,10 @@ class MemoryStorage(
 
     override fun removeBlock(id: Int) {
         storage[id] = null
+    }
+
+    override fun getStorageBitMap(): BitSet {
+        return BitSet.valueOf(storage.map { it?.let { 1L } ?: 0L}.toLongArray())
     }
 
     private fun nextFreeBlockIndex() = storage.indexOfFirst { it == null }
