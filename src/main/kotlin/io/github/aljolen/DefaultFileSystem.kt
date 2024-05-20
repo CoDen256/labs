@@ -26,7 +26,7 @@ class DefaultFileSystem(
     private var navigation: Navigation
     private var fileEdit: FileEdit
 
-    private val directory: Directory = DefaultDirectory()
+    private val directory: WorkingDirectory = DefaultWorkingDirectory()
 
     private val files = arrayOfNulls<FileDescriptor>(256)
     private val fds = arrayOfNulls<FileStream>(256 * 4)
@@ -307,11 +307,11 @@ class DefaultFileSystem(
     }
 
     override fun cwd(): String {
-        return directory.path().toString()
+        return directory.cwd().toString()
     }
 
-    override fun symlink(name: String) {
-        TODO("Not yet implemented")
+    override fun symlink(value: String, pathname: String) {
+        directory.symlink(Path(value), Path(pathname))
     }
 
     private fun subSize(size: Int, fd: FileDescriptor) {

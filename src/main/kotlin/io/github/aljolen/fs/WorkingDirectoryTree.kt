@@ -4,22 +4,23 @@ import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
 
-
-interface Directory{
+interface WorkingDirectory {
     fun create(path: Path, fd: Int): HardLink
     fun remove(path: Path): HardLink
     fun ls(): List<HardLink>
     fun get(path: Path): HardLink
-    fun cwd(): HardLink
+    fun cwd(): Path
     fun cd(path: Path): HardLink
-    fun path(): Path
+    fun symlink(value: Path, path: Path)
 }
 
-class DefaultDirectory : Directory{
+class DefaultWorkingDirectory : WorkingDirectory {
     private val links = ArrayList<HardLink>()
 
     override fun create(path: Path, fd: Int): HardLink {
-        if (links.any{it.name == path.name()}){ throw FileAlreadyExistsException("File with name $path already exists") }
+        if (links.any { it.name == path.name() }) {
+            throw FileAlreadyExistsException("File with name $path already exists")
+        }
         val hardLink = HardLink(path.name(), fd)
         links.add(hardLink)
         return hardLink
@@ -30,10 +31,10 @@ class DefaultDirectory : Directory{
     }
 
     override fun get(path: Path): HardLink {
-        return links.find { it.name == path.name() }?: throw FileNotFoundException("File <{$path.name()}> Not Found")
+        return links.find { it.name == path.name() } ?: throw FileNotFoundException("File <{$path.name()}> Not Found")
     }
 
-    override fun cwd(): HardLink {
+    override fun cwd(): Path {
         TODO("Not yet implemented")
     }
 
@@ -41,12 +42,13 @@ class DefaultDirectory : Directory{
         TODO("Not yet implemented")
     }
 
-    override fun path(): Path {
+    override fun symlink(value: Path, path: Path) {
         TODO("Not yet implemented")
     }
 
     override fun remove(path: Path): HardLink {
-        val link: HardLink = links.firstOrNull { it.name == path.name() } ?: throw FileNotFoundException("No link with name ${path.name()}")
+        val link: HardLink = links.firstOrNull { it.name == path.name() }
+            ?: throw FileNotFoundException("No link with name ${path.name()}")
         links.remove(link)
         return link
     }
@@ -54,30 +56,16 @@ class DefaultDirectory : Directory{
 }
 
 
-class WorkingDirectoryTree() {
+class Path(private val path: String) {
 
-
-    fun ls(path: Path){
-
-    }
-
-//    fun
-
-    fun change(path: Path){
-
-    }
-
-}
-
-class Path(private val path: String){
-
-    fun isRelative(): Boolean{
+    fun isRelative(): Boolean {
         return !path.startsWith("/")
     }
 
     fun name(): String = elements.last()
 
     private val elements: Array<String>;
+
     init {
         val clean = path.ifBlank { "." }
 
@@ -87,7 +75,7 @@ class Path(private val path: String){
             .toTypedArray()
     }
 
-    fun slice(from: Int, to: Int?=null): Link {
+    fun slice(from: Int, to: Int? = null): Link {
         return Link(elements.slice(from..(to ?: elements.size)).joinToString("/"))
     }
 

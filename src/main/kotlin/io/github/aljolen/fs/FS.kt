@@ -75,7 +75,7 @@ interface FS {
 
     fun cwd(): String
 
-    fun symlink(pathname: String)
+    fun symlink(value: String, pathname: String)
 }
 
 data class StatInfo(
