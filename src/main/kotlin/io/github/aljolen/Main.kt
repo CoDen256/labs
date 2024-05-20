@@ -3,7 +3,7 @@ package io.github.aljolen
 import io.github.aljolen.utils.Link
 
 fun main() {
-    val fs = FileSystem(3, 4096 / 8)
+    val fs = DefaultFileSystem(4096 / 8)
 
     fs.mkdir(Link("test_dir"))
     fs.cd(Link("/"))
