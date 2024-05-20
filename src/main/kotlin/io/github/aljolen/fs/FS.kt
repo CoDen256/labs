@@ -1,5 +1,7 @@
 package io.github.aljolen.fs
 
+import io.github.aljolen.fs.storage.Storage
+
 interface FS {
 
     /** Output information about a file (file descriptor data). */
@@ -85,13 +87,7 @@ data class FileDescriptor(
     val type: FileType,
     var nlink: Int,
     val map: MutableList<Int> = ArrayList()
-) {
-    val size: Int
-        get() = map.size
-
-    val nblock: Int
-        get() = map.size
-}
+)
 
 class FileStream(var offset: Int, val id: Int, val fd: Int)
 

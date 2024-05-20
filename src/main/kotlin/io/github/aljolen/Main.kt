@@ -1,9 +1,10 @@
 package io.github.aljolen
 
+import io.github.aljolen.fs.storage.MemoryStorage
 import io.github.aljolen.utils.Link
 
 fun main() {
-    val fs = DefaultFileSystem(4096 / 8)
+    val fs = DefaultFileSystem(MemoryStorage(10, 10))
 
     fs.mkdir(Link("test_dir"))
     fs.cd(Link("/"))
@@ -15,7 +16,7 @@ fun main() {
     val iNode = fs.open(Link("./readme.txt"))
 
     fs.truncate(Link("./readme.txt"), text.length)
-    fs.write(iNode, text.length, text)
+    fs.write(iNode, text.length, text.toByteArray())
 
     println(fs.read(iNode, text.length))
 

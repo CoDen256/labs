@@ -2,8 +2,10 @@ package io.github.aljolen
 
 import io.github.aljolen.fs.FileType
 import io.github.aljolen.fs.HardLink
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import io.github.aljolen.fs.StatInfo
+import io.github.aljolen.fs.storage.MemoryStorage
+import io.github.aljolen.utils.StorageDisplay
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -13,11 +15,15 @@ import java.nio.file.FileAlreadyExistsException
 
 class DefaultFileSystemTest {
 
-    lateinit var fs: DefaultFileSystem
+    val blockCount = 8
+    val blockSize = 16
 
+    lateinit var fs: DefaultFileSystem
+    lateinit var storage: MemoryStorage
     @BeforeEach
     fun setUp() {
-        fs = DefaultFileSystem(4096 / 8)
+        storage = MemoryStorage(blockSize, blockCount)
+        fs = DefaultFileSystem(storage)
     }
 
     @Test
@@ -75,7 +81,63 @@ class DefaultFileSystemTest {
     }
 
     @Test
-    fun open() {
+    fun truncate_open_seek_read_write_read_close() {
+        fs.create("test")
+
+        assertThrows<IllegalStateException> { fs.read(0, 10) }
+        val invalid = fs.open("test")
+        fs.close(invalid)
+        assertThrows<IllegalStateException> { fs.read(invalid, 10) }
+
+        assertThrows<IllegalStateException> { fs.read(fs.open("test"), 10) }
+
+
+        fs.truncate("test", blockSize * 2 + 1)
+        val stat = fs.stat("test")
+        assertEquals(StatInfo(0, FileType.REGULAR, blockSize * 3, 1, 0), stat)
+
+        val fd = fs.open("test")
+        assertArrayEquals(ByteArray(10), fs.read(fd, 10))
+
+        fs.seek(fd, 1)
+        fs.write(fd, 10, "0123456789".toByteArray())
+        fs.write(fd, 10, "abcdefghij".toByteArray())
+        fs.seek(fd, 32)
+        fs.write(fd, 3, "HEL".toByteArray())
+        // '_0123456789abcde|fghij___________|HEL______________'
+        assertEquals(3, fs.stat("test").nblock)
+
+        fs.seek(fd, 0)
+
+        assertEquals('\u0000' + "0123", fs.read(fd, 5))
+        assertEquals("45678", fs.read(fd, 5))
+        fs.seek(fd, 16)
+        assertEquals("fghij"+'\u0000', fs.read(fd, 6))
+        fs.seek(fd, 32)
+        assertEquals("HEL"+'\u0000'.toString().repeat(blockSize-3), fs.read(fd, blockSize))
+
+
+        fs.create("extra")
+        fs.truncate("extra", blockSize * 2)
+
+        fs.truncate("test", blockSize*4+3) // added 2 blocks
+        assertEquals(3, fs.stat("test").nblock)
+        fs.seek(fd, blockSize*3)
+        fs.write(fd, 21, "abcdefghijklmnopqrstu".toByteArray())
+        assertEquals(5, fs.stat("test").nblock)
+        assertEquals(5*blockSize, fs.stat("test").size)
+
+        fs.truncate("extra", 1)
+        assertEquals(blockSize, fs.stat("extra").size)
+
+        fs.seek(fd, blockSize*4)
+        assertEquals("qrstu"+'\u0000', fs.read(fd, 6))
+
+        println(StorageDisplay().display(storage))
+    }
+
+    private fun assertEquals(out: String, read: ByteArray) {
+        assertArrayEquals(out.toByteArray(), read)
     }
 
     @Test

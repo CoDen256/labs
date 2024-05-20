@@ -9,13 +9,14 @@ import io.github.aljolen.components.operations.FileIO
 import io.github.aljolen.components.operations.Navigation
 import io.github.aljolen.components.operations.Printer
 import io.github.aljolen.fs.*
-import io.github.aljolen.fs.storage.MemoryStorage
+import io.github.aljolen.fs.storage.Storage
 import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
+import kotlin.math.abs
 
 class DefaultFileSystem(
-    private var ioSizeInBytes: Int
+    private val storage: Storage
 ) : FS {
     private var iNodeCounter: INodeCounter = INodeCounter()
     private var hardLinkFactory: HardLinkFactory = HardLinkFactory(iNodeCounter)
@@ -29,12 +30,11 @@ class DefaultFileSystem(
     private val links = ArrayList<HardLink>()
     private val files = arrayOfNulls<FileDescriptor>(256)
     private val fds = arrayOfNulls<FileStream>(256 * 4)
-    private val storage = MemoryStorage(256, 256)
 
     init {
         val rootDir = dirFactory.create("root")
         navigation = Navigation(rootDir, rootDir)
-        fileIO = FileIO(ioSizeInBytes)
+        fileIO = FileIO(1000)
         fileEdit = FileEdit(iNodeCounter, fileIO)
     }
 
@@ -61,9 +61,9 @@ class DefaultFileSystem(
 //        return fileEdit.read(iNode, size)
 //    }
 
-    fun write(iNode: Int, size: Int, value: String) {
-        fileEdit.write(iNode, size, value)
-    }
+//    fun write(iNode: Int, size: Int, value: String) {
+//        fileEdit.write(iNode, size, value)
+//    }
 
     fun truncate(name: Link, size: Int) {
         val (_, file) = navigation.getLinkWithFile(name)
@@ -72,7 +72,7 @@ class DefaultFileSystem(
 
     fun stat(link: Link): String {
         val (searchedLink, file) = navigation.getLinkWithFile(link)
-        return printer.stat(searchedLink, file, ioSizeInBytes, link)
+        return printer.stat(searchedLink, file, 1024, link)
     }
 
     fun link(link1: Link, link2: Link) {
@@ -119,9 +119,9 @@ class DefaultFileSystem(
             StatInfo(
                 it.id,
                 it.type,
-                it.size,
+                it.size(),
                 it.nlink,
-                it.nblock
+                it.nblock()
             )
         }
     }
@@ -200,13 +200,25 @@ class DefaultFileSystem(
         fileStream.offset = offset
     }
 
+    private fun FileDescriptor.size(): Int{
+        return map.map { storage.getBlock(it) }.count() * storage.getBlockSize()
+    }
+
+    private fun FileDescriptor.nblock(): Int{
+        return map.map { storage.getBlock(it) }.count { !it.isEmpty() }
+    }
+
     override fun read(fd: Int, size: Int): ByteArray {
         val fileStream = getFileStream(fd)
         val file = get(fileStream.id)
 
+        if (size > file.size()){
+            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size")
+        }
+
         var current = fileStream.offset
         var length = size
-        var result = ByteArray(size)
+        var result = ByteArray(0)
 
         for (blockNum in file.map) {
             if (length == 0) break
@@ -214,7 +226,6 @@ class DefaultFileSystem(
 
             if (current >storage.getBlockSize()) {
                 current -= storage.getBlockSize()
-                println(current)
                 continue
             }
 
@@ -232,28 +243,31 @@ class DefaultFileSystem(
         val fileStream = getFileStream(fd)
         val file = get(fileStream.id)
 
-        var left = fileStream.offset
-        val blocks = file.map.map { storage.getBlock(it) }.toMutableList()
-        var block = blocks.removeFirstOrNull()
+        if (size > file.size()){
+            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size")
+        }
 
-        var fullValue = value
+        val blocks = file
+            .map
+            .map { storage.getBlock(it) }
+            .toMutableList()
 
-        while (block != null && fullValue.isNotEmpty()) {
-            if (left > storage.getBlockSize()) {
-                left -= storage.getBlockSize()
+        var offset = fileStream.offset
+        var content = value.sliceArray(0 until size)
+
+        for (block in blocks){
+            if (content.isEmpty()) break
+            if (offset > storage.getBlockSize()) {
+                offset -= storage.getBlockSize()
                 continue
             }
 
-            val blockSize = storage.getBlockSize()
-            val writeLength = blockSize - left
-            val toWrite = fullValue.slice(0 until writeLength)
-
-            fullValue = fullValue.drop(writeLength).toByteArray()
-            block.write(left, toWrite.toByteArray())
-
-            left = 0
-            block = blocks.removeFirstOrNull()
+            val blockChunkSize = minOf(content.size, storage.getBlockSize() - offset)
+            block.write(offset, content.sliceArray(0 until blockChunkSize))
+            content = content.drop(blockChunkSize).toByteArray()
+            offset = 0
         }
+
         fileStream.offset += size
     }
 
@@ -266,16 +280,37 @@ class DefaultFileSystem(
     }
 
     override fun truncate(name: String, size: Int) {
+        val fd = get(get(name))
+        val diff = size - fd.size()
+        if (diff == 0) return
+        if (diff > 0) {
+            addSize(diff, fd)
+            return
+        }
+        subSize(diff, fd)
+    }
+
+    private fun subSize(size: Int, fd: FileDescriptor) {
+        val fullBlocksCount = abs(size / storage.getBlockSize())
+
+        repeat(fullBlocksCount) {
+            val index = fd.map.size - it - 1
+            val blockId = fd.map.removeAt(index)
+            storage.removeBlock(blockId)
+        }
+    }
+
+    private fun addSize(size: Int, fd: FileDescriptor) {
         val fullBlocksCount = (size / storage.getBlockSize())
         val leftBlockSize = size % storage.getBlockSize()
-        val fd = get(get(name))
         repeat(fullBlocksCount) {
             val block = storage.newBlock()
             fd.map.add(block.getId())
         }
 
-//        if (leftBlockSize != 0) file.addBlock(Block(leftBlockSize))
-        fd.map.add(storage.newBlock().getId())
+        if (leftBlockSize != 0) {
+            fd.map.add(storage.newBlock().getId())
+        }
     }
 
 
