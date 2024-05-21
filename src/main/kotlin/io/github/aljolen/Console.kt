@@ -1,8 +1,6 @@
 package io.github.aljolen
 
-import io.github.aljolen.fs.FS
-import io.github.aljolen.fs.HardLink
-import io.github.aljolen.fs.StatInfo
+import io.github.aljolen.fs.*
 import io.github.aljolen.fs.storage.Storage
 import io.github.aljolen.utils.StorageDisplay
 
@@ -101,9 +99,14 @@ class Console(private val fs: FS, private val storage: Storage) {
 
     fun outLinks(links: List<HardLink>){
         links.forEachIndexed { i, link ->
-            println("${link.pathname.padEnd(15, ' ')} -> ${link.id}")
+            val name = Path(link.pathname).name()
+            val pathname = if (link.file.type == FileType.DIRECTORY) { green(name) } else blue(name)
+            println("${pathname.padEnd(15, ' ')} -> ${link.id}")
         }
     }
+
+    private fun green(s: String) = "\u001B[1;92m$s\u001B[0m"
+    private fun blue(s: String) = "\u001B[0;94m$s\u001B[0m"
 
     fun out(link: HardLink){
         println("${link.pathname.padEnd(15, ' ')} -> ${link.id}")

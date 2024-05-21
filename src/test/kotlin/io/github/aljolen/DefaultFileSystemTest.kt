@@ -32,7 +32,8 @@ class DefaultFileSystemTest {
         assertThrows<FileNotFoundException> { fs.get(0) }
         assertTrue(fs.ls().isEmpty())
 
-        val (name, id) = fs.create("test")
+        val (name, file) = fs.create("test")
+        val id = file.id
 
         assertEquals("root/test", name)
         assertEquals(id, 0)
@@ -46,7 +47,7 @@ class DefaultFileSystemTest {
         val ls = fs.ls()
         assertEquals(1, ls.size)
 
-        assertEquals(HardLink("root/test", 0), ls.first())
+        assertEquals(HardLink("root/test", file), ls.first())
         assertEquals(1, fs.create("extra").id)
         assertEquals(2, fs.create("extra2").id)
 

@@ -5,8 +5,8 @@ import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
 
 interface WorkingDirectory {
-    fun create(path: Path, fd: Int): HardLink
-    fun mkdir(path: Path, fd: Int): HardLink
+    fun create(path: Path, file: FileDescriptor): HardLink
+    fun mkdir(path: Path, file: FileDescriptor): HardLink
     fun remove(path: Path): HardLink
     fun rmdir(path: Path): HardLink
     fun ls(): List<HardLink>
@@ -27,8 +27,8 @@ sealed interface Node {
 interface File : Node {}
 
 interface Directory : Node {
-    fun create(name: String, fd: Int): File
-    fun mkdir(name: String, fd: Int): Directory
+    fun create(name: String, file: FileDescriptor): File
+    fun mkdir(name: String, file: FileDescriptor): Directory
     fun remove(name: String): Node
     fun get(name: String): Node
     fun delete()
@@ -65,16 +65,16 @@ class FSDirectory(private val value: HardLink) : Directory {
 
     override fun value(): HardLink = value
 
-    override fun create(name: String, fd: Int): File {
+    override fun create(name: String, file: FileDescriptor): File {
         verifyDuplicate(name)
-        val file = FSFile(newHardLink(name, fd))
+        val file = FSFile(newHardLink(name, file))
         nodes.add(file)
         return file
     }
 
-    override fun mkdir(name: String, fd: Int): Directory {
+    override fun mkdir(name: String, file: FileDescriptor): Directory {
         verifyDuplicate(name)
-        val dir = FSDirectory(newHardLink(name, fd))
+        val dir = FSDirectory(newHardLink(name, file))
         nodes.add(dir)
         return dir
     }
@@ -114,7 +114,7 @@ class FSDirectory(private val value: HardLink) : Directory {
         return path().name()
     }
 
-    private fun newHardLink(name: String, fd: Int) = HardLink(path().resolve(name).toString(), fd)
+    private fun newHardLink(name: String, file: FileDescriptor) = HardLink(path().resolve(name).toString(), file)
 
 
     private fun verifyDuplicate(name: String) {
@@ -126,17 +126,17 @@ class FSDirectory(private val value: HardLink) : Directory {
 
 class WorkingDirectoryTree : WorkingDirectory {
 
-    private val root: Directory = FSDirectory(HardLink("root", -1))
+    private val root: Directory = FSDirectory(HardLink("root", FileDescriptor.ROOT))
     private var cwd: Directory = root
 
-    override fun create(path: Path, fd: Int): HardLink {
+    override fun create(path: Path, file: FileDescriptor): HardLink {
         val parent = getDir(path.parent())
-        return parent.create(path.name(), fd).value()
+        return parent.create(path.name(), file).value()
     }
 
-    override fun mkdir(path: Path, fd: Int): HardLink {
+    override fun mkdir(path: Path, file: FileDescriptor): HardLink {
         val parent = getDir(path.parent())
-        return parent.mkdir(path.name(), fd).value()
+        return parent.mkdir(path.name(), file).value()
     }
 
     override fun ls(): List<HardLink> {

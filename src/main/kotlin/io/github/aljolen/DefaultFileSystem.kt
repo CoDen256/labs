@@ -184,8 +184,9 @@ class DefaultFileSystem(
     }
 
     private fun newFile(path: String, fd: Int): HardLink {
-        get(fd).nlink++
-        return directory.create(Path(path), fd)
+        val file = get(fd)
+        file.nlink++
+        return directory.create(Path(path), file)
     }
 
     private fun rmFile(path: String) {
@@ -193,8 +194,9 @@ class DefaultFileSystem(
     }
 
     private fun newDir(path: String, fd: Int): HardLink {
-        get(fd).nlink++
-        return directory.mkdir(Path(path), fd)
+        val file = get(fd)
+        file.nlink++
+        return directory.mkdir(Path(path), file)
     }
 
     private fun rmDir(path: String): HardLink {

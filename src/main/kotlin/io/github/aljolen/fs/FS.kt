@@ -6,7 +6,10 @@ interface FS {
     fun stat(pathname: String): StatInfo
 
 
-    /** Output a list of hard links to files with file descriptor numbers in a directory. */
+    /**
+     * Output a list of hard links to files with file descriptor numbers in a
+     * directory.
+     */
     fun ls(): List<HardLink>
 
     /**
@@ -88,15 +91,22 @@ data class StatInfo(
 
 data class HardLink(
     val pathname: String,
+    val file: FileDescriptor
+) {
     val id: Int
-){}
+        get() = file.id
+}
 
 data class FileDescriptor(
     val id: Int,
     val type: FileType,
     var nlink: Int,
     val map: MutableList<Int> = ArrayList()
-)
+){
+    companion object{
+        val ROOT = FileDescriptor(-1, FileType.DIRECTORY, 0)
+    }
+}
 
 class FileStream(var offset: Int, val file: FileDescriptor, val fd: Int)
 
