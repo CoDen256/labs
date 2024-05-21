@@ -1,10 +1,11 @@
 package io.github.aljolen
 
-import io.github.aljolen.fs.FileType
-import io.github.aljolen.fs.HardLink
-import io.github.aljolen.fs.StatInfo
-import io.github.aljolen.fs.storage.MemoryStorage
-import io.github.aljolen.utils.StorageDisplay
+import io.github.aljolen.fs.DefaultFileSystem
+import io.github.aljolen.fs.MemoryStorage
+import io.github.aljolen.fs.api.FileType
+import io.github.aljolen.fs.api.HardLink
+import io.github.aljolen.fs.api.StatInfo
+import io.github.aljolen.fs.utils.StorageDisplay
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -142,26 +143,6 @@ class DefaultFileSystemTest {
     }
 
     @Test
-    fun close() {
-    }
-
-    @Test
-    fun seek() {
-    }
-
-    @Test
-    fun read() {
-    }
-
-    @Test
-    fun write() {
-    }
-
-    @Test
-    fun truncate() {
-    }
-
-    @Test
     fun stat() {
         fs.create("test")
         val (name, id0) = fs.create("test2")
@@ -173,76 +154,5 @@ class DefaultFileSystemTest {
         assertEquals(2, nlink)
         assertEquals(0, size)
         assertEquals(0, nblock)
-    }
-
-
-
-    @Test
-    fun symlink() {
-    }
-
-    @Test
-    fun mkdir() {
-    }
-
-    @Test
-    fun unlink() {
-    }
-
-    @Test
-    fun rmdir() {
-    }
-
-    @Test
-    fun cd() {
-    }
-
-
-    @Test
-    fun testStat() {
-    }
-
-    @Test
-    fun testLs() {
-    }
-
-    @Test
-    fun testCreate() {
-    }
-
-    @Test
-    fun testOpen() {
-    }
-
-    @Test
-    fun testOpen1() {
-    }
-
-    @Test
-    fun testClose() {
-    }
-
-    @Test
-    fun testSeek() {
-    }
-
-    @Test
-    fun testRead() {
-    }
-
-    @Test
-    fun testWrite() {
-    }
-
-    @Test
-    fun testLink() {
-    }
-
-    @Test
-    fun testUnlink() {
-    }
-
-    @Test
-    fun testTruncate() {
     }
 }

@@ -1,4 +1,4 @@
-package io.github.aljolen.fs
+package io.github.aljolen.fs.api
 
 interface FS {
 

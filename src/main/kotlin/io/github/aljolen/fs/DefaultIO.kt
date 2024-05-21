@@ -1,21 +1,7 @@
-package io.github.aljolen
+package io.github.aljolen.fs
 
-import io.github.aljolen.fs.FileDescriptor
-import io.github.aljolen.fs.FileStream
-import io.github.aljolen.fs.StatInfo
-import io.github.aljolen.fs.storage.Storage
+import io.github.aljolen.fs.api.*
 import kotlin.math.abs
-
-interface IO {
-    fun open(file: FileDescriptor): Int
-    fun truncate(file: FileDescriptor, size: Int)
-    fun stat(file: FileDescriptor): StatInfo
-
-    fun close(fd: Int)
-    fun seek(fd: Int, offset: Int)
-    fun read(fd: Int, size: Int): ByteArray
-    fun write(fd: Int, size: Int, value: ByteArray)
-}
 
 class DefaultIO(private val storage: Storage) : IO {
     private val fds = arrayOfNulls<FileStream>(256 * 4)

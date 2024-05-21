@@ -1,8 +1,8 @@
-package io.github.aljolen.fs
+package io.github.aljolen.fs.api
 
-import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
 import java.nio.file.FileAlreadyExistsException
+
 
 interface WorkingDirectory {
     fun create(path: Path, file: FileDescriptor): HardLink
@@ -244,17 +244,6 @@ class Path(private val path: String) {
             .replace(Regex("\\/\$"), "")
             .split(Regex("(?<!\\\\)\\/"))
             .toTypedArray()
-    }
-
-    fun slice(from: Int, to: Int? = null): Link {
-        return Link(elements.slice(from..(to ?: elements.size)).joinToString("/"))
-    }
-
-    fun sliceLast(): Pair<Link, String> {
-        // [this.slice(0, -1), this.elements.slice(-1)[0]]
-        val lastElement = elements.last()
-        val newElements = elements.dropLast(1)
-        return Link(newElements.joinToString("/")) to lastElement
     }
 
     fun segments(): List<String> {

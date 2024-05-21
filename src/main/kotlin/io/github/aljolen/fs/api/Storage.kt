@@ -1,4 +1,4 @@
-package io.github.aljolen.fs.storage
+package io.github.aljolen.fs.api
 
 import java.util.BitSet
 

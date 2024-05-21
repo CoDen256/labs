@@ -1,6 +1,7 @@
-package io.github.aljolen.fs.storage
+package io.github.aljolen.api.storage
 
-import io.github.aljolen.utils.StorageDisplay
+import io.github.aljolen.fs.MemoryStorage
+import io.github.aljolen.fs.utils.StorageDisplay
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 

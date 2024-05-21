@@ -1,5 +1,7 @@
-package io.github.aljolen.fs.storage
+package io.github.aljolen.fs
 
+import io.github.aljolen.fs.api.Block
+import io.github.aljolen.fs.api.Storage
 import java.util.*
 
 class MemoryStorage(
@@ -46,7 +48,7 @@ class MemoryStorage(
 class MemoryBlock(
     size: Int,
     private val id: Int,
-): Block{
+): Block {
 
     private val content: ByteArray=ByteArray(size)
 

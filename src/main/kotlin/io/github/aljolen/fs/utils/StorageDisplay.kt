@@ -1,7 +1,7 @@
-package io.github.aljolen.utils
+package io.github.aljolen.fs.utils
 
-import io.github.aljolen.fs.storage.Block
-import io.github.aljolen.fs.storage.Storage
+import io.github.aljolen.fs.api.Block
+import io.github.aljolen.fs.api.Storage
 
 class StorageDisplay {
 
