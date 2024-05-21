@@ -159,6 +159,14 @@ class FSDirectory(
 
     override fun unlink(name: String): HardLink {
         val link = getLink(name)
+        if (link.file.type == FileType.DIRECTORY) throw IllegalStateException("Not allowed to unlink directories ($name)")
+        nodes.remove(link)
+        link.file.nlink--
+        return link
+    }
+
+    override fun forceUnlink(name: String): HardLink {
+        val link = getLink(name)
         nodes.remove(link)
         link.file.nlink--
         return link
@@ -178,10 +186,10 @@ class FSDirectory(
 
     override fun delete() {
         if (nodes.size > 2) throw IllegalStateException("Unable to remove non-empty directory ${value().pathname}")
-        unlink(".")
+        forceUnlink(".")
         if (parent != null){
-            unlink("..")
-            parent.unlink(path().name())
+            forceUnlink("..")
+            parent.forceUnlink(path().name())
         }
     }
 

@@ -209,7 +209,6 @@ class DefaultFileSystemTest {
         
         fs.rmdir("/f/s")
         assertEquals(2, fs.ls().size)
-
     }
 
     @Test
@@ -232,6 +231,11 @@ class DefaultFileSystemTest {
 
         assertEquals(symLink.file, second.file)
 
+    }
 
+    @Test
+    fun unlinkdir() {
+        fs.mkdir("extra")
+        assertThrows<IllegalStateException> { fs.unlink("/extra") }
     }
 }

@@ -13,6 +13,7 @@ interface Directory : DirectoryEntry {
     fun link(name: String, file: FileDescriptor): HardLink
     fun mkdir(name: String, file: FileDescriptor): HardLink
     fun unlink(name: String): HardLink
+    fun forceUnlink(name: String): HardLink
     fun get(name: String): DirectoryEntry
     fun ls(): List<HardLink>
     fun delete()
