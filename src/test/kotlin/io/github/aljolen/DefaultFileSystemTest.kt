@@ -209,5 +209,19 @@ class DefaultFileSystemTest {
         
         fs.rmdir("/f/s")
         assertEquals(2, fs.ls().size)
+
+    }
+
+    @Test
+    fun createAbs(){
+
+        fs.cd("/")
+        fs.mkdir("a")
+        fs.cd("a")
+
+        val link = fs.mkdir("/b")
+        assertEquals("/b", link.pathname)
+        assertEquals(2, fs.ls().size)
+
     }
 }

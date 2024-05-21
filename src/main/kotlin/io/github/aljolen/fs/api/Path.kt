@@ -15,7 +15,9 @@ class Path(private val path: String) {
         if (elements.size == 1) {
             return null
         }
-        return Path(elements.dropLast(1).joinToString("/"))
+        val parents = elements.dropLast(1)
+        if (parents.size == 1 && parents.get(0).isBlank()) return Path("/")
+        return Path(parents.joinToString("/"))
     }
 
     private val elements: Array<String>;
