@@ -5,13 +5,13 @@ import java.io.FileNotFoundException
 
 class DefaultFileSystem(storage: Storage) : FS {
 
-    private val directory: WorkingDirectory = WorkingDirectoryTree()
+    private val files = arrayOfNulls<FileDescriptor>(256)
+    private val root: FileDescriptor = newDir()
+    private val directory: WorkingDirectory = WorkingDirectoryTree(root)
     private val io: IO = DefaultIO(storage)
 
-    private val files = arrayOfNulls<FileDescriptor>(256)
-
     override fun stat(pathname: String): StatInfo {
-        return io.stat(get(directory.get(Path(pathname)).id))
+        return io.stat(directory.get(Path(pathname)).file)
     }
 
     override fun ls(): List<HardLink> {
@@ -19,12 +19,12 @@ class DefaultFileSystem(storage: Storage) : FS {
     }
 
     override fun create(pathname: String): HardLink {
-        val fd = newFile()
-        return newFile(pathname, fd.id)
+        val file = nextFile()
+        return linkfile(pathname, file).also { save(file) }
     }
 
     override fun open(pathname: String): Int {
-        return io.open(get(directory.get(Path(pathname)).id))
+        return io.open(directory.get(Path(pathname)).file)
     }
 
     override fun close(fd: Int) {
@@ -44,23 +44,27 @@ class DefaultFileSystem(storage: Storage) : FS {
     }
 
     override fun link(pathname1: String, pathname2: String): HardLink {
-        return newFile(pathname2, directory.get(Path(pathname1)).id)
+        val file = directory.get(Path(pathname1)).file
+        return linkfile(pathname2, file)
     }
 
     override fun unlink(pathname: String) {
-        rmFile(pathname)
+        directory.unlink(Path(pathname))
     }
 
     override fun truncate(pathname: String, size: Int) {
-        return io.truncate(get(directory.get(Path(pathname)).id), size)
+        return io.truncate(directory.get(Path(pathname)).file, size)
     }
 
     override fun mkdir(pathname: String): HardLink {
-        return newDir(pathname, newDir().id)
+        val new = nextDir()
+        return linkdir(pathname, new).also {
+            save(new)
+        }
     }
 
     override fun rmdir(pathname: String): HardLink {
-        return rmDir(pathname)
+        return directory.rmdir(Path(pathname))
     }
 
     override fun cd(pathname: String): HardLink {
@@ -75,46 +79,41 @@ class DefaultFileSystem(storage: Storage) : FS {
         directory.symlink(Path(value), Path(pathname))
     }
 
+    private fun linkfile(path: String, file: FileDescriptor): HardLink {
+        return directory.link(Path(path), file)
+    }
+
+    private fun linkdir(path: String, file: FileDescriptor): HardLink {
+        return directory.mkdir(Path(path), file)
+    }
+
+    private fun newDir(): FileDescriptor {
+        val new = nextDir()
+        save(new)
+        return new
+    }
+
+    private fun nextDir(): FileDescriptor {
+        val fd = nextFileDescriptorId()
+        return FileDescriptor(fd, FileType.DIRECTORY, 0)
+    }
+
+    private fun nextFile(): FileDescriptor {
+        val fd = nextFileDescriptorId()
+        return FileDescriptor(fd, FileType.REGULAR, 0)
+    }
+
+    private fun save(new: FileDescriptor) {
+        files[new.id] = new
+    }
+
     internal fun get(fileDescriptorId: Int): FileDescriptor {
         return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
     }
 
-    private fun newFile(path: String, fd: Int): HardLink {
-        val file = get(fd)
-        return directory.create(Path(path), file)
-    }
-
-    private fun rmFile(path: String) {
-        get(directory.remove(Path(path)).id)
-    }
-
-    private fun newDir(path: String, fd: Int): HardLink {
-        val file = get(fd)
-        return directory.mkdir(Path(path), file)
-    }
-
-    private fun rmDir(path: String): HardLink {
-        val dir = directory.rmdir(Path(path))
-        return dir
-    }
-
-    private fun newFile(): FileDescriptor {
-        val fd = nextFileDescriptorId()
-        val new = FileDescriptor(fd, FileType.REGULAR, 0)
-        files[fd] = new
-        return new
-    }
-
-    private fun newDir(): FileDescriptor {
-        val fd = nextFileDescriptorId()
-        val new = FileDescriptor(fd, FileType.DIRECTORY, 0)
-        files[fd] = new
-        return new
-    }
-
     private fun nextFileDescriptorId(): Int {
         for ((index, fileDescriptor) in files.withIndex()) {
-            if (fileDescriptor == null){
+            if (fileDescriptor == null) {
                 return index
             }
         }

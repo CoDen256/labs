@@ -119,11 +119,7 @@ data class FileDescriptor(
     val type: FileType,
     var nlink: Int,
     val map: MutableList<Int> = ArrayList()
-){
-    companion object{
-        val ROOT = FileDescriptor(-1, FileType.DIRECTORY, 0)
-    }
-}
+)
 
 class FileStream(var offset: Int, val file: FileDescriptor, val fd: Int)
 

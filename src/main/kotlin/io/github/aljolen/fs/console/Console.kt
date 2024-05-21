@@ -104,12 +104,14 @@ class Console(private val fs: FS, private val storage: Storage) {
     }
 
     fun outLinks(links: List<HardLink>) {
-        links.forEachIndexed { i, link ->
+        links
+            .sortedBy { it.pathname }
+            .forEachIndexed { i, link ->
             val name = Path(link.pathname).name()
             val pathname = if (link.file.type == FileType.DIRECTORY) {
                 green(name)
             } else blue(name)
-            println("${pathname.padEnd(15, ' ')} -> ${link.id}")
+            println("${pathname.padEnd(25, ' ')} -> ${link.id}")
         }
     }
 

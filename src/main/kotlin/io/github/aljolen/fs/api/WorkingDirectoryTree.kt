@@ -16,9 +16,9 @@ sealed interface Node {
 interface File : Node {}
 
 interface Directory : Node {
-    fun create(name: String, file: FileDescriptor): HardLink
+    fun link(name: String, file: FileDescriptor): HardLink
     fun mkdir(name: String, file: FileDescriptor): HardLink
-    fun remove(name: String): HardLink
+    fun unlink(name: String): HardLink
     fun get(name: String): Node
     fun ls(): List<HardLink>
     fun delete()
@@ -44,9 +44,7 @@ class FSFile(private val value: HardLink) : File {
     override fun name(): String {
         return path().name()
     }
-
 }
-
 
 class FSDirectory(
     private val link: HardLink,
@@ -64,7 +62,7 @@ class FSDirectory(
 
     override fun value(): HardLink = link
 
-    override fun create(name: String, file: FileDescriptor): HardLink {
+    override fun link(name: String, file: FileDescriptor): HardLink {
         verifyDuplicate(name)
         val link = newHardLink(name, file)
         newNode(link, FSFile(link))
@@ -82,9 +80,8 @@ class FSDirectory(
         return link
     }
 
-    override fun remove(name: String): HardLink {
+    override fun unlink(name: String): HardLink {
         val link = getLink(name)
-        if (link.file.type == FileType.DIRECTORY) {throw IllegalArgumentException("$name is a directory")}
         nodes.remove(link)
         link.file.nlink--
         return link
@@ -105,11 +102,12 @@ class FSDirectory(
     }
 
     override fun delete() {
-        link.file.nlink--
-//        for (node in links) {
-//            if (node is Directory) {node.delete()}
-//            else remove(node.name())
-//        }
+        if (nodes.size > 2) throw IllegalStateException("Unable to remove non-empty directory ${value().pathname}")
+        unlink(".")
+        if (parent != null){
+            unlink("..")
+            parent.unlink(path().name())
+        }
     }
 
     override fun path(): Path {
@@ -143,9 +141,9 @@ class FSDirectory(
 
 
 interface WorkingDirectory {
-    fun create(path: Path, file: FileDescriptor): HardLink
+    fun link(path: Path, file: FileDescriptor): HardLink
     fun mkdir(path: Path, file: FileDescriptor): HardLink
-    fun remove(path: Path): HardLink
+    fun unlink(path: Path): HardLink
     fun rmdir(path: Path): HardLink
     fun ls(): List<HardLink>
     fun get(path: Path): HardLink
@@ -154,14 +152,14 @@ interface WorkingDirectory {
     fun symlink(value: Path, path: Path)
 }
 
-class WorkingDirectoryTree : WorkingDirectory {
+class WorkingDirectoryTree(rootFile: FileDescriptor) : WorkingDirectory {
 
-    private val root: Directory = FSDirectory(HardLink("root", FileDescriptor.ROOT))
+    private val root: Directory = FSDirectory(HardLink("root", rootFile))
     private var cwd: Directory = root
 
-    override fun create(path: Path, file: FileDescriptor): HardLink {
+    override fun link(path: Path, file: FileDescriptor): HardLink {
         val parent = getDir(path.parent())
-        return parent.create(path.name(), file)
+        return parent.link(path.name(), file)
     }
 
     override fun mkdir(path: Path, file: FileDescriptor): HardLink {
@@ -191,9 +189,9 @@ class WorkingDirectoryTree : WorkingDirectory {
         TODO("Not yet implemented")
     }
 
-    override fun remove(path: Path): HardLink {
+    override fun unlink(path: Path): HardLink {
         val parent = getDir(path.parent())
-        return parent.remove(path.name())
+        return parent.unlink(path.name())
     }
 
     override fun rmdir(path: Path): HardLink {
