@@ -191,12 +191,23 @@ class DefaultFileSystemTest {
 
         fs.cd(".")
         assertEquals("/f/s", fs.cwd())
+        assertEquals(3, fs.ls().size)
 
         fs.cd("..")
         assertEquals("/f", fs.cwd())
 
         fs.cd(".././f/./s/./..")
         assertEquals("/f", fs.cwd())
+        assertEquals(3, fs.ls().size)
 
+
+        fs.link("s/extra.dat", "link")
+        val out = fs.stat("link")
+        assertEquals(FileType.REGULAR, out.type)
+        fs.unlink("../f/link")
+        fs.unlink("/f/s/extra.dat")
+        
+        fs.rmdir("/f/s")
+        assertEquals(2, fs.ls().size)
     }
 }
