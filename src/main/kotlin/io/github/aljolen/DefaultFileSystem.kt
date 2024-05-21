@@ -12,7 +12,6 @@ import io.github.aljolen.fs.*
 import io.github.aljolen.fs.storage.Storage
 import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
-import kotlin.math.abs
 
 class DefaultFileSystem(
     private val storage: Storage
@@ -26,10 +25,10 @@ class DefaultFileSystem(
     private var navigation: Navigation
     private var fileEdit: FileEdit
 
-    private val directory: WorkingDirectory = DefaultWorkingDirectory()
+    private val directory: WorkingDirectory = WorkingDirectoryTree()
+    private val io: IO = DefaultIO(storage)
 
     private val files = arrayOfNulls<FileDescriptor>(256)
-    private val fds = arrayOfNulls<FileStream>(256 * 4)
 
     init {
         val rootDir = dirFactory.create("root")
@@ -115,16 +114,7 @@ class DefaultFileSystem(
     }
 
     override fun stat(pathname: String): StatInfo {
-        val fileDescriptorId = directory.get(Path(pathname)).id
-        return get(fileDescriptorId).let {
-            StatInfo(
-                it.id,
-                it.type,
-                it.size(),
-                it.nlink,
-                it.nblock()
-            )
-        }
+        return io.stat(get(directory.get(Path(pathname)).id))
     }
 
     override fun ls(): List<HardLink> {
@@ -133,17 +123,83 @@ class DefaultFileSystem(
 
     override fun create(pathname: String): HardLink {
         val fd = newFile()
-        return newHardLink(pathname, fd.id)
+        return newFile(pathname, fd.id)
     }
 
-    private fun newHardLink(path: String, fd: Int): HardLink {
+    override fun open(pathname: String): Int {
+        return io.open(get(directory.get(Path(pathname)).id))
+    }
+
+    override fun close(fd: Int) {
+        return io.close(fd)
+    }
+
+    override fun seek(fd: Int, offset: Int) {
+        io.seek(fd, offset)
+    }
+
+    override fun read(fd: Int, size: Int): ByteArray {
+        return io.read(fd, size)
+    }
+
+    override fun write(fd: Int, size: Int, value: ByteArray) {
+        io.write(fd, size, value)
+    }
+
+    override fun link(pathname1: String, pathname2: String): HardLink {
+        return newFile(pathname2, directory.get(Path(pathname1)).id)
+    }
+
+    override fun unlink(pathname: String) {
+        rmFile(pathname)
+    }
+
+    override fun truncate(pathname: String, size: Int) {
+        return io.truncate(get(directory.get(Path(pathname)).id), size)
+    }
+
+    override fun mkdir(pathname: String): HardLink {
+        return newDir(pathname, newDir().id)
+    }
+
+    override fun rmdir(pathname: String): HardLink {
+        return rmDir(pathname)
+    }
+
+    override fun cd(pathname: String): HardLink {
+        return directory.cd(Path(pathname))
+    }
+
+    override fun cwd(): String {
+        return directory.cwd().toString()
+    }
+
+    override fun symlink(value: String, pathname: String) {
+        directory.symlink(Path(value), Path(pathname))
+    }
+
+    internal fun get(fileDescriptorId: Int): FileDescriptor {
+        return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
+    }
+
+    private fun newFile(path: String, fd: Int): HardLink {
         get(fd).nlink++
         return directory.create(Path(path), fd)
     }
 
-    private fun rmHardLink(path: String) {
-        val (name, id) = directory.remove(Path(path))
-        get(id).nlink--
+    private fun rmFile(path: String) {
+        get(directory.remove(Path(path)).id).nlink--
+    }
+
+    private fun newDir(path: String, fd: Int): HardLink {
+        get(fd).nlink++
+        return directory.mkdir(Path(path), fd)
+    }
+
+    private fun rmDir(path: String): HardLink {
+        val dir = directory.rmdir(Path(path))
+        get(dir.id).nlink--
+        return dir
     }
 
     private fun newFile(): FileDescriptor {
@@ -167,178 +223,5 @@ class DefaultFileSystem(
             }
         }
         throw IllegalArgumentException("Max amount of file descriptors exceeded: ${files.size}")
-    }
-
-    private fun newStream(id: Int): FileStream {
-        val fd = nextNumericFd()
-        val fileStream = FileStream(0, id, fd)
-        fds[fd] = fileStream
-        return fileStream
-    }
-
-    private fun nextNumericFd(): Int{
-        for ((index, fileDescriptor) in fds.withIndex()){
-            if (fileDescriptor == null){
-                return index
-            }
-        }
-        throw IllegalArgumentException("Max amount of file descriptors exceeded: ${fds.size}")
-    }
-
-
-    override fun open(pathname: String): Int {
-        return newStream(directory.get(Path(pathname)).id).id
-    }
-
-    override fun close(fd: Int) {
-        fds[fd] = null
-    }
-
-    private fun getFileStream(fd: Int): FileStream {
-        return fds[fd] ?: throw IllegalStateException("FD $fd is not open")
-    }
-
-    override fun seek(fd: Int, offset: Int) {
-        val fileStream = getFileStream(fd)
-        fileStream.offset = offset
-    }
-
-    private fun FileDescriptor.size(): Int{
-        return map.map { storage.getBlock(it) }.count() * storage.getBlockSize()
-    }
-
-    private fun FileDescriptor.nblock(): Int{
-        return map.map { storage.getBlock(it) }.count { !it.isEmpty() }
-    }
-
-    override fun read(fd: Int, size: Int): ByteArray {
-        val fileStream = getFileStream(fd)
-        val file = get(fileStream.id)
-
-        if (size > file.size()){
-            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size")
-        }
-
-        var current = fileStream.offset
-        var length = size
-        var result = ByteArray(0)
-
-        for (blockNum in file.map) {
-            if (length == 0) break
-            val block = storage.getBlock(blockNum)
-
-            if (current >storage.getBlockSize()) {
-                current -= storage.getBlockSize()
-                continue
-            }
-
-            val lengthInTheBlock = minOf(length, storage.getBlockSize() - current)
-
-            result += block.read(current, current + lengthInTheBlock)
-            length -= lengthInTheBlock
-            current = 0
-        }
-        fileStream.offset += size
-        return result
-    }
-
-    override fun write(fd: Int, size: Int, value: ByteArray) {
-        val fileStream = getFileStream(fd)
-        val file = get(fileStream.id)
-
-        if (size > file.size()){
-            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size")
-        }
-
-        val blocks = file
-            .map
-            .map { storage.getBlock(it) }
-            .toMutableList()
-
-        var offset = fileStream.offset
-        var content = value.sliceArray(0 until size)
-
-        for (block in blocks){
-            if (content.isEmpty()) break
-            if (offset > storage.getBlockSize()) {
-                offset -= storage.getBlockSize()
-                continue
-            }
-
-            val blockChunkSize = minOf(content.size, storage.getBlockSize() - offset)
-            block.write(offset, content.sliceArray(0 until blockChunkSize))
-            content = content.drop(blockChunkSize).toByteArray()
-            offset = 0
-        }
-
-        fileStream.offset += size
-    }
-
-    override fun link(pathname1: String, pathname2: String): HardLink {
-        return newHardLink(pathname2, directory.get(Path(pathname1)).id)
-    }
-
-    override fun unlink(pathname: String) {
-        rmHardLink(pathname)
-    }
-
-    override fun truncate(name: String, size: Int) {
-        val fileDescriptorId = directory.get(Path(name)).id
-        val fd = get(fileDescriptorId)
-        val diff = size - fd.size()
-        if (diff == 0) return
-        if (diff > 0) {
-            addSize(diff, fd)
-            return
-        }
-        subSize(diff, fd)
-    }
-
-    override fun mkdir(pathname: String): HardLink {
-        return directory.create(Path(pathname), newDir().id)
-    }
-
-    override fun rmdir(pathname: String): HardLink {
-        return directory.remove(Path(pathname))
-    }
-
-    override fun cd(pathname: String): HardLink {
-        return directory.cd(Path(pathname))
-    }
-
-    override fun cwd(): String {
-        return directory.cwd().toString()
-    }
-
-    override fun symlink(value: String, pathname: String) {
-        directory.symlink(Path(value), Path(pathname))
-    }
-
-    private fun subSize(size: Int, fd: FileDescriptor) {
-        val fullBlocksCount = abs(size / storage.getBlockSize())
-
-        repeat(fullBlocksCount) {
-            val index = fd.map.size - it - 1
-            val blockId = fd.map.removeAt(index)
-            storage.removeBlock(blockId)
-        }
-    }
-
-    private fun addSize(size: Int, fd: FileDescriptor) {
-        val fullBlocksCount = (size / storage.getBlockSize())
-        val leftBlockSize = size % storage.getBlockSize()
-        repeat(fullBlocksCount) {
-            val block = storage.newBlock()
-            fd.map.add(block.getId())
-        }
-
-        if (leftBlockSize != 0) {
-            fd.map.add(storage.newBlock().getId())
-        }
-    }
-
-
-    internal fun get(fileDescriptorId: Int): FileDescriptor {
-        return files[fileDescriptorId] ?: throw FileNotFoundException("FD $fileDescriptorId Not Found")
     }
 }

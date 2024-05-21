@@ -6,7 +6,9 @@ import java.nio.file.FileAlreadyExistsException
 
 interface WorkingDirectory {
     fun create(path: Path, fd: Int): HardLink
+    fun mkdir(path: Path, fd: Int): HardLink
     fun remove(path: Path): HardLink
+    fun rmdir(path: Path): HardLink
     fun ls(): List<HardLink>
     fun get(path: Path): HardLink
     fun cwd(): Path
@@ -14,32 +16,144 @@ interface WorkingDirectory {
     fun symlink(value: Path, path: Path)
 }
 
-class DefaultWorkingDirectory : WorkingDirectory {
-    private val links = ArrayList<HardLink>()
+sealed interface Node {
+    fun value(): HardLink
+    fun path(): Path
+    fun fd(): Int
+    fun nodes(): List<Node>
+    fun name(): String
+}
+
+interface File : Node {}
+
+interface Directory : Node {
+    fun create(name: String, fd: Int): File
+    fun mkdir(name: String, fd: Int): Directory
+    fun remove(name: String): Node
+    fun get(name: String): Node
+    fun delete()
+}
+
+class FSFile(private val value: HardLink) : File {
+    override fun value(): HardLink {
+        return value
+    }
+
+    override fun path(): Path {
+        return Path(value.pathname)
+    }
+
+    override fun fd(): Int {
+        return value.id
+    }
+
+    override fun nodes(): List<Node> {
+        return emptyList()
+    }
+
+    override fun name(): String {
+        return path().name()
+    }
+
+}
+
+class FSDirectory(private val value: HardLink) : Directory {
+
+    private val nodes = ArrayList<Node>().also {
+        // TODO infinite recursion
+    }
+
+    override fun value(): HardLink = value
+
+    override fun create(name: String, fd: Int): File {
+        verifyDuplicate(name)
+        val file = FSFile(newHardLink(name, fd))
+        nodes.add(file)
+        return file
+    }
+
+    override fun mkdir(name: String, fd: Int): Directory {
+        verifyDuplicate(name)
+        val dir = FSDirectory(newHardLink(name, fd))
+        nodes.add(dir)
+        return dir
+    }
+
+    override fun remove(name: String): Node {
+        val node = get(name)
+        if (node is Directory) {throw IllegalArgumentException("$name is a directory")}
+        nodes.remove(node)
+        return node
+    }
+
+    override fun get(name: String): Node {
+        return nodes.find { it.name() == name } ?: throw FileNotFoundException("File with name $name does not exist")
+    }
+
+    override fun delete() {
+        for (node in nodes) {
+            if (node is Directory) {node.delete()}
+            else remove(node.name())
+        }
+    }
+
+    override fun path(): Path {
+        return Path(value.pathname)
+    }
+
+    override fun fd(): Int {
+        return value.id
+    }
+
+    override fun nodes(): List<Node> {
+        return nodes
+    }
+
+    override fun name(): String {
+        return path().name()
+    }
+
+    private fun newHardLink(name: String, fd: Int) = HardLink(path().resolve(name).toString(), fd)
+
+
+    private fun verifyDuplicate(name: String) {
+        if (nodes.any { it.name() == name }) {
+            throw FileAlreadyExistsException("File with name $name already exists")
+        }
+    }
+}
+
+class WorkingDirectoryTree : WorkingDirectory {
+
+    private val root: Directory = FSDirectory(HardLink("root", -1))
+    private var cwd: Directory = root
 
     override fun create(path: Path, fd: Int): HardLink {
-        if (links.any { it.name == path.name() }) {
-            throw FileAlreadyExistsException("File with name $path already exists")
-        }
-        val hardLink = HardLink(path.name(), fd)
-        links.add(hardLink)
-        return hardLink
+        val parent = getDir(path.parent())
+        return parent.create(path.name(), fd).value()
+    }
+
+    override fun mkdir(path: Path, fd: Int): HardLink {
+        val parent = getDir(path.parent())
+        return parent.mkdir(path.name(), fd).value()
     }
 
     override fun ls(): List<HardLink> {
-        return links
+        return cwd.nodes().map { it.value() }
     }
 
     override fun get(path: Path): HardLink {
-        return links.find { it.name == path.name() } ?: throw FileNotFoundException("File <{$path.name()}> Not Found")
+        val parent = getDir(path.parent())
+        return parent.get(path.name()).value()
     }
 
     override fun cwd(): Path {
-        TODO("Not yet implemented")
+        return cwd.path()
     }
 
     override fun cd(path: Path): HardLink {
-        TODO("Not yet implemented")
+        cwd = getDir(path)
+        return cwd.value()
     }
 
     override fun symlink(value: Path, path: Path) {
@@ -47,10 +161,35 @@ class DefaultWorkingDirectory : WorkingDirectory {
     }
 
     override fun remove(path: Path): HardLink {
-        val link: HardLink = links.firstOrNull { it.name == path.name() }
-            ?: throw FileNotFoundException("No link with name ${path.name()}")
-        links.remove(link)
-        return link
+        val parent = getDir(path.parent())
+        return parent.remove(path.name()).value()
+    }
+
+    override fun rmdir(path: Path): HardLink {
+        val dir = getDir(path)
+        dir.delete()
+        return dir.value()
+    }
+
+    private fun getDir(path: Path): Directory {
+        return getNode(path) as? Directory ?: throw IllegalArgumentException("$path is not a directory")
+    }
+
+    private fun getNode(path: Path): Node {
+        if (path.isRelative()) {
+            return traverse(cwd, path.segments())
+        }
+        return traverse(root, path.segments())
+    }
+
+    private fun traverse(root: Directory, segments: List<String>): Node {
+        if (segments.isEmpty()) return root
+        val next = segments.first()
+        val node = root.get(next)
+        if (node !is Directory) {
+            throw IllegalArgumentException("$next is not a directory")
+        }
+        return traverse(node, segments.drop(1))
     }
 
 }
@@ -58,11 +197,16 @@ class DefaultWorkingDirectory : WorkingDirectory {
 
 class Path(private val path: String) {
 
+    fun resolve(subPath: String): Path {
+        return Path(this.path + "/" + subPath)
+    }
+
     fun isRelative(): Boolean {
         return !path.startsWith("/")
     }
 
     fun name(): String = elements.last()
+    fun parent(): Path = Path(elements.dropLast(1).joinToString("/"))
 
     private val elements: Array<String>;
 
@@ -86,7 +230,7 @@ class Path(private val path: String) {
         return Link(newElements.joinToString("/")) to lastElement
     }
 
-    fun toArray(): List<String> {
+    fun segments(): List<String> {
         return elements.map { it.replace(Regex("/\\\\(?=\\/)/g"), "") }
     }
 

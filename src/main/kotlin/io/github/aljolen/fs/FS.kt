@@ -87,7 +87,7 @@ data class StatInfo(
 )
 
 data class HardLink(
-    val name: String,
+    val pathname: String,
     val id: Int
 )
 
@@ -98,7 +98,7 @@ data class FileDescriptor(
     val map: MutableList<Int> = ArrayList()
 )
 
-class FileStream(var offset: Int, val id: Int, val fd: Int)
+class FileStream(var offset: Int, val file: FileDescriptor, val fd: Int)
 
 enum class FileType {
     REGULAR, DIRECTORY
