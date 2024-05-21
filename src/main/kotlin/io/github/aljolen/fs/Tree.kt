@@ -76,7 +76,7 @@ class WorkingDirectoryTree(io: IO, rootFile: FileDescriptor) : WorkingDirectory 
         val next = segments.first()
         val node = root.get(next)
         if (node is Symlink){
-            return getNode(root, node.path())
+            return getNode(root, node.resolve())
         }
         return traverse(node, segments.drop(1))
     }
@@ -169,8 +169,6 @@ class FSDirectory(
     }
 
     override fun get(name: String): DirectoryEntry {
-        if (name == ".") return this
-        if (name == "..") return parent ?: throw FileNotFoundException("Directory with name <$name> does not exist")
         return nodes[getLink(name)] ?: throw FileNotFoundException("Hardlink $name not found")
     }
 
