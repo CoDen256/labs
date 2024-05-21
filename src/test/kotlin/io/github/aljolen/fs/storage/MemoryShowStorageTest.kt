@@ -4,7 +4,7 @@ import io.github.aljolen.utils.StorageDisplay
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-class MemoryStorageTest {
+class MemoryShowStorageTest {
 
     @Test
     fun getBlockSize() {

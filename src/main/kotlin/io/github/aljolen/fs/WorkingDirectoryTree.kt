@@ -87,6 +87,7 @@ class FSDirectory(private val value: HardLink) : Directory {
     }
 
     override fun get(name: String): Node {
+        if (name == ".") return this
         return nodes.find { it.name() == name } ?: throw FileNotFoundException("File with name $name does not exist")
     }
 
@@ -235,7 +236,7 @@ class Path(private val path: String) {
     }
 
     override fun toString(): String {
-        return elements.joinToString("/")
+        return elements.joinToString("/").removePrefix("root")
     }
 
 }

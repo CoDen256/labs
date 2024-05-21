@@ -4,7 +4,9 @@ import io.github.aljolen.fs.storage.MemoryStorage
 import io.github.aljolen.utils.Link
 
 fun main() {
-    val console = Console(DefaultFileSystem(MemoryStorage(10, 10)))
+    val storage = MemoryStorage(16, 16)
+    val console = Console(DefaultFileSystem(storage), storage)
+    console.run()
 //    val fs =
 //
 //    fs.mkdir(Link("test_dir"))

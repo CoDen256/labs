@@ -89,7 +89,7 @@ data class StatInfo(
 data class HardLink(
     val pathname: String,
     val id: Int
-)
+){}
 
 data class FileDescriptor(
     val id: Int,

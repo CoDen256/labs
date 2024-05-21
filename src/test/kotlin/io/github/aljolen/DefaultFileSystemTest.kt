@@ -34,7 +34,7 @@ class DefaultFileSystemTest {
 
         val (name, id) = fs.create("test")
 
-        assertEquals("test", name)
+        assertEquals("root/test", name)
         assertEquals(id, 0)
 
         val (fdId, type, nlink, map) = fs.get(id)
@@ -46,7 +46,7 @@ class DefaultFileSystemTest {
         val ls = fs.ls()
         assertEquals(1, ls.size)
 
-        assertEquals(HardLink("test", 0), ls.first())
+        assertEquals(HardLink("root/test", 0), ls.first())
         assertEquals(1, fs.create("extra").id)
         assertEquals(2, fs.create("extra2").id)
 
@@ -58,7 +58,7 @@ class DefaultFileSystemTest {
         val new = fs.create("test")
         val link = fs.link("test", "test2")
 
-        assertEquals("test2", link.pathname)
+        assertEquals("root/test2", link.pathname)
         assertEquals(new.id, link.id)
 
         assertEquals(2, fs.ls().size)
@@ -74,7 +74,7 @@ class DefaultFileSystemTest {
         fs.unlink("test")
         assertEquals(1, fs.ls().size)
         assertEquals(1, fs.get(link.id).nlink)
-        assertEquals("test2", fs.ls().first().pathname)
+        assertEquals("root/test2", fs.ls().first().pathname)
         assertEquals(0, fs.ls().first().id)
 
         assertThrows<FileNotFoundException> { fs.unlink("test") }
