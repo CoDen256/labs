@@ -27,9 +27,9 @@ sealed interface Node {
 interface File : Node {}
 
 interface Directory : Node {
-    fun create(name: String, file: FileDescriptor): File
-    fun mkdir(name: String, file: FileDescriptor): Directory
-    fun remove(name: String): Node
+    fun create(name: String, file: FileDescriptor): HardLink
+    fun mkdir(name: String, file: FileDescriptor): HardLink
+    fun remove(name: String): HardLink
     fun get(name: String): Node
     fun delete()
 }
@@ -57,45 +57,68 @@ class FSFile(private val value: HardLink) : File {
 
 }
 
-class FSDirectory(private val value: HardLink) : Directory {
+fun HardLink.asNode(parent: Directory?): Node {
+    return when (this.file.type) {
+        FileType.REGULAR -> FSFile(this)
+        FileType.DIRECTORY -> FSDirectory(this, parent)
+    }
+}
 
-    private val nodes = ArrayList<Node>().also {
-        // TODO infinite recursion
+
+class FSDirectory(
+    private val value: HardLink,
+    private val parent: Directory?=null
+) : Directory {
+
+    private val links = ArrayList<HardLink>()
+
+    init {
+        mkdir(".", value.file)
+        parent?.let { mkdir("..", it.value().file) }
     }
 
     override fun value(): HardLink = value
 
-    override fun create(name: String, file: FileDescriptor): File {
+    override fun create(name: String, file: FileDescriptor): HardLink {
         verifyDuplicate(name)
-        val file = FSFile(newHardLink(name, file))
-        nodes.add(file)
-        return file
+        val link = newHardLink(name, file)
+        links.add(link)
+        file.nlink++
+        return link
     }
 
-    override fun mkdir(name: String, file: FileDescriptor): Directory {
+    override fun mkdir(name: String, file: FileDescriptor): HardLink {
         verifyDuplicate(name)
-        val dir = FSDirectory(newHardLink(name, file))
-        nodes.add(dir)
-        return dir
+        val link = newHardLink(name, file)
+        links.add(link)
+        file.nlink++
+        return link
     }
 
-    override fun remove(name: String): Node {
-        val node = get(name)
-        if (node is Directory) {throw IllegalArgumentException("$name is a directory")}
-        nodes.remove(node)
-        return node
+    override fun remove(name: String): HardLink {
+        val link = getLink(name)
+        if (link.file.type == FileType.DIRECTORY) {throw IllegalArgumentException("$name is a directory")}
+        links.remove(link)
+        link.file.nlink--
+        return link
+    }
+
+    private fun getLink(name: String): HardLink {
+        return links.find { Path(it.pathname).name() == name } ?: throw FileNotFoundException("File with name $name does not exist")
     }
 
     override fun get(name: String): Node {
         if (name == ".") return this
-        return nodes.find { it.name() == name } ?: throw FileNotFoundException("File with name $name does not exist")
+        if (name == "..") return parent ?: throw FileNotFoundException("Directory with name $name does not exist")
+        return getLink(name).asNode(this)
     }
 
     override fun delete() {
-        for (node in nodes) {
-            if (node is Directory) {node.delete()}
-            else remove(node.name())
-        }
+        value.file.nlink--
+//        for (node in links) {
+//            if (node is Directory) {node.delete()}
+//            else remove(node.name())
+//        }
     }
 
     override fun path(): Path {
@@ -107,7 +130,7 @@ class FSDirectory(private val value: HardLink) : Directory {
     }
 
     override fun nodes(): List<Node> {
-        return nodes
+        return links.map { it.asNode(this) }
     }
 
     override fun name(): String {
@@ -116,9 +139,8 @@ class FSDirectory(private val value: HardLink) : Directory {
 
     private fun newHardLink(name: String, file: FileDescriptor) = HardLink(path().resolve(name).toString(), file)
 
-
     private fun verifyDuplicate(name: String) {
-        if (nodes.any { it.name() == name }) {
+        if (links.any { Path(it.pathname).name() == name }) {
             throw FileAlreadyExistsException("File with name $name already exists")
         }
     }
@@ -131,12 +153,12 @@ class WorkingDirectoryTree : WorkingDirectory {
 
     override fun create(path: Path, file: FileDescriptor): HardLink {
         val parent = getDir(path.parent())
-        return parent.create(path.name(), file).value()
+        return parent.create(path.name(), file)
     }
 
     override fun mkdir(path: Path, file: FileDescriptor): HardLink {
         val parent = getDir(path.parent())
-        return parent.mkdir(path.name(), file).value()
+        return parent.mkdir(path.name(), file)
     }
 
     override fun ls(): List<HardLink> {
@@ -163,7 +185,7 @@ class WorkingDirectoryTree : WorkingDirectory {
 
     override fun remove(path: Path): HardLink {
         val parent = getDir(path.parent())
-        return parent.remove(path.name()).value()
+        return parent.remove(path.name())
     }
 
     override fun rmdir(path: Path): HardLink {
@@ -172,7 +194,8 @@ class WorkingDirectoryTree : WorkingDirectory {
         return dir.value()
     }
 
-    private fun getDir(path: Path): Directory {
+    private fun getDir(path: Path?): Directory {
+        if (path == null) {return cwd}
         return getNode(path) as? Directory ?: throw IllegalArgumentException("$path is not a directory")
     }
 
@@ -207,7 +230,10 @@ class Path(private val path: String) {
     }
 
     fun name(): String = elements.last()
-    fun parent(): Path = Path(elements.dropLast(1).joinToString("/"))
+    fun parent(): Path? {
+        if (elements.size == 1){ return null}
+        return Path(elements.dropLast(1).joinToString("/"))
+    }
 
     private val elements: Array<String>;
 

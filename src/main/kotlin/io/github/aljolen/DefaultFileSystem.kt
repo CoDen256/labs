@@ -185,23 +185,20 @@ class DefaultFileSystem(
 
     private fun newFile(path: String, fd: Int): HardLink {
         val file = get(fd)
-        file.nlink++
         return directory.create(Path(path), file)
     }
 
     private fun rmFile(path: String) {
-        get(directory.remove(Path(path)).id).nlink--
+        get(directory.remove(Path(path)).id)
     }
 
     private fun newDir(path: String, fd: Int): HardLink {
         val file = get(fd)
-        file.nlink++
         return directory.mkdir(Path(path), file)
     }
 
     private fun rmDir(path: String): HardLink {
         val dir = directory.rmdir(Path(path))
-        get(dir.id).nlink--
         return dir
     }
 
