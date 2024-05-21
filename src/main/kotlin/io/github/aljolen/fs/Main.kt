@@ -8,13 +8,5 @@ fun main() {
     val fs = DefaultFileSystem(io)
     val console = Console(fs, io, storage)
 
-
-    fs.mkdir("a")
-    fs.mkdir("a/b")
-    fs.cd("a/b")
-    fs.create("test.dat")
-    fs.symlink("/a", "shortcut")
-    fs.symlink("test.dat", "copy")
-
     console.run()
 }

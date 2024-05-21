@@ -10,7 +10,7 @@ interface FS {
      * Output a list of hard links to files with file descriptor numbers in a
      * directory.
      */
-    fun ls(): List<HardLink>
+    fun ls(pathname: String = "."): List<HardLink>
 
     /**
      * Create a regular file and create a hard link named name to it in the

@@ -15,8 +15,8 @@ class DefaultFileSystem(
         return io.stat(directory.getSymlink(Path(pathname)).file)
     }
 
-    override fun ls(): List<HardLink> {
-        return directory.ls()
+    override fun ls(pathname: String): List<HardLink> {
+        return directory.ls(Path(pathname))
     }
 
     override fun create(pathname: String): HardLink {

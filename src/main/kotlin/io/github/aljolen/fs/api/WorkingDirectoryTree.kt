@@ -28,7 +28,7 @@ interface WorkingDirectory {
     fun mkdir(path: Path, file: FileDescriptor): HardLink
     fun unlink(path: Path): HardLink
     fun rmdir(path: Path): HardLink
-    fun ls(): List<HardLink>
+    fun ls(path: Path): List<HardLink>
     fun get(path: Path): HardLink
     fun getSymlink(path: Path): HardLink
     fun cwd(): Path

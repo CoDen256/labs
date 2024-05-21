@@ -9,7 +9,7 @@ class Console(private val fs: FS, private val io: IO, private val storage: Stora
 
     fun run() {
         while (true) {
-            print("${fs.cwd()}> ")
+            print(prompt(fs.cwd()+"> "))
             val input = readln()
             try {
                 val cmd = create(input)
@@ -25,7 +25,7 @@ class Console(private val fs: FS, private val io: IO, private val storage: Stora
         val args = input.split(" ")
         return when (args[0]) {
             "stat" -> Stat(args[1])
-            "ls" -> Ls
+            "ls" -> Ls(args.getOrElse(1) { "." })
             "create" -> Create(args[1])
             "open" -> Open(args[1])
             "close" -> Close(args[1].toInt())
@@ -52,7 +52,7 @@ class Console(private val fs: FS, private val io: IO, private val storage: Stora
 
     fun handle(cmd: Command): Any? = when (cmd) {
         is Stat -> fs.stat(cmd.pathname)
-        is Ls -> fs.ls()
+        is Ls -> fs.ls(cmd.pathname)
         is Create -> fs.create(cmd.pathname)
         is Open -> fs.open(cmd.pathname)
         is Close -> fs.close(cmd.fd)
@@ -116,14 +116,15 @@ class Console(private val fs: FS, private val io: IO, private val storage: Stora
     }
 
     private fun color(link: HardLink, name: String) = when(link.file.type){
-        FileType.DIRECTORY -> green(name)
-        FileType.REGULAR -> blue(name)
-        FileType.SYMBOLIC -> yellow(name)
+        FileType.DIRECTORY -> dir(name)
+        FileType.REGULAR -> reg(name)
+        FileType.SYMBOLIC -> symbolic(name)
     }
 
-    private fun green(s: String) = "\u001B[1;92m$s\u001B[0m"
-    private fun blue(s: String) = "\u001B[0;94m$s\u001B[0m"
-    private fun yellow(s: String) = "\u001B[0;93m$s\u001B[0m"
+    private fun dir(s: String) = "\u001B[0;95m$s\u001B[0m"
+    private fun reg(s: String) = "\u001B[0;36m$s\u001B[0m"
+    private fun symbolic(s: String) = "\u001B[0;93m$s\u001B[0m"
+    private fun prompt(s: String) = "\u001B[0;97m$s\u001B[0m"
 
     fun out(link: HardLink) {
 //        println("${link.pathname.padEnd(15, ' ')} -> ${link.id}")

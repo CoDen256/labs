@@ -6,7 +6,7 @@ data object Unknown : Command
 data object ShowStorage: Command
 
 data class Stat(val pathname: String) : Command
-data object Ls : Command
+data class Ls(val pathname: String) : Command
 data class Create(val pathname: String) : Command
 data class Open(val pathname: String) : Command
 data class Close(val fd: Int) : Command

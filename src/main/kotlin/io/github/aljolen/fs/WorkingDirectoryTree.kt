@@ -24,8 +24,8 @@ class WorkingDirectoryTree(io: IO, rootFile: FileDescriptor) : WorkingDirectory 
         return parent.mkdir(path.name(), file)
     }
 
-    override fun ls(): List<HardLink> {
-        return cwd.ls()
+    override fun ls(path: Path): List<HardLink> {
+        return getDir(path).ls()
     }
 
     override fun get(path: Path): HardLink {
