@@ -12,6 +12,7 @@ import io.github.aljolen.fs.*
 import io.github.aljolen.fs.storage.Storage
 import io.github.aljolen.utils.Link
 import java.io.FileNotFoundException
+import kotlin.collections.List
 
 class DefaultFileSystem(
     private val storage: Storage
