@@ -93,8 +93,25 @@ data class HardLink(
     val pathname: String,
     val file: FileDescriptor
 ) {
-    val id: Int
-        get() = file.id
+    val id: Int get() = file.id
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is HardLink) return false
+
+        if (pathname != other.pathname) return false
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = pathname.hashCode()
+        result = 31 * result + id
+        return result
+    }
+
+
 }
 
 data class FileDescriptor(
