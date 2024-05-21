@@ -1,6 +1,7 @@
 package io.github.aljolen
 
 import io.github.aljolen.fs.DefaultFileSystem
+import io.github.aljolen.fs.FileIO
 import io.github.aljolen.fs.MemoryStorage
 import io.github.aljolen.fs.api.FileType
 import io.github.aljolen.fs.api.HardLink
@@ -24,20 +25,20 @@ class DefaultFileSystemTest {
     @BeforeEach
     fun setUp() {
         storage = MemoryStorage(blockSize, blockCount)
-        fs = DefaultFileSystem(storage)
+        fs = DefaultFileSystem(FileIO(storage))
     }
 
     @Test
     fun create_ls() {
 
-        assertThrows<FileNotFoundException> { fs.get(0) }
-        assertTrue(fs.ls().isEmpty())
+        assertThrows<FileNotFoundException> { fs.get(1) }
+        assertFalse(fs.ls().isEmpty())
 
         val (name, file) = fs.create("test")
         val id = file.id
 
-        assertEquals("root/test", name)
-        assertEquals(id, 0)
+        assertEquals("/test", name)
+        assertEquals(1, id)
 
         val (fdId, type, nlink, map) = fs.get(id)
         assertEquals(id, fdId)
@@ -46,11 +47,11 @@ class DefaultFileSystemTest {
         assertTrue(map.isEmpty())
 
         val ls = fs.ls()
-        assertEquals(1, ls.size)
+        assertEquals(2, ls.size)
 
-        assertEquals(HardLink("root/test", file), ls.first())
-        assertEquals(1, fs.create("extra").id)
-        assertEquals(2, fs.create("extra2").id)
+        assertEquals(HardLink("/test", file), ls.get(1))
+        assertEquals(2, fs.create("extra").id)
+        assertEquals(3, fs.create("extra2").id)
 
         assertThrows<FileAlreadyExistsException> { fs.create("extra2") }
     }
@@ -60,10 +61,10 @@ class DefaultFileSystemTest {
         val new = fs.create("test")
         val link = fs.link("test", "test2")
 
-        assertEquals("root/test2", link.pathname)
+        assertEquals("/test2", link.pathname)
         assertEquals(new.id, link.id)
 
-        assertEquals(2, fs.ls().size)
+        assertEquals(3, fs.ls().size) // extra .
 
         assertThrows<FileNotFoundException> { fs.link("test3", "test") }
 
@@ -74,10 +75,10 @@ class DefaultFileSystemTest {
 
 
         fs.unlink("test")
-        assertEquals(1, fs.ls().size)
+        assertEquals(2, fs.ls().size)
         assertEquals(1, fs.get(link.id).nlink)
-        assertEquals("root/test2", fs.ls().first().pathname)
-        assertEquals(0, fs.ls().first().id)
+        assertEquals("/test2", fs.ls().get(1).pathname)
+        assertEquals(1, fs.ls().get(1).id)
 
         assertThrows<FileNotFoundException> { fs.unlink("test") }
     }
@@ -96,7 +97,7 @@ class DefaultFileSystemTest {
 
         fs.truncate("test", blockSize * 2 + 1)
         val stat = fs.stat("test")
-        assertEquals(StatInfo(0, FileType.REGULAR, blockSize * 3, 1, 0), stat)
+        assertEquals(StatInfo(1, FileType.REGULAR, blockSize * 3, 1, 0), stat)
 
         val fd = fs.open("test")
         assertArrayEquals(ByteArray(10), fs.read(fd, 10))
@@ -145,11 +146,11 @@ class DefaultFileSystemTest {
     @Test
     fun stat() {
         fs.create("test")
-        val (name, id0) = fs.create("test2")
+        val (name, fd) = fs.create("test2")
         fs.link("test2", "test3")
 
         val (id, type, size, nlink, nblock) = fs.stat("test3")
-        assertEquals(id0, id)
+        assertEquals(fd.id, id)
         assertEquals(FileType.REGULAR, type)
         assertEquals(2, nlink)
         assertEquals(0, size)

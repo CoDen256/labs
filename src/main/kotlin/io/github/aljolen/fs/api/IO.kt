@@ -8,5 +8,7 @@ interface IO {
     fun seek(fd: Int, offset: Int)
     fun read(fd: Int, size: Int): ByteArray
     fun write(fd: Int, size: Int, value: ByteArray)
+    fun writeSymlink(value: String, file: FileDescriptor)
+    fun readSymlink(file: FileDescriptor): String
 }
 

@@ -3,7 +3,7 @@ package io.github.aljolen.fs.console
 import io.github.aljolen.fs.api.*
 import io.github.aljolen.fs.utils.StorageDisplay
 
-class Console(private val fs: FS, private val storage: Storage) {
+class Console(private val fs: FS, private val io: IO, private val storage: Storage) {
 
     private val display = StorageDisplay()
 
@@ -107,16 +107,23 @@ class Console(private val fs: FS, private val storage: Storage) {
         links
             .sortedBy { it.pathname }
             .forEachIndexed { i, link ->
-            val name = Path(link.pathname).name()
-            val pathname = if (link.file.type == FileType.DIRECTORY) {
-                green(name)
-            } else blue(name)
-            println("${pathname.padEnd(25, ' ')} -> ${link.id}")
-        }
+                val name = Path(link.pathname).name()
+                val pathname = color(link, name)
+                val extra = if (link.file.type == FileType.SYMBOLIC) " -> " +
+                        io.readSymlink(link.file) else ""
+                println("${pathname.padEnd(25, ' ')} -> ${link.id}$extra")
+            }
+    }
+
+    private fun color(link: HardLink, name: String) = when(link.file.type){
+        FileType.DIRECTORY -> green(name)
+        FileType.REGULAR -> blue(name)
+        FileType.SYMBOLIC -> yellow(name)
     }
 
     private fun green(s: String) = "\u001B[1;92m$s\u001B[0m"
     private fun blue(s: String) = "\u001B[0;94m$s\u001B[0m"
+    private fun yellow(s: String) = "\u001B[0;93m$s\u001B[0m"
 
     fun out(link: HardLink) {
 //        println("${link.pathname.padEnd(15, ' ')} -> ${link.id}")

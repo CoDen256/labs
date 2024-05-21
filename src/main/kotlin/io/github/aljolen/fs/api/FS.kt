@@ -78,7 +78,7 @@ interface FS {
 
     fun cwd(): String
 
-    fun symlink(value: String, pathname: String)
+    fun symlink(value: String, pathname: String): HardLink
 }
 
 data class StatInfo(
@@ -124,7 +124,7 @@ data class FileDescriptor(
 class FileStream(var offset: Int, val file: FileDescriptor, val fd: Int)
 
 enum class FileType {
-    REGULAR, DIRECTORY
+    REGULAR, DIRECTORY, SYMBOLIC
 }
 
 

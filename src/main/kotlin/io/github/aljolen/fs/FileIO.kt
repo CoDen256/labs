@@ -3,7 +3,7 @@ package io.github.aljolen.fs
 import io.github.aljolen.fs.api.*
 import kotlin.math.abs
 
-class DefaultIO(private val storage: Storage) : IO {
+class FileIO(private val storage: Storage) : IO {
     private val fds = arrayOfNulls<FileStream>(256 * 4)
 
     private fun newStream(file: FileDescriptor): FileStream {
@@ -83,8 +83,8 @@ class DefaultIO(private val storage: Storage) : IO {
         val fileStream = getFileStream(fd)
         val file = fileStream.file
 
-        if (size > file.size()){
-            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size")
+        if (fileStream.offset + size > file.size()){
+            throw IllegalStateException("File size exceeded: ${file.size()}, but was: $size at offset ${fileStream.offset}")
         }
 
         val blocks = file
@@ -109,6 +109,20 @@ class DefaultIO(private val storage: Storage) : IO {
         }
 
         fileStream.offset += size
+    }
+
+    override fun readSymlink(file: FileDescriptor): String{
+        if (file.type != FileType.SYMBOLIC) throw IllegalArgumentException("$file is not a symbolic link")
+        val block = storage.getBlock(file.map.first())
+        return String(block.read(0, storage.getBlockSize() - 1)
+            .dropLastWhile { it.toInt() == 0 }.toByteArray())
+    }
+
+    override fun writeSymlink(value: String, file: FileDescriptor) {
+       truncate(file, storage.getBlockSize())
+       val fd = open(file)
+       write(fd, value.length, value.toByteArray())
+       close(fd)
     }
 
     override fun truncate(file: FileDescriptor, size: Int) {

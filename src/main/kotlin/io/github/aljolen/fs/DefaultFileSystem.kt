@@ -3,15 +3,16 @@ package io.github.aljolen.fs
 import io.github.aljolen.fs.api.*
 import java.io.FileNotFoundException
 
-class DefaultFileSystem(storage: Storage) : FS {
+class DefaultFileSystem(
+    private val io: IO,
+) : FS {
 
     private val files = arrayOfNulls<FileDescriptor>(256)
     private val root: FileDescriptor = newDir()
-    private val directory: WorkingDirectory = WorkingDirectoryTree(root)
-    private val io: IO = DefaultIO(storage)
+    private val directory: WorkingDirectory = WorkingDirectoryTree(io, root)
 
     override fun stat(pathname: String): StatInfo {
-        return io.stat(directory.get(Path(pathname)).file)
+        return io.stat(directory.getSymlink(Path(pathname)).file)
     }
 
     override fun ls(): List<HardLink> {
@@ -75,8 +76,12 @@ class DefaultFileSystem(storage: Storage) : FS {
         return directory.cwd().toString()
     }
 
-    override fun symlink(value: String, pathname: String) {
-        directory.symlink(Path(value), Path(pathname))
+    override fun symlink(value: String, pathname: String): HardLink {
+        val file = nextSymLink()
+        val link = directory.symlink(Path(pathname), file)
+        io.writeSymlink(value, file)
+        save(file)
+        return link
     }
 
     private fun linkfile(path: String, file: FileDescriptor): HardLink {
@@ -101,6 +106,11 @@ class DefaultFileSystem(storage: Storage) : FS {
     private fun nextFile(): FileDescriptor {
         val fd = nextFileDescriptorId()
         return FileDescriptor(fd, FileType.REGULAR, 0)
+    }
+
+    private fun nextSymLink(): FileDescriptor{
+        val fd = nextFileDescriptorId()
+        return FileDescriptor(fd, FileType.SYMBOLIC, 0)
     }
 
     private fun save(new: FileDescriptor) {
