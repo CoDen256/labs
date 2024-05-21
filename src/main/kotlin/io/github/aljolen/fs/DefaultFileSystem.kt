@@ -45,7 +45,7 @@ class DefaultFileSystem(
     }
 
     override fun link(pathname1: String, pathname2: String): HardLink {
-        val file = directory.get(Path(pathname1)).file
+        val file = directory.getSymlink(Path(pathname1)).file
         return linkfile(pathname2, file)
     }
 

@@ -224,4 +224,14 @@ class DefaultFileSystemTest {
         assertEquals(2, fs.ls().size)
 
     }
+
+    @Test
+    fun hardOnSoft() {
+        val symLink = fs.symlink("some", "data.txt")
+        val second = fs.link("data.txt", "/document")
+
+        assertEquals(symLink.file, second.file)
+
+
+    }
 }
