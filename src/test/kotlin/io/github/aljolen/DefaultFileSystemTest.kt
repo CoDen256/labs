@@ -3,6 +3,7 @@ package io.github.aljolen
 import io.github.aljolen.fs.DefaultFileSystem
 import io.github.aljolen.fs.FileIO
 import io.github.aljolen.fs.MemoryStorage
+import io.github.aljolen.fs.api.FileDescriptor
 import io.github.aljolen.fs.api.FileType
 import io.github.aljolen.fs.api.HardLink
 import io.github.aljolen.fs.api.StatInfo
@@ -155,5 +156,47 @@ class DefaultFileSystemTest {
         assertEquals(2, nlink)
         assertEquals(0, size)
         assertEquals(0, nblock)
+    }
+
+
+    @Test
+    fun traverse() {
+        val root = fs.ls()
+        val rootFd = FileDescriptor(0, FileType.REGULAR, 0)
+        assertEquals(HardLink("/.", rootFd), root.get(0))
+        assertEquals(1, root.size)
+
+
+        fs.create("test.dat")
+        fs.truncate("test.dat", 10)
+        val fd = fs.open("test.dat")
+        fs.write(fd, 10, "abcdefghjijklmn".toByteArray())
+        fs.close(fd)
+
+        fs.link("test.dat", "test-copy.dat")
+        fs.symlink("/././test.dat", "sy.dat")
+        fs.mkdir("f")
+        fs.mkdir("f/s")
+        fs.create("f/s/extra.dat")
+        fs.symlink("f/s/../../sy.dat", "one-more")
+
+        val sym = fs.open("one-more")
+        assertEquals( "abcdefghji"+'\u0000',fs.read(sym, 11))
+
+        fs.cd("f")
+        assertEquals("/f", fs.cwd())
+
+        fs.cd("s")
+        assertEquals("/f/s", fs.cwd())
+
+        fs.cd(".")
+        assertEquals("/f/s", fs.cwd())
+
+        fs.cd("..")
+        assertEquals("/f", fs.cwd())
+
+        fs.cd(".././f/./s/./..")
+        assertEquals("/f", fs.cwd())
+
     }
 }

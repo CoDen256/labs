@@ -114,7 +114,7 @@ class FileIO(private val storage: Storage) : IO {
     override fun readSymlink(file: FileDescriptor): String{
         if (file.type != FileType.SYMBOLIC) throw IllegalArgumentException("$file is not a symbolic link")
         val block = storage.getBlock(file.map.first())
-        return String(block.read(0, storage.getBlockSize() - 1)
+        return String(block.read(0, storage.getBlockSize())
             .dropLastWhile { it.toInt() == 0 }.toByteArray())
     }
 
